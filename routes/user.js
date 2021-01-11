@@ -3,6 +3,7 @@ const {check, validationResult} = require('express-validator');
 const router = express.Router();
 const authMiddleware = require('../middleware/auth');
 const mongoose = require('mongoose');
+const checkObjectId = require('../middleware/checkObjectId');
 
 const User = require('../models/user');
 const Post = require('../models/post');
@@ -116,6 +117,137 @@ async (req, res) => {
         console.error(err);
     }
 
+});
+
+
+// @route    PUT /like/:id
+// @desc     Like a post/thread
+// @access   Private
+router.put('/like/:id', authMiddleware, checkObjectId('id'), async (req, res) => {
+    let post;
+    let type = 'Post'
+    try {
+        //Check if it's a post or a thread
+        if(req.query.type === 'thread') {
+            type = 'Thread';
+            post = await Thread.findById(req.params.id);
+        } else {
+            post = await Post.findById(req.params.id);
+        }
+  
+      // Check if the post has already been liked
+      if (post.likes.some((like) => like.user.toString() === req.user.id)) {
+        return res.status(400).json({ msg: `${type} already liked` });
+      }
+  
+      post.likes.unshift({ user: req.user.id });
+  
+      await post.save();
+  
+      return res.json(post.likes);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  });
+  
+// @route    PUT api/posts/unlike/:id
+// @desc     Unlike a post/thread
+// @access   Private
+router.put('/unlike/:id', authMiddleware, checkObjectId('id'), async (req, res) => {
+    let post;
+    let type = 'Post'
+    try {
+        //Check if it's a post or a thread
+        if(req.query.type === 'thread') {
+            post = await Thread.findById(req.params.id);
+            type = 'Thread';
+        } else {
+            post = await Post.findById(req.params.id);
+        }
+        // Check if the post has not yet been liked
+        if (!post.likes.some((like) => like.user.toString() === req.user.id)) {
+        return res.status(400).json({ msg: `${type} has not yet been liked` });
+        }
+
+        // remove the like
+        post.likes = post.likes.filter(
+        ({ user }) => user.toString() !== req.user.id
+        );
+
+        await post.save();
+
+        return res.json(post.likes);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+// @route    PUT /dislike/:id
+// @desc     Dislike a post/thread
+// @access   Private
+router.put('/dislike/:id', authMiddleware, checkObjectId('id'), async (req, res) => {
+    let post;
+    let type = 'Post'
+    try {
+        //Check if it's a post or a thread
+        if(req.query.type === 'thread') {
+            post = await Thread.findById(req.params.id);
+            type = 'Thread';
+        } else {
+            post = await Post.findById(req.params.id);
+        }
+  
+        // Check if the post has already been disliked
+        
+        if (post.unlikes.some((unlike) => unlike.user.toString() === req.user.id)) {
+            return res.status(400).json({ msg: `${type} already disliked` });
+        }
+    
+        post.unlikes.unshift({ user: req.user.id });
+    
+        await post.save();
+    
+        return res.json(post.unlikes);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+  });
+  
+// @route    PUT api/posts/undo-dislike/:id
+// @desc     undo dislike in a post/thread
+// @access   Private
+router.put('/undo-dislike/:id', authMiddleware, checkObjectId('id'), async (req, res) => {
+    let post;
+    let type = 'Post'
+    try {
+        //Check if it's a post or a thread
+        if(req.query.type === 'thread') {
+            post = await Thread.findById(req.params.id);
+            type = 'Thread';
+        } else {
+            post = await Post.findById(req.params.id);
+        }
+        // Check if the post has not yet been disliked
+        if (!post.unlikes.some((unlike) => unlike.user.toString() === req.user.id)) {
+        return res.status(400).json({ msg: `${type} has not yet been disliked` });
+        }
+
+        // remove the dislike
+        post.unlikes = post.unlikes.filter(
+        ({ user }) => user.toString() !== req.user.id
+        );
+
+        await post.save();
+
+        return res.json(post.unlikes);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
 });
 
 

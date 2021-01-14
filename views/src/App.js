@@ -7,6 +7,7 @@ const App = () => {
     <Layout>
       <Threads/>
     </Layout>
+    
   )
   
 }

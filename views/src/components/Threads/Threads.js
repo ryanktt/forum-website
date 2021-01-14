@@ -4,8 +4,9 @@ import Thread from './Thread/Thread';
 
 const Threads = () => {
     return (
-        
+        <div className={style.Thread}>
             <Thread/>
+        </div>
         
     )
 }

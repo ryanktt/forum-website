@@ -1,1 +1,126 @@
- 
+hr {
+    border-top: solid 1px rgb(221, 221, 221);
+    border-bottom: none;
+}
+
+h4 {
+    cursor: pointer;
+}
+
+.Box {
+    display: flex;
+    align-items: center;
+}
+
+
+
+.Thread * {
+    margin: 0;
+}
+
+.Thread p {
+    margin-right: 15px;
+    display: inline-block;
+    font-size: small;
+    color: rgba(0, 0, 0, 0.678);
+}
+.Thread {
+    max-height: 100px;
+    display:  flex;
+}
+
+
+
+
+.Post {
+    width: 100%;
+}
+
+.PostContent{
+    flex-direction: column;
+    align-items: baseline;
+    position: relative;
+    justify-content: space-around;
+}
+
+.ProfilePic {
+    width: 80px;
+    justify-content: center;
+}
+
+.ProfilePic2 {
+    width: 80px;
+    justify-content: center;
+}
+
+.ThreadOwnerPic {
+    width: 50px;
+    height: auto;
+
+}
+
+
+
+.Details {
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+
+.DetailsBox div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.DetailsMobile {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.DetailsMobileBox {
+    height: fit-content;
+    width: 45px;
+    display: flex;
+    flex-direction: column;
+}
+
+.DetailsMobileBox i {
+    color: rgb(255, 177, 32);
+}
+
+.DetailsMobileBox p {
+    margin: 5px 0 0 0;
+}
+
+
+
+.LastPost {
+    flex-direction: column;
+    justify-content: space-around;
+    min-width: 120px;
+}
+.LastPost p {
+    margin: 0;
+}
+
+.LastPost div {
+   display: flex;
+   flex-direction: column;
+}
+
+.LastPostPic {
+    width: 30px;
+    height: auto;
+
+}
+@media only screen and (max-width: 768px) {
+    .Details, .LastPost, .ProfilePic2 {
+        display: none;
+    }
+
+    .DetailsMobile {
+        display: flex;
+    }
+  
+}

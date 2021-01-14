@@ -1,0 +1,31 @@
+.SideDrawer {
+    top: 80px;
+    display: flex;
+    flex-flow: column;
+    padding: 15px 0;
+    padding-left: 30px;
+    margin: 0 auto;
+    background-color: rgb(32, 32, 32);
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    transition: ease-in-out 0.3s;
+    overflow: hidden;
+    transform: translateX(-100%);
+    z-index: 5;
+
+}
+
+.Active {
+    transform: translateX(0);
+
+}
+
+.SideDrawer ul {
+    margin-top: 40px;
+    height: 200px;
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    justify-content: space-between;
+}

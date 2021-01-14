@@ -1,0 +1,16 @@
+.Nav * {
+    -webkit-user-select: none;  
+    -moz-user-select: none;     
+    -ms-user-select: none;      
+    user-select: none;  
+}
+
+.Nav {
+    z-index: 5;
+    width: 100%;
+    position: fixed;
+    margin: 0 auto;
+    height: 85px;
+    background-color: rgb(32, 32, 32);
+    
+}

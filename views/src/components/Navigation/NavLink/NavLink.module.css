@@ -1,0 +1,29 @@
+.NavLink a {
+    font-family: 'Roboto', sans-serif;
+    color: rgb(255, 185, 80);
+    text-decoration: none;
+    padding: 0;
+}
+
+.NavLink .active{
+    background-color: rgb(236, 154, 0);
+    border-radius: 3px;
+    padding: 5px;
+    width: fit-content;
+
+}
+
+
+.NavLink .active  a{
+    color: white;
+}
+
+.NavLink a:hover {
+    color: white;
+}
+
+
+
+
+
+

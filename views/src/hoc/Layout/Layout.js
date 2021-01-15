@@ -1,5 +1,6 @@
 import React from 'react';
 import Navigation from '../../components/Navigation/Navigation';
+import Footer from '../../components/Footer/Footer';
 import style from './Layout.module.css';
 import Wrapper from './Wrapper/Wrapper';
 
@@ -10,6 +11,7 @@ const Layout = (props) => {
             <Wrapper>
                 {props.children}
             </Wrapper>
+            <Footer />
             
         </div>
     )

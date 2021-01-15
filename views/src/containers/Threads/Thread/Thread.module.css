@@ -1,10 +1,8 @@
-hr {
-    border-top: solid 1px rgb(221, 221, 221);
-    border-bottom: none;
-}
 
-h4 {
+
+.Thread h4 {
     cursor: pointer;
+    font-weight: 500;
 }
 
 .Box {
@@ -25,7 +23,7 @@ h4 {
     color: rgba(0, 0, 0, 0.678);
 }
 .Thread {
-    max-height: 100px;
+    max-height: 200px;
     display:  flex;
 }
 

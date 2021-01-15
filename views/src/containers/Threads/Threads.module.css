@@ -1,0 +1,37 @@
+.ThreadCategory {
+    height: 35px;
+    border: solid 1px;
+    background-color: rgb(32, 32, 32);
+    border-left-color: rgb(255, 166, 0);
+    border-top-color: rgb(255, 115, 0);
+    border-left-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 0;
+    border-right-width: 0;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 0;
+}
+
+.ThreadCategory p {
+    font-weight: 500;
+    position: relative;
+    bottom: 9px;
+    left: 15px;
+    color: rgb(255, 186, 59);
+    width: fit-content;
+}
+
+.Thread h4 {
+    color: rgba(0, 0, 0, 0.822);
+}
+.Thread {
+    border: 1px solid rgb(226, 226, 226);
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-left-color: orange;
+    border-left-width: 2px;
+    padding-top: 20px;
+    
+}
+

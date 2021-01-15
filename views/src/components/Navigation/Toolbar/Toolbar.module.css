@@ -32,9 +32,6 @@
 }
 
 @media only screen and (max-width: 810px) {
-    .Toolbar {
-        max-width: 90%;
-    }
     .Toolbar ul, .Searchbar {
         display: none;
     }

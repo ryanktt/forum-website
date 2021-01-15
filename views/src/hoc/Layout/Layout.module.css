@@ -1,0 +1,13 @@
+body {
+    padding-top: 120px;
+}
+
+hr {
+    border-top: solid 1px rgb(221, 221, 221);
+    border-bottom: none;
+}
+
+.Layout * {
+    box-sizing: border-box;
+    
+}

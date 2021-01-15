@@ -14,7 +14,7 @@ const Thread = () => {
 
             <div className={[style.Post, style.Box].join(' ')}>
                 <div className={style.PostContent}>
-                    <h4>Lorem Ipsum Dolores Matheo Solaires Astora Gravda Magna</h4>
+                    <h4>Lorem Ipsum Dolores Matheo Solaires Astora Gravda Magna </h4>
                     <div className={style.PostDetails}>
                         <p>Lorensio</p>
                         <p>Dec 14, 2020 at 6:56 AM</p>

@@ -1,8 +1,11 @@
-.NavLink a {
+.NavLink {
+    text-decoration: none;
+}
+
+.NavLink {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     color: rgb(255, 185, 80);
-    text-decoration: none;
     padding: 0;
 }
 
@@ -15,11 +18,11 @@
 }
 
 
-.NavLink .active  a{
+.NavLink .active  {
     color: white;
 }
 
-.NavLink a:hover {
+.NavLink :hover {
     color: white;
 }
 

@@ -4,7 +4,6 @@
     justify-content: space-between;
     cursor: pointer;
     height: 20px;
-    display: none;
 }
 
 .HamburgerToggle  div {
@@ -14,10 +13,4 @@
     border: solid rgb(180, 117, 0);
     border-width: 0 0 2px 0;
     
-}
-
-@media only screen and (max-width: 810px) {
-    .HamburgerToggle {
-        display: flex;
-    }
 }

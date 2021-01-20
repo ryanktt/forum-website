@@ -2,8 +2,9 @@
     display: block;
 }
 
+
 .Input input {
-    margin-bottom: 15px;
+    
     width: 100%;
     outline-style: none;
     border: 1px solid rgb(231, 231, 231);
@@ -12,6 +13,7 @@
     background-color: rgb(245, 245, 245);
     
 }
+
 
 .Input label {
     color: rgb(29, 29, 29);

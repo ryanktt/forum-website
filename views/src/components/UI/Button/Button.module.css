@@ -5,10 +5,13 @@
     padding: 7px;
     cursor: pointer;
     width: fit-content;
+    height: fit-content;
     transition: ease-in-out 0.2s;
     text-decoration: none;
     margin: 0;
-    
+    font-size: 16px;
+    outline: none;
+    border: 1px solid transparent;
     
 }
 
@@ -21,8 +24,9 @@
 }
 
 .Button, .Button p  {
-    color: rgba(0, 0, 0, 0.795) ;
+    color: rgba(29, 29, 29, 0.76) ;
     font-weight: 600;
+    font-size: 15px;
     margin: 0;
 }
 
@@ -34,3 +38,27 @@
     top: 2px;
     right: 1px
 }
+
+.Danger, .Success {
+    padding: 6px;
+}
+
+.Danger {
+    background-color: rgb(236, 35, 35);
+    color: white;
+    
+}
+
+.Danger:hover {
+    background-color: rgb(253, 37, 37);
+}
+
+.Success {
+    background-color: rgb(34, 228, 34);
+    
+}
+
+.Success:hover {
+    background-color: rgb(41, 255, 41);
+}
+

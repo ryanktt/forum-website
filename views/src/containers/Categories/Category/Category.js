@@ -2,6 +2,9 @@ import React from 'react'
 import style from './Category.module.css';
 
 const Category = (props) => {
+    let path = props.path;
+    if(!props.path)  path = '' ;
+
     return (
         <div className={style.Category} style={{borderColor: props.color}}>
             <div className={style.Introduction}>
@@ -9,21 +12,21 @@ const Category = (props) => {
                     {props.fontAwesome}
                 </div>
                 <div className={style.CategoryInfo}>
-                    <h2 style={{color: props.color}}>{props.categoryName}</h2>
+                    <a href={`/threads${path}`}><h2 style={{color: props.color}}>{props.categoryName}</h2></a>
                     <p>{props.description}</p>
 
                     <div className={style.CategoryDetails}>
-                    <div className={style.CategoryDetailsBox}>
-                        <div>
-                            <i class="far fa-comment"></i>
-                            <p>789</p>
-                        </div>
-                        <div>
-                            <i class="far fa-comments"></i>
-                            <p>3558</p>
+                        <div className={style.CategoryDetailsBox}>
+                            <div>
+                                <i class="far fa-comment"></i>
+                                <p>789</p>
+                            </div>
+                            <div>
+                                <i class="far fa-comments"></i>
+                                <p>3558</p>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
             </div>
 

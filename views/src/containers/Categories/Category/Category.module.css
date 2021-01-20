@@ -1,6 +1,9 @@
 .Category * {
     margin: 0;
 }
+.Category a {
+    text-decoration: none;
+}
 
 .Category {
     border: solid 1px rgb(255, 198, 41);
@@ -23,8 +26,7 @@
 }
 
 .Introduction {
-    padding-top: 10px;
-    padding-bottom: 10px;
+   
     display: flex;
     justify-content: space-around;
 }
@@ -70,6 +72,7 @@
 
 .CategoryDetailsBox {
     display: flex;
+    margin-top: 5px;
 }
 .CategoryDetailsBox div {
     margin-right: 15px;
@@ -83,7 +86,7 @@
 }
 
 .CategoryDetails p{
-    font-size: 12px;
+    font-size: 11px;
 }
 
 

@@ -29,3 +29,10 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+@media only screen and (max-width: 768px) {
+    .SideDrawer {
+        width: fit-content;
+        padding-right: 15px;
+    }
+}

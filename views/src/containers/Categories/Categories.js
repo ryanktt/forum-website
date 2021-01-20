@@ -5,35 +5,41 @@ import Category from './Category/Category';
 const Categories = () => {
     return (
         <div className={style.Categories}>
-            <Category 
+            <Category
+                path='/pc'
                 categoryName='PC' 
                 color='rgb(32, 32, 32)'
                 fontAwesome={<i style={{color:'rgb(32, 32, 32)'}} class="fas fa-desktop"></i>}
                 description='Notícias sobre PC, Hardware, Placas de Vídeo e Steam.'
                 />
-            <Category 
+            <Category
+                path='/playstation'
                 categoryName='Playstation'
                 color='rgb(22, 80, 255)'
                 fontAwesome={<i style={{color:'rgb(22, 80, 255)'}} class="fab fa-playstation"></i>}
                 description='Discussão sobre Sony/Playstation.'
                 />
             <Category 
+                path='/xbox'
                 categoryName='Xbox'
                 color='rgb(13, 104, 0)'
                 fontAwesome={<i style={{color: 'rgb(13, 104, 0)'}} class="fab fa-xbox"></i>}
                 description='Discussão sobre Microsoft/Xbox.'/>
             <Category 
+                path='/jogos'
                 categoryName='Jogos' 
                 color='rgb(219, 0, 0)'
                 fontAwesome={<i style={{color: 'rgb(219, 0, 0)'}} class="fas fa-gamepad"></i>}
                 description='Discussão sobre jogos em geral.'/>
             <Category 
+                path='/cinema'
                 categoryName='Filmes e Séries'
                 color='rgb(0, 195, 229)'
                 fontAwesome={<i style={{color:'rgb(0, 195, 229)'}} class="fas fa-film"></i>}
                 description='Discussão e notícias sobre as séries e filmes do momento.'/>
 
             <Category 
+                path='/animes'
                 categoryName='Animes'
                 color='rgb(140, 0, 255)'
                 fontAwesome={<i style={{color:'rgb(140, 0, 255)'}} class="fas fa-video"></i>}

@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import style from './Admin.module.css';
+import Users from './Users/Users';
 
-const Admin = (props) => {
+const Admin = () => {
     return (
-        <div>
-            
+        <div className={style.Admin}>
+            <Users/>
         </div>
     )
 }

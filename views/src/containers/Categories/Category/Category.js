@@ -1,5 +1,6 @@
 import React from 'react'
 import style from './Category.module.css';
+import {Link} from 'react-router-dom';
 
 const Category = (props) => {
     let path = props.path;
@@ -12,7 +13,7 @@ const Category = (props) => {
                     {props.fontAwesome}
                 </div>
                 <div className={style.CategoryInfo}>
-                    <a href={`/threads${path}`}><h2 style={{color: props.color}}>{props.categoryName}</h2></a>
+                    <Link to={`/threads${path}`}><h2 style={{color: props.color}}>{props.categoryName}</h2></Link>
                     <p>{props.description}</p>
 
                     <div className={style.CategoryDetails}>

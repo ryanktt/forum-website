@@ -5,10 +5,10 @@ import {Link} from 'react-router-dom';
 const Button = (props) => {
     let buttonStyle = ''
     if(props.danger) buttonStyle = style.Danger;
-    if(props.Success) buttonStyle = style.Succes;
+    if(props.success) buttonStyle = style.Success;
     let buttonType = <Link to={props.link} onClick={props.close} className={[style.Button, buttonStyle].join(' ')}>{props.children}</Link>;
     if(props.button) {
-        buttonType = <button  to={props.link} onClick={props.clicked} className={[style.Button, buttonStyle].join(' ')}>{props.children}</button>
+        buttonType = <button type='submit' to={props.link} onClick={props.clicked} className={[style.Button, buttonStyle].join(' ')}>{props.children}</button>
     }
 
 

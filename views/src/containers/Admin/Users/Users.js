@@ -38,7 +38,7 @@ const Users = (props) => {
             <table cellSpacing='3' cellPadding='2'>
                 <thead>
                     <tr> 
-                        <th>User Name</th>
+                        <th>Usuário</th>
                         <th>IP Address</th>
                         <th>Ações</th>
                 

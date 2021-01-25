@@ -14,13 +14,27 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    admin: {
-        type: Boolean,
-        default: false
-    },
     date: {
         type: Date,
         default: Date.now
+    },
+    settings: {
+           role: {
+               type: Number,
+               default: 1
+           },
+           status: {
+               type: Number,
+               default: 1
+           },
+           allowAccessFrom: {
+               type: Date,
+               default:() => Date.now() - 7*24*60*60*1000
+           }
+    },
+    ip: {
+        type: String,
+        required: true
     }
 });
 

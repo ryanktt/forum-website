@@ -8,9 +8,9 @@ const Layout = (props) => {
     return (
         <div className={style.Layout}>
             <Navigation/>
-            <Wrapper>
-                {props.children}
-            </Wrapper>
+                <Wrapper>
+                    {props.children}
+                </Wrapper>
             <Footer />
             
         </div>

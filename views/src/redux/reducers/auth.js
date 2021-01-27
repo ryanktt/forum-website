@@ -1,10 +1,11 @@
 import {LOGIN, SIGNUP, LOGOUT, AUTH_ERROR} from '../actions/actionTypes/authTypes'
+import {LOADING} from '../actions/actionTypes/commonTypes';
 
 const initialState = {
     token: null,
     isAuthenticated: null,
     user: null,
-    loading: true
+    loading: false
 
 
 
@@ -32,6 +33,11 @@ const reducer = (state = initialState, action) => {
                 token: null,
                 isAuthenticated: false,
                 loading: false
+            }
+        case LOADING:
+            return {
+                ...state,
+                loading: true
             }
         default:
             return state   

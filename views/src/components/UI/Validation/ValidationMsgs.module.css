@@ -1,0 +1,29 @@
+.ValidationMsgs {
+    border: 1px solid rgba(61, 61, 61, 0.918);
+    background-color: rgb(240, 240, 240);
+    width: fit-content;
+    transition: ease-in-out 0.2s;
+    padding: 10px;
+    margin: 0 auto;
+    border-radius: 3px;
+}
+.ValidationMsgs p {
+    color: rgb(29, 29, 29);
+    margin: 0;
+}
+
+.ValidationMsgs.Success {
+    border: 1px solid rgba(0, 197, 0, 0.808);
+    background-color: rgb(231, 255, 228);
+}
+.ValidationMsgs.Success p {
+    color: rgb(0, 121, 4);
+}
+
+.ValidationMsgs.Danger {
+    border: 1px solid rgba(230, 0, 0, 0.808);
+    background-color: rgb(255, 227, 227);
+}
+.ValidationMsgs.Danger p {
+    color: rgba(209, 0, 0, 0.678);
+}

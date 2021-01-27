@@ -1,9 +1,15 @@
 import axios from '../../axios';
 
 import {LOGIN, SIGNUP, AUTH_ERROR} from './actionTypes/authTypes';
+import {LOADING} from './actionTypes/commonTypes';
 
 
 export const auth = (formData, type) => async dispatch => {
+    dispatch({
+        type: LOADING
+    })
+
+
     let path = '';
     type === 'login' ? path = '/auth/login' : path = '/auth/signup';
 
@@ -14,19 +20,23 @@ export const auth = (formData, type) => async dispatch => {
     
     try { 
         const response = await axios.post(path, formData);
-        dispatch({
+       
+        return dispatch({
             type: dispatchType,
             payload: response.data
         })
-        
 
     } catch(err) {
-        const errors = err.response.data.errors;
-        if(errors) {
-            console.log(errors)
-        }
+        alert('' + err + '')
+        // const errors = err.response.data.errors
         
-        dispatch({
+        // if(errors) {
+        //     console.log(errors);
+        // } else {
+            
+        // }
+
+        return dispatch({
             type: AUTH_ERROR
         })
     }

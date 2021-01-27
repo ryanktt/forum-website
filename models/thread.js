@@ -16,12 +16,16 @@ const ThreadSchema = new Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        required: true
+    },
     likes: [
         {
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'user'
-        }
+            user: {
+                type: Schema.Types.ObjectId,
+                ref: 'user'
+            }
         }
     ],
     unlikes: [

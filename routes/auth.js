@@ -98,7 +98,7 @@ async (req, res) => {
         const passwordMatch  =  await bcrypt.compare(password, user.password);
 
         if(!passwordMatch ) { 
-          return res.json({errors:[{msg: 'Credenciais Inválidas'}]});
+          return res.status(400).json({errors:[{msg: 'Credenciais Inválidas'}]});
         }
 
         const payload = {
@@ -114,6 +114,7 @@ async (req, res) => {
                 if (err) throw err;
                 res.json({ token });
             })
+        console.log('success')
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error');

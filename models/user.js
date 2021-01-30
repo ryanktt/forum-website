@@ -14,10 +14,6 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
     settings: {
            role: {
                type: Number,
@@ -36,6 +32,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     }
-});
+
+}, {timestamps: true});
 
 module.exports = mongoose.model('user', UserSchema);

@@ -34,7 +34,7 @@ const Auth = (props) => {
         try {
 
             if(type === 'signup') {
-                console.log(type)
+                
                 if (submitedData.password !== submitedData.password2) {
                     console.log('aqui')
                     return props.valAlert('Senhas não coincidem.', 'danger', 3000);
@@ -43,8 +43,9 @@ const Auth = (props) => {
             const data = JSON.stringify(submitedData);
             const res =  await props.auth(data, type, props.history)
             
-            if(res.type){
+            if(res) if(res.type){
                 type === 'login' ? props.history.push('/') : props.history.push('/auth/login');
+    
             }
 
         } catch (err) {

@@ -17,17 +17,17 @@
     margin: 0;
 }
 
+.Thread {
+    padding: 10px 0;
+    max-height: 150px;
+    display:  flex;
+}
+
 .Thread p {
     margin-right: 15px;
     display: inline-block;
     font-size: small;
     color: rgba(0, 0, 0, 0.678);
-}
-.Thread {
-    padding: 5px 0;
-    
-    max-height: 150px;
-    display:  flex;
 }
 
 
@@ -55,8 +55,9 @@
 }
 
 .ThreadOwnerPic {
-    width: 50px;
-    height: auto;
+    object-fit: cover;
+    width: 45px;
+    height: 45px;
 
 }
 
@@ -121,8 +122,9 @@
 }
 
 .LastPostPic {
-    width: 30px;
-    height: auto;
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
 
 }
 @media only screen and (max-width: 768px) {

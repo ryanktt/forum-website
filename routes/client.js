@@ -26,7 +26,6 @@ router.get('/threads', async (req, res) => {
         const pages = await Thread.paginate({}, options);
         
         const totalPages = pages.totalPages;
-        console.log(pages)
         
     } catch (err) {
         console.error(err)

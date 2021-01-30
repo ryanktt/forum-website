@@ -7,11 +7,13 @@ const { check, validationResult} = require('express-validator');
 
 const router = express.Router();
 
+
+
 // @route    POST /
 // @desc     Register user
 // @access   Public
 router.post('/auth/signup',
-check('name', 'Nome é obrigatório').notEmpty(),
+check('name', 'Nome é obrigatório').notEmpty().exists(),
 check('email', 'Por favor digite um email válido').isEmail(),
 check('password', 'Por favor digite uma senha com 6 ou mais caracteres').isLength({min: 6}),
 async (req, res) => {
@@ -22,22 +24,18 @@ async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
+
   const {
       name,
       email,
-      password, 
-      password2
+      password
   } = req.body;
-
-
-  if(password !== password2) {
-    res.json({errors: [{msg: 'Senhas não coincidem.'}]})
-  }
   try {
+
     let user =  await User.findOne({email: email})
 
     if(user) {
-      return res.json({errors: [{msg: 'Usuário já existe'}]})
+      return res.status(400).json({errors: [{msg: 'Usuário já existe'}]})
     }
     user = new User({name, email, password, ip});
 
@@ -92,7 +90,7 @@ async (req, res) => {
     try {
         const user = await User.findOne({email})
         if(!user ) {
-          return res.json({errors:[{msg: 'Credenciais Inválidas'}]});
+          return res.status(400).json({errors:[{msg: 'Credenciais Inválidas'}]});
         }
 
         const passwordMatch  =  await bcrypt.compare(password, user.password);
@@ -109,12 +107,11 @@ async (req, res) => {
         jwt.sign(
             payload, 
             process.env.JWT_SECRET,
-            { expiresIn: '5 days' },
+            { expiresIn: '15 days' },
             (err, token) => {
                 if (err) throw err;
                 res.json({ token });
             })
-        console.log('success')
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error');

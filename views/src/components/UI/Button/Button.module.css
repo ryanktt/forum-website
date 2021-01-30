@@ -1,11 +1,10 @@
 .Button {
-    position: relative;
+    
     border-radius: 3px;
     background-color: rgb(255, 187, 60);
     padding: 7px;
     cursor: pointer;
-    width: fit-content;
-    height: fit-content;
+    
     transition: ease-in-out 0.2s;
     text-decoration: none;
     margin: 0;
@@ -15,16 +14,9 @@
     
 }
 
-.Button button {
-    width: fit-content;
-    font-size: 14px;
-    outline: none;
-    background: transparent;
-    border: 1px solid transparent;
-}
 
-.Button, .Button p  {
-    color: rgba(29, 29, 29, 0.76) ;
+.Button  {
+    color: rgba(22, 22, 22, 0.76) ;
     font-weight: 600;
     font-size: 15px;
     margin: 0;
@@ -35,8 +27,18 @@
 }
 
 .Button:active {
+    position: relative;
     top: 2px;
     right: 1px
+}
+
+.Large {
+    font-size: 18px;
+    padding: 6px;
+}
+
+.Intense {
+    background-color: rgb(255, 176, 30);
 }
 
 .Danger, .Success {

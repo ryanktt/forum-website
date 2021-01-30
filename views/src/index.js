@@ -8,6 +8,8 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import './index.css';
 import App from './App';
 
+import setAuthToken from './utils/setAuthToken';
+
 import reportWebVitals from './reportWebVitals';
 import rootReducer from './redux/rootReducer'; 
 
@@ -15,6 +17,20 @@ import rootReducer from './redux/rootReducer';
 const middleware = [thunk];
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));
+
+// GET PREV AND CURRENT STATE AND CHECK IF TOKEN CHANGED TO SET THE NEW ONE
+let currentState = store.getState();
+
+store.subscribe(() => {
+  const prevState = currentState;
+  currentState = store.getState();
+
+  if(prevState.auth.token !== currentState.auth.token) {
+    const token =  currentState.auth.token;
+    console.log(currentState)
+    setAuthToken(token);
+  }
+})
 
 
 ReactDOM.render(

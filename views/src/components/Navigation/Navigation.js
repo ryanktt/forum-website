@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {connect} from 'react-redux';
 import style from'./Navigation.module.css';
 import Backdrop from '../UI/Backdrop/Backdrop';
 import Toolbar from './Toolbar/Toolbar';
@@ -35,11 +36,17 @@ const Navigation = (props) => {
         <>
             {backdrop}
             <div className={style.Nav}>
-                <Toolbar sideDrawerHandler={toggleSideDrawer}/>
+                <Toolbar isAuth={props.isAuth} sideDrawerHandler={toggleSideDrawer}/>
                 <SideDrawer active={state.sDrawerActive}/>
             </div>
         </>
     )
 }
 
-export default Navigation;
+const mapStateToProps = state => {
+    return {
+        isAuth: state.auth.isAuthenticated
+    }
+}
+
+export default connect(mapStateToProps)(Navigation);

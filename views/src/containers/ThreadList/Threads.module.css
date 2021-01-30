@@ -1,4 +1,4 @@
-.ThreadCategory {
+.ThreadsCategory {
     height: 45px;
     border: solid 1px;
     background-color: rgb(32, 32, 32);
@@ -12,7 +12,7 @@
     border-top-right-radius: 0;
 }
 
-.ThreadCategory p {
+.ThreadsCategory p {
     font-family: 'Ubuntu', sans-serif;
     font-weight: 500;
     font-size: 20px;
@@ -32,9 +32,15 @@
     border-radius: 5px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    border-left-color: orange;
+    border-left-color: rgb(255, 176, 29);
     border-left-width: 2px;
     padding-top: 20px;
     
+}
+
+.ThreadsBtn {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px auto;
 }
 

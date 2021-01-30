@@ -43,12 +43,9 @@ const ThreadSchema = new Schema({
                 ref: 'post'
             }
         }
-    ],
-    date: {
-        type: Date,
-        default: Date.now
-    }
-});
+    ]
+}, {timestamps: true});
+
 
 ThreadSchema.plugin(mongoosePaginate);
 

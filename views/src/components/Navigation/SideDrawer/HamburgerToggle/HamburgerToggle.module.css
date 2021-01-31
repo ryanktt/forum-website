@@ -1,0 +1,16 @@
+.HamburgerToggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    height: 20px;
+}
+
+.HamburgerToggle  div {
+    height: 4px;
+    width: 25px;
+    background-color: rgb(255, 200, 81);
+    border: solid rgb(180, 117, 0);
+    border-width: 0 0 2px 0;
+    
+}

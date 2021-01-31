@@ -1,0 +1,75 @@
+.Users table {
+    margin: 0 auto;
+    max-width: 600px;
+    width: 100%;
+    
+}
+
+.Users  {
+    overflow: auto;
+    margin: 0 auto;
+    max-height: 300px;
+}
+
+.Users td {
+    color: rgb(39, 39, 39);
+    padding: 6px 10px;
+    font-size: 15px;
+}
+
+.Users tbody tr:nth-of-type(even) {
+    background-color: rgb(241, 241, 241);
+}
+
+
+.Users th {
+    
+    background-color: #ffb62d;
+    color: rgb(36, 36, 36);
+    font-weight: 500;
+    padding: 8px 10px;
+
+}
+
+.Users .Gear {
+    text-align: center;
+}
+
+.Users .Gear:hover {
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+    color: orange;
+}
+
+/* Modal Related */
+
+.Users  button {
+    height: 30px;
+    padding: 5px;
+    background: rgb(87, 87, 87);
+    border-radius: 3px;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    outline: inherit;
+    margin-left: 10px;
+}
+
+.Users button:hover {
+    background-color: rgb(138, 138, 138);
+}
+
+.Users .Ban {
+    margin: 0 auto 15px auto;
+    display: flex;
+    width: fit-content;
+    
+}
+
+.Users .Disban {
+    margin: 0 auto;
+    width: fit-content;
+    
+}

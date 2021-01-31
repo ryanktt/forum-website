@@ -1,0 +1,17 @@
+.NewThread {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.NewThread  h2{
+
+    font-weight: 500;
+    font-size: 26px;
+    color: rgb(29, 29, 29);
+    
+}
+
+.NewThread .Button {
+    margin: 15px auto;
+    width: fit-content;
+}

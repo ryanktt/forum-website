@@ -1,0 +1,23 @@
+.Input * {
+    display: block;
+}
+
+
+.Input input {
+    
+    width: 100%;
+    outline-style: none;
+    border: 1px solid rgb(231, 231, 231);
+    height: 30px;
+    border-radius: 2px;
+    background-color: rgb(245, 245, 245);
+    
+}
+
+
+.Input label {
+    color: rgb(29, 29, 29);
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 2px;
+}

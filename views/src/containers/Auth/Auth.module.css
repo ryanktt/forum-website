@@ -1,0 +1,43 @@
+
+.Auth .Btn {
+    margin-top: 25px;
+}
+
+.Auth .Anchor  {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(36, 65, 128);
+    width: fit-content;
+    position: relative;
+    left: 70%;
+    
+}
+
+.Auth div {
+    height: fit-content;
+    margin-bottom: 15px;
+}
+
+.Auth  h2{
+    padding-left: 40px;
+    color: rgb(29, 29, 29);
+    font-size: 23px;
+    font-weight: 500;
+    margin-bottom: 25px;
+    
+
+}
+
+.Auth span {
+    font-weight: 900;
+    color: orange;
+    left: 60px;
+    position: relative;
+    
+}
+
+.Auth {
+    width: 300px;
+    margin: 0 auto;
+}
+

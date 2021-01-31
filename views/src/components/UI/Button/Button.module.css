@@ -1,0 +1,66 @@
+.Button {
+    font-family: 'Roboto', sans-serif;
+    border-radius: 3px;
+    background-color: rgb(255, 187, 60);
+    padding: 7px;
+    cursor: pointer;
+    
+    transition: ease-in-out 0.2s;
+    text-decoration: none;
+    margin: 0;
+    font-size: 16px;
+    outline: none;
+    border: 1px solid transparent;
+    
+}
+
+
+.Button  {
+    color: rgba(22, 22, 22, 0.76) ;
+    font-weight: 600;
+    font-size: 15px;
+    margin: 0;
+}
+
+.Button:hover {
+    background-color: rgb(255, 209, 59);
+}
+
+.Button:active {
+    position: relative;
+    top: 2px;
+    right: 1px
+}
+
+.Large {
+    font-size: 18px;
+    padding: 6px;
+}
+
+.Intense {
+    background-color: rgb(255, 176, 30);
+}
+
+.Danger, .Success {
+    padding: 6px;
+}
+
+.Danger {
+    background-color: rgb(236, 35, 35);
+    color: white;
+    
+}
+
+.Danger:hover {
+    background-color: rgb(253, 37, 37);
+}
+
+.Success {
+    background-color: rgb(34, 228, 34);
+    
+}
+
+.Success:hover {
+    background-color: rgb(41, 255, 41);
+}
+

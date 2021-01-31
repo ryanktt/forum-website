@@ -1,0 +1,154 @@
+
+.Thread h4 {
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 15px;
+    
+}
+
+.Box {
+    display: flex;
+    align-items: center;
+}
+
+
+
+.Thread * {
+    margin: 0;
+}
+
+.Thread {
+    padding: 10px 0;
+    max-height: 150px;
+    display:  flex;
+}
+
+.Thread p {
+    margin-right: 15px;
+    display: inline-block;
+    font-size: small;
+    color: rgba(0, 0, 0, 0.678);
+}
+
+
+
+
+.Post {
+    width: 100%;
+}
+
+.PostContent{
+    flex-direction: column;
+    align-items: baseline;
+    position: relative;
+    justify-content: space-around;
+}
+
+.ProfilePic {
+    width: 80px;
+    justify-content: center;
+}
+
+.ProfilePic2 {
+    width: 80px;
+    justify-content: center;
+}
+
+.ThreadOwnerPic {
+    object-fit: cover;
+    width: 45px;
+    height: 45px;
+
+}
+
+
+
+.Details {
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+
+.DetailsBox div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.DetailsMobile {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    position: relative;
+}
+
+.DetailsMobileBox {
+   
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0px;
+    right: 8px;
+    
+    
+    
+}
+
+.DetailsMobileBox i {
+    font-size: smaller;
+    color: rgb(255, 177, 32);
+}
+
+.DetailsMobileBox p {
+    font-size: 12px;
+    margin: 5px 0 0 0;
+}
+
+
+
+.LastPost {
+    flex-direction: column;
+    justify-content: space-around;
+    min-width: 120px;
+}
+.LastPost p {
+    margin: 0;
+}
+
+.LastPost div {
+   display: flex;
+   flex-direction: column;
+}
+
+.LastPostPic {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+
+}
+@media only screen and (max-width: 768px) {
+    .Details, .LastPost, .ProfilePic2 {
+        display: none;
+    }
+    
+    .PostContent {
+        width: 93%;
+    }
+
+    .DetailsMobile {
+        display: flex;
+    }
+    
+    .ProfilePic {
+        width: 60px;
+        justify-content: center;
+    }
+
+    .ThreadOwnerPic {
+        object-fit: cover;
+        width: 40px;
+        height: 40px;
+    
+    }
+}

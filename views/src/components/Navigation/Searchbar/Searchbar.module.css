@@ -1,0 +1,32 @@
+.Searchbar * {
+    display: inline-block;
+    outline:none;
+}
+
+.Searchbar {
+    white-space: pre-wrap;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.Searchbar input{
+    border-style: none;
+    
+}
+
+.Searchbar i {
+    color: rgb(255, 166, 0);
+    margin-right: 5px;
+    -moz-user-select: none;
+    user-select: none;
+    
+    
+}
+
+.Searchbar button {
+    border: none;
+    background-color: white;
+}

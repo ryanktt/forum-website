@@ -116,7 +116,7 @@ async (req, res) => {
             })
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server error');
+        res.status(500).send('Erro de Servidor');
     }
     
     

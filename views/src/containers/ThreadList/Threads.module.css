@@ -41,6 +41,12 @@
 .ThreadsBtn {
     display: flex;
     justify-content: flex-end;
-    margin: 20px auto;
+    margin: 15px auto;
+}
+
+@media only screen and (max-width: 501px) {
+    .ThreadsBtn {
+        margin-right: 10px;
+    }
 }
 

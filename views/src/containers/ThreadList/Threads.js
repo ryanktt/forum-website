@@ -1,22 +1,40 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux';
 import style from './Threads.module.css';
 import Thread from './Thread/Thread';
 import Button from '../../components/UI/Button/Button';
 import {fetchThreads} from '../../redux/actions/thread';
 
+
 const Threads = (props) => {
+    const [threadsFetched, setThreadsFetched] = useState(false);
+    let {fetchThreads, threads, isAuth} = props
+
     let newThreadBtn = null;
-    if(props.isAuth) {
+    if(isAuth) {
         newThreadBtn = <div className={style.ThreadsBtn}>
         <Button link='/user/new-thread' intense large>Novo Tópico</Button>
         </div>
     }    
-    useEffect(() => {
-        props.fetchThreads();
-      }, []); 
-    console.log('fetched')
 
+    useEffect(() => {
+        fetchThreads();
+    }, []) 
+
+    useEffect(() => {
+        if(threads.length > 0) {
+            setThreadsFetched(true)
+        }
+    }, [threads])
+
+    let threadList = []
+    
+    if(threadsFetched){
+        threadList = threads.map(thread => {
+            return <Thread thread={thread} key={thread._id} user={thread.user} />
+        })
+    }
+    
     return (
         <>  
             {newThreadBtn}
@@ -24,21 +42,14 @@ const Threads = (props) => {
                 <p >Categoria</p>
             </div>
             <div className={style.Thread}>
-                <Thread/>
-                <Thread/>
-                <Thread/>
-                <Thread/>
-                <Thread/>
-                <Thread/>
-                <Thread/>
-                <Thread/>
+            {threadList}
             </div>
         </>
         
     )
 }
 
-const mapStateToPros = state => {
+const mapStateToProps = state => {
     return {
         isAuth: state.auth.isAuthenticated,
         threads: state.thread.threadList
@@ -49,4 +60,4 @@ const mapDispatchToProps = dispatch => {
     return {fetchThreads: () => dispatch(fetchThreads)}
 }
  
-export default connect(mapStateToPros, mapDispatchToProps)(Threads);
+export default connect(mapStateToProps, mapDispatchToProps)(Threads);

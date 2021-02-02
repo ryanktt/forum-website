@@ -6,10 +6,6 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user'
     },
-    thread: {
-        type: Schema.Types.ObjectId,
-        ref: 'thread'
-    },
     content: {
         type: String,
         required: true

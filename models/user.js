@@ -14,6 +14,15 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    profile: {
+        description: {
+            type: String
+        },
+        userImg: {
+          type: String,
+          default: 'https://i.imgur.com/aFUANXE.png'
+        }
+    },
     settings: {
            role: {
                type: Number,

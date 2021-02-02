@@ -14,7 +14,7 @@ export const loadUser = async dispatch => {
             payload: user.data
         })
     } catch (err) {
-        console.error(err.message);
+        console.log(err.response);
         dispatch({
             type: AUTH_ERROR
         })
@@ -35,13 +35,16 @@ export const auth = (formData, type) => async dispatch => {
     
     try { 
         const response = await axios.post(path, formData);
-
-        if(type === 'login')  loadUser(dispatch);
     
-        return dispatch({
+        dispatch({
             type: dispatchType,
             payload: response.data
         })
+
+        if(type === 'login') { 
+            loadUser(dispatch);
+            return {type: 'login'}
+        }
 
     } catch(err) {
         const errors = err.response.data.errors;
@@ -52,7 +55,8 @@ export const auth = (formData, type) => async dispatch => {
             })
             
         } 
-        
+        console.log(err)
+
         dispatch({
             type: AUTH_ERROR
         });

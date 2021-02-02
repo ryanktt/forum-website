@@ -5,7 +5,7 @@ import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Form from '../../components/UI/Form/Form';
 import Post from '../../components/Post/Post';
-import {newPost, newThread} from '../../redux/actions/thread';
+import {newThread} from '../../redux/actions/thread';
 
 const NewThread = (props) => {
     const [threadData, setThreadData] = useState({

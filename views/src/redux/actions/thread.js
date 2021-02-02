@@ -31,7 +31,7 @@ export const newThread = (threadData) => async dispatch => {
         
     } catch (err) {
         const errors = err.response.data.errors;
-        if(erros) {
+        if(errors) {
             console.log(errors);
         }
         console.log(err)
@@ -50,7 +50,7 @@ export const newPost = (threadData, threadId) => async dispatch => {
         return post;
     } catch (err) {
         const errors = err.response.data.errors;
-        if(erros) {
+        if(errors) {
             console.log(errors);
         }
         console.log(err)

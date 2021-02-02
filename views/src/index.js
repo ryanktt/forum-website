@@ -16,7 +16,7 @@ import rootReducer from './redux/rootReducer';
 
 const middleware = [thunk];
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));
+const store = createStore(rootReducer, composeWithDevTools({trace: true})(applyMiddleware(...middleware)));
 
 // GET PREV AND CURRENT STATE AND CHECK IF TOKEN CHANGED TO SET THE NEW ONE
 let currentState = store.getState();

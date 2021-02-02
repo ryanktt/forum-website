@@ -17,7 +17,11 @@ router.get('/threads', async (req, res) => {
     const options = {
         page: page,
         sort: {updatedAt: -1},
-        populate: {path: 'user', select: '-password -settings'},
+        select: 'title createdAt',
+        populate: [
+          {path: 'user', select: 'name profile'},
+          {path: 'posts.post', select: 'createdAt user', sort: {createdAt: -1}, limit: 1, populate: {path: 'user', select: 'name profile', sort: {createdAt: -1}}}
+        ],
         limit: 35,
         collation: {
           locale: 'en',

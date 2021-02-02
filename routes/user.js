@@ -14,6 +14,7 @@ const thread = require('../models/thread');
 // @access   Private
 router.get('/', async(req, res) => {
     try {
+        
         const user = await User.findById(req.user.id).select('-password -settings');
         res.json(user)
   

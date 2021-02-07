@@ -1,30 +1,28 @@
 import axios from '../../utils/axios';
 
-import {LOGIN, SIGNUP, AUTH_ERROR, LOAD_USER, LOGOUT} from './actionTypes/authTypes';
-import {LOADING} from './actionTypes/commonTypes';
+import {LOGIN, SIGNUP, AUTH_ERROR, LOAD_USER, LOGOUT, USER_LOADING, USER_STOP_LOADING} from './actionTypes/authTypes';
+import {LOADING, STOP_LOADING} from './actionTypes/commonTypes';
 import {validationAlert as valAlert} from './validationAlert';
 
 export const loadUser = async dispatch => {
+    dispatch({type: USER_LOADING})
 
     try {
         const user = await axios.get('/user');
 
+        dispatch({type: USER_STOP_LOADING})
         return dispatch({
             type: LOAD_USER,
             payload: user.data
         })
     } catch (err) {
-        console.log(err.response);
-        dispatch({
-            type: AUTH_ERROR
-        })
+
+        dispatch({type: AUTH_ERROR})
+        dispatch({type: USER_STOP_LOADING});
     }
 }
-
 export const auth = (formData, type) => async dispatch => {
-    dispatch({
-        type: LOADING
-    })
+    dispatch({ type: LOADING});
 
 
     let path = '';
@@ -41,25 +39,25 @@ export const auth = (formData, type) => async dispatch => {
             payload: response.data
         })
 
+        dispatch({type: STOP_LOADING});
         if(type === 'login') { 
             loadUser(dispatch);
             return {type: 'login'}
         }
-
+        return {type: 'signup'}
     } catch(err) {
         const errors = err.response.data.errors;
 
         if(errors) {
-            errors.map(error => {
+            errors.map(error => { 
                 return dispatch(valAlert(error.msg, 'danger'));
             })
             
         } 
-        console.log(err)
+        console.log(err);
 
-        dispatch({
-            type: AUTH_ERROR
-        });
+        dispatch({type: AUTH_ERROR});
+        dispatch({type: STOP_LOADING});
 
     }
 }

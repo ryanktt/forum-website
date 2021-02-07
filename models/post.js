@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const PostSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'user'
+    },
+    thread: {
+        type: Schema.Types.ObjectId,
+        ref: 'thread'
     },
     content: {
         type: String,
@@ -17,7 +22,7 @@ const PostSchema = new Schema({
             }
         }
     ],
-    unlikes: [
+    dislikes: [
         {
             user: {
                 type: Schema.Types.ObjectId
@@ -25,5 +30,7 @@ const PostSchema = new Schema({
         }
     ],
 }, {timestamps: true});
+
+PostSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('post', PostSchema);

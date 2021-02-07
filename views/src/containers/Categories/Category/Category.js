@@ -1,20 +1,21 @@
 import React from 'react'
 import style from './Category.module.css';
-import {Link} from 'react-router-dom';
+import FetchLink from '../../../components/FetchLink/FetchLink';
 
 const Category = (props) => {
-    let path = props.path;
-    if(!props.path)  path = '' ;
+    let {path, fontAwesome, color, description, categoryName} = props;
+    if(!path)  path = '' ;
 
+ 
     return (
-        <div className={style.Category} style={{borderColor: props.color}}>
+        <div  className={style.Category} style={{borderColor: color}}>
             <div className={style.Introduction}>
                 <div className={style.FontAwesome}>
-                    {props.fontAwesome}
+                    {fontAwesome}
                 </div>
                 <div className={style.CategoryInfo}>
-                    <Link to={`/threads${path}`}><h2 style={{color: props.color}}>{props.categoryName}</h2></Link>
-                    <p>{props.description}</p>
+                    <FetchLink path={`/threads${path}`}><h2 style={{color: color}}>{categoryName}</h2></FetchLink>
+                    <p>{description}</p>
 
                     <div className={style.CategoryDetails}>
                         <div className={style.CategoryDetailsBox}>

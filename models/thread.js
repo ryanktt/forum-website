@@ -28,7 +28,7 @@ const ThreadSchema = new Schema({
             }
         }
     ],
-    unlikes: [
+    dislikes: [
         {
             user: {
                 type: Schema.Types.ObjectId,

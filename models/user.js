@@ -16,7 +16,8 @@ const UserSchema = new Schema({
     },
     profile: {
         description: {
-            type: String
+            type: String,
+            default: ''
         },
         userImg: {
           type: String,
@@ -42,6 +43,6 @@ const UserSchema = new Schema({
         required: true
     }
 
-}, {timestamps: true});
+}, {timestamps: true}, {strict: false});
 
 module.exports = mongoose.model('user', UserSchema);

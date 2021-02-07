@@ -34,8 +34,8 @@ const App = (props) => {
   return (
     <Layout>
       <Route path='/' exact component={Categories}/>
-      <Route path='/threads' exact component={ThreadList}/>
-      <Route path='/thread' exact component={Thread}/>
+      <Route path='/threads/:category' exact component={ThreadList}/>
+      <Route path='/thread/:category/:id' exact component={Thread}/>
       <Route path='/auth/login' exact component={Auth}/>
       <Route path='/auth/signup' exact component={Auth}/>
       <Route path='/user/new-thread' exact component={NewThread}/>

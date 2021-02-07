@@ -5,10 +5,11 @@ import Footer from '../../components/Footer/Footer';
 import style from './Layout.module.css';
 import Wrapper from './Wrapper/Wrapper';
 import Loading from '../../components/UI/Loading/Loading';
+import Backdrop from '../../components/UI/Backdrop/Backdrop';
 
 const Layout = (props) => {
 
-    let content = props.children;
+    let loading = null;
     //Deal with when Loading component should appear
     const states = props.loading
     const statesArr = [];
@@ -18,7 +19,7 @@ const Layout = (props) => {
 
     const isLoading = statesArr.filter(obj =>  obj.loading === true)
     if(isLoading.length > 0) {
-        content = <Loading/>
+        loading = <><Loading/></>
     }
 
 
@@ -26,7 +27,8 @@ const Layout = (props) => {
         <div className={style.Layout}>
             <Navigation/>
                 <Wrapper>
-                    {content}
+                    {loading}
+                    {props.children}
                 </Wrapper>
             <Footer />
             

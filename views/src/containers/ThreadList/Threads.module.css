@@ -38,15 +38,47 @@
     
 }
 
+
+
 .ThreadsBtn {
     display: flex;
     justify-content: flex-end;
-    margin: 15px auto;
 }
+
+.LocationBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.Btn {
+    height: min-content;
+}
+
+.BtnMobile {
+    display: none;
+    padding: 0 15px;
+    width: fit-content;
+}
+
 
 @media only screen and (max-width: 501px) {
     .ThreadsBtn {
-        margin-right: 10px;
+        justify-content: flex-start;
+        margin-bottom: 25px;
+    }
+
+    .Btn {
+        display: none;
+    }
+
+    .BtnMobile {
+        display: block;
+    }
+
+    .LocationBar {
+        padding: 0 15px;
     }
 }
 

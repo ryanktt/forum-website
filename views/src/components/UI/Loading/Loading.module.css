@@ -1,11 +1,12 @@
 .LoadFacebookG{
-	top: 45%;
-	left: calc(50% - 62px);
-	width:125px;
-	height: 125px;
+	top: 40%;
+	left: calc(50% - 50px);
+	width:100px;
+	height: 100px;
 	display: block;
 	position: fixed;
-	margin:auto;
+	margin: 0 auto;
+	z-index: 10;
 }
 
 .Facebook_blockG{

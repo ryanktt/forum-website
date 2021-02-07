@@ -1,20 +1,22 @@
 import React from 'react'
 import style from './Post.module.css';
-import userImg from '../../../assets/user.png';
+import {dateFormat} from '../../../utils/dateFormat';
 
-const Post = () => {
+const Post = (props) => {
+    const {post, user, postNumber} = props
+
     return (
-        <div className={style.Post}>
+        <div  className={style.Post}>
             <div className={style.UserDetails}>
-                <img src={userImg} alt='user-img'/>
+                <img src={user.profile.userImg} alt='user-img'/>
                 <div>
-                    
+                     
                 </div>
-                <h4>Username</h4>
+                <h4>{user.name}</h4>
                 <div className={style.UserDetailsBox}>
                     <div>
                         <i class="far fa-user"></i>
-                        <p>Mar 19, 2019</p>
+                        <p>{dateFormat(user.createdAt)}</p>
                     </div>
                     <div>
                         <i class="far fa-comments"></i>
@@ -22,11 +24,11 @@ const Post = () => {
                     </div>
                     <div>
                         <i class="far fa-thumbs-up"></i>
-                        <p>136</p>
+                        <p>{post.likes.length}</p>
                     </div>
                     <div>
                     <i class="far fa-thumbs-down"></i>
-                        <p>136</p>
+                        <p>{post.dislikes.length}</p>
                     </div>
                 </div>
             </div>
@@ -34,10 +36,10 @@ const Post = () => {
             <div className={style.Content}>
                 <div className={style.ContentBox}>
                     <div className={style.PostInf}>
-                        <p>44 minutos atrás</p>
-                        <p>#3</p>
+                        <p>{dateFormat(post.createdAt)}</p>
+                        <p>{`#${postNumber}`}</p>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p className={style.ContentFont}>{post.content}</p>
                 </div>
                 
                 <div className={style.UserActions}>              

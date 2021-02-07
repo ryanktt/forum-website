@@ -6,7 +6,8 @@ const checkObjectId = require('../middleware/checkObjectId');
 const User = require('../models/user');
 const Post = require('../models/post');
 const Thread = require('../models/thread');
-const thread = require('../models/thread');
+const { json } = require('express');
+
 
 
 // @route    GET /
@@ -36,7 +37,7 @@ async (req, res) => {
         res.status(400).json({errors: errors.array()});
     }
 
-    const { title, category, postId } = req.body;
+    const { title, category, postId} = req.body;
    
     try {
         const thread = new Thread({
@@ -48,7 +49,7 @@ async (req, res) => {
         
 
         await thread.save();
-        res.json('Postado com Sucesso');
+        return res.json({id: thread._id});
     }catch(err) {
         console.error(err);
         res.status(500).json('Erro de Servidor')
@@ -68,27 +69,37 @@ async (req, res) => {
     
     const {
         content,
-        threadId
+        threadId,
+        postId
     } = req.body    
+    
 
     try {
+       
+        if(postId) {
+            await Post.updateOne({_id: postId}, {$set: { thread: threadId}})
+            return res.json('Sucesso')
+        }
+        
+        
 
+      
         const post = new Post({
+            thread: threadId,
             user: req.user.id,
             content: content
         });
 
-        if(threadId) await Thread.updateOne(threadId, {$push: {"posts": {post: post.id}}});
-
         await post.save();
 
-        res.json({id: post.id})
-
+        return res.json({id: post.id})
+    
+        
+        
     } catch(err) {
         console.error(err);
         res.status(500).json('Erro de Servidor')
     }
-    
 
 });
 

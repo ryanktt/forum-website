@@ -1,14 +1,45 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import FetchLink from '../../../components/FetchLink/FetchLink';
 import style from './Thread.module.css';
 import {dateFormat} from '../../../utils/dateFormat';
+import {categories as categoriesArr} from '../../../utils/categories';
+
+
 
 const Thread = (props) => {
-    const {thread, user} = props;
+    const {thread, user, match} = props;
+    // const [categoryInf, setCategoryInf] = useState({
+    //     name: '',
+    //     color: 'rgb(134, 134, 134)'
+    // })
+
+    // const changeRgbOpacity = (color, opacity) => {
+    //     const strLength = color.length
+    //     const rgb = color.substring(0, strLength - 1);
+    //     return  `${rgb}, ${opacity})`;
+    // }
+
+    const categories = categoriesArr.map(category => {
+        if(match.params.category !== thread.category) {
+            if(thread.category === category.value)  {
+                //const brighter = changeRgbOpacity(category.color, 1)
+
+                return <div key={category.value} style={{borderColor: category.color}} className={style.Category}>
+                    <p style={{color: category.color}}>{category.name}</p>
+                </div>
+            }
+        }
+        return null;
+
+    });
+    
+
 
     //get last post createdAt from thread
     const postsArr = [...thread.posts];
     const lastPost = postsArr.shift()
 
+    
 
     return (
         <>
@@ -20,12 +51,17 @@ const Thread = (props) => {
 
             <div className={[style.Post, style.Box].join(' ')}>
                 <div className={style.PostContent}>
-                    <h4>{thread.title}</h4>
+                <FetchLink  classes={style.Link}
+                    path={`/thread/${match.params.category}/${thread._id}`}
+                    >
+                        <h4>{thread.title}</h4>
+                </FetchLink>
                     <div className={style.PostDetails}>
                         <p>{user.name}</p>
                         <p>{dateFormat(thread.createdAt)}</p>
                     </div>
                 </div>
+                {categories}
             </div>
 
             <div className={[style.Details, style.Box].join(' ')}>

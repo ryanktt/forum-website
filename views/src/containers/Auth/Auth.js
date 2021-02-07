@@ -44,12 +44,11 @@ const Auth = (props) => {
             const res =  await props.auth(data, type, props.history);
             if(res) if(res.type){
                 if(type === 'login'){ 
-                    props.history.push('/') 
-                } else{
+                    return props.history.push('/');
+                } else {
                     props.history.push('/auth/login') 
-                    props.valAlert('Registrado com sucesso!', 'success');
-                }
-    
+                    props.valAlert('Registrado com sucesso!', 'success');        
+                }       
             }
 
         } catch (err) {

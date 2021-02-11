@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import style from './Thread.module.css';
 import Post from './Post/Post';
 import {fetchThread} from '../../redux/actions/thread';
 import Location from '../../components/Location/Location';
-import Validation from '../../components/UI/Validation/ValidationMsgs';
 import {categories} from '../../utils/categories';
-import NewPost from '../../components/Post/Post';
+import NewPost from '../../containers/NewPost/NewPost';
 
 const Thread = (props) => {
     const {fetchThread, thread, fetching, match, reFetch} = props;
-    
+    const [threadId, setThreadId] = useState('');
+
     useEffect(() => {
         if(!thread && !fetching ) {
             return fetchThread(match.params.id);
@@ -20,14 +20,17 @@ const Thread = (props) => {
             return fetchThread(match.params.id);
         }
         
-    }, []);
+    }, [reFetch]);
 
+    useEffect(() => {
+        if(thread) setThreadId(thread.id);
+    }, [thread]) 
 
     let posts = null;
     let postNumber = 0
     if(thread) posts = thread.posts.map(post => {
         postNumber++
-        return <Post post={post} user={post.user} postNumber={postNumber} key={post._id}/>
+        return <div className={style.Post} key={post._id +1}><Post post={post} user={post.user} postNumber={postNumber} key={post._id}/></div>
     })
 
 
@@ -46,14 +49,13 @@ const Thread = (props) => {
 
     return (
         <>
-        <div style={{margin:'0 auto'}}><Validation/></div>
         <h2 className={style.ThreadTitle}>{thread ? thread.title : null}</h2>
         <div className={style.Location}><Location items=
         {locationItems}/></div>
         <div className={style.Thread}>
             {posts}
         </div>
-        <NewPost />
+        <NewPost threadId={threadId}/>
         
         </>
     )

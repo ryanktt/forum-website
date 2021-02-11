@@ -1,0 +1,85 @@
+.PageLocation {
+    display: flex;
+
+    width: fit-content;
+}
+
+.Disable {
+    display: none;
+}
+
+.PageLocation .Pages {
+    display: flex;
+   
+}
+
+.PageLocation .Pages div {
+    border-radius: 2px;
+    margin: 0 1px;
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    background-color: rgb(29, 29, 29);
+}
+
+.PageLocation .Pages div:hover {
+    background-color: rgb(10, 10, 10);
+}
+
+.PageLocation p {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    color: rgb(235, 235, 235);
+    margin: 0;
+    cursor: pointer;
+    
+}
+
+.PageLocation a {
+    text-decoration: none;
+}
+
+.PageLocation .Selected {
+    border-bottom: 1px solid rgb(255, 190, 70);
+}
+
+.PageLocation .Selected p {
+    color: rgb(255, 198, 93);
+}
+
+.PageLocation .Dots:hover {
+    cursor:unset;
+}
+
+.PageLocation p:hover {
+    color: #ffc14f;
+}
+
+.Next, .Prev {
+    display: flex;
+    align-items: center;
+    background-color: rgb(29, 29, 29);
+    padding: 4px 8px;
+    border-radius: 2px;
+    
+}
+
+.Next {
+    margin-left: 6px;
+}
+.Prev {
+    margin-right: 6px;
+}
+
+@media only screen and (max-width: 501px) {
+    .PageLocation p{
+        font-size: 10px;
+    }
+
+    .PageLocation .Pages div {
+        padding: 4px 7px;
+        
+    }
+    
+}

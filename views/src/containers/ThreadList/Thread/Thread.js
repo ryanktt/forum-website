@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import FetchLink from '../../../components/FetchLink/FetchLink';
 import style from './Thread.module.css';
 import {dateFormat} from '../../../utils/dateFormat';
@@ -24,8 +24,8 @@ const Thread = (props) => {
             if(thread.category === category.value)  {
                 //const brighter = changeRgbOpacity(category.color, 1)
 
-                return <div key={category.value} style={{borderColor: category.color}} className={style.Category}>
-                    <p style={{color: category.color}}>{category.name}</p>
+                return <div key={category.value} style={{backgroundColor: category.color}} className={style.Category}>
+                    <p >{category.name}</p>
                 </div>
             }
         }
@@ -37,7 +37,7 @@ const Thread = (props) => {
 
     //get last post createdAt from thread
     const postsArr = [...thread.posts];
-    const lastPost = postsArr.shift()
+    const lastPost = postsArr.pop(); 
 
     
 

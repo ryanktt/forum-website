@@ -21,9 +21,9 @@ router.get('/threads/:category', async (req, res) => {
         select: 'title createdAt views category',
         populate: [
           {path: 'user', select: 'name profile'},
-          {path: 'posts.post', select: 'createdAt user', sort: {createdAt: -1}, limit: 1, populate: {path: 'user', select: 'profile name', sort: {createdAt: -1}}}
+          {path: 'posts.post', select: 'createdAt user', populate: {path: 'user', select: 'profile name'}}
         ],
-        limit: 35,
+        limit: 15,
         collation: {
           locale: 'en',
         },
@@ -38,8 +38,7 @@ router.get('/threads/:category', async (req, res) => {
           pages = await Thread.paginate({}, options);
         }
      
-        const totalPages = pages.totalPages;
-        res.json(pages.docs);
+        res.json(pages);
     } catch (err) { 
         console.error(err.message)
         res.status(500).json('Erro de Servidor');
@@ -60,9 +59,9 @@ router.get('/thread/:id', async (req, res) => {
 
   const options = {
     page: page,
-    sort: {createdAt: -1},
+    sort: {createdAt: 1},
     populate: {path: 'user', select: 'name createdAt deslikes likes profile'},
-    limit: 1,
+    limit: 25,
     collation: {
       locale: 'en',
     },
@@ -73,8 +72,7 @@ router.get('/thread/:id', async (req, res) => {
   try {
       const threadInfo = await Thread.findById({_id: req.params.id}).select('title createdAt');
       const posts = await Post.paginate({thread: req.params.id}, options)
-      const thread = {createdAt: threadInfo.createdAt, title: threadInfo.title, posts: posts.docs}
-      
+      const thread = {id: threadInfo.id, createdAt: threadInfo.createdAt, title: threadInfo.title, posts: posts.docs}
       res.json(thread);
       
 

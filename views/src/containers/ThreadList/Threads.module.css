@@ -52,6 +52,10 @@
     margin-bottom: 10px;
 }
 
+.PageLocation {
+    margin-top: 15px;
+}
+
 .Btn {
     height: min-content;
 }
@@ -79,6 +83,10 @@
 
     .LocationBar {
         padding: 0 15px;
+    }
+
+    .PageLocation {
+        margin-left: 10px;
     }
 }
 

@@ -13,7 +13,7 @@ const FetchLink = (props) => {
     const fetch = () => {
         reFetchPage()
     }
-
+   
     underline ? underline = style.Underline : underline = ''
 
     return (

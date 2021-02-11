@@ -9,9 +9,6 @@ const Post = (props) => {
         <div  className={style.Post}>
             <div className={style.UserDetails}>
                 <img src={user.profile.userImg} alt='user-img'/>
-                <div>
-                     
-                </div>
                 <h4>{user.name}</h4>
                 <div className={style.UserDetailsBox}>
                     <div>

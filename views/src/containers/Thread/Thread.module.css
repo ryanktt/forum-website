@@ -2,6 +2,10 @@
     margin: 0;
 }
 
+.Thread .Post {
+    margin-bottom: 10px;
+}
+
 .ThreadTitle {
     font-size: 22px;
     font-weight: 500;
@@ -18,4 +22,7 @@
         font-size: 18px;
     }
     
+    .Thread .Post {
+        margin-bottom: 15px;
+    }
 }

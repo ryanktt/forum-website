@@ -1,0 +1,89 @@
+.NewPost .Content {
+    background-color: transparent;
+    border-left: 2px solid orange;
+    border-top: 0px;
+    border-bottom: 1px solid rgb(221, 221, 221);
+    border-right: 1px solid rgb(221, 221, 221);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.NewPost .Textarea {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: rgb(39, 39, 39);
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(238, 238, 238);
+    height: 100%;
+    width: 100%;
+    resize: none;
+    
+}
+
+.NewPost textarea:focus {
+    border: none;
+    outline:none;
+}
+
+.NewPost .BBbar {
+    display: flex;
+    position: relative;
+    background-color: rgb(29, 29, 29);
+    padding: 9px 10px;
+    border-left: 2px solid rgb(255, 136, 0);
+    border-top: 2px solid rgb(255, 136, 0);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 3px;
+
+}
+
+.NewPost .BBItem {
+    position: relative;
+}
+
+.NewPost .BBItem div {
+
+    display: none;
+    position: absolute;
+    width: max-content;
+}
+
+.NewPost .BBItem div p {
+    border-radius: 2px;
+    background-color: rgb(29, 29, 29);
+    color: rgb(219, 219, 219);
+    padding: 3px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.NewPost .BBItem:hover div {
+    display: block;
+}
+
+.NewPost .BBbar i {
+    color: rgb(189, 189, 189);
+    margin-right: 15px;
+    font-size: 21px;
+}
+
+.NewPost .BBbar i:hover {
+    color: rgb(238, 238, 238);
+    cursor: pointer;
+}
+
+
+.NewPost .Btn {
+    position: absolute;
+    right: 25px;
+    bottom: 3px;
+}
+
+@media only screen and (max-width: 767px ) {
+    .NewPost .Textarea {
+        font-size: 14px;
+    }
+
+}

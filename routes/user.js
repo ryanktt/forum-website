@@ -6,7 +6,7 @@ const checkObjectId = require('../middleware/checkObjectId');
 const User = require('../models/user');
 const Post = require('../models/post');
 const Thread = require('../models/thread');
-const { json } = require('express');
+
 
 
 
@@ -16,7 +16,7 @@ const { json } = require('express');
 router.get('/', async(req, res) => {
     try {
         
-        const user = await User.findById(req.user.id).select('-password -settings');
+        const user = await User.findById(req.user.id).select('-email -ip -password -settings');
         res.json(user)
   
     } catch (err) {
@@ -66,13 +66,13 @@ async (req, res) => {
     if(!errors.isEmpty()) {
         res.status(400).json({errors: errors.array()});
     }
-    
+
     const {
         content,
         threadId,
         postId
     } = req.body    
-    
+    console.log(req.body)
 
     try {
        
@@ -81,14 +81,14 @@ async (req, res) => {
             return res.json('Sucesso')
         }
         
-        
-
       
         const post = new Post({
             thread: threadId,
             user: req.user.id,
             content: content
         });
+
+        await Thread.findByIdAndUpdate(threadId, { $push: { posts: {post: post.id} }})
 
         await post.save();
 

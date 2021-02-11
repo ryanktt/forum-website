@@ -3,13 +3,16 @@ import {NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_THREAD, FETCH_START, REFETCH}
 import {LOADING, STOP_LOADING} from './actionTypes/commonTypes';
 
 
-export const fetchThreads = category => async dispatch => {
+export const fetchThreads = param => async dispatch => {
     dispatch({type: FETCH_START});
     dispatch({type: LOADING});
-    try {
-        const threads = await axios.get(`/threads/${category}`);
 
-        dispatch({type: FETCH_THREADS, payload: threads.data});
+
+    try {
+        const threads = await axios.get(`/threads/${param.category}${param.currentPage}`);
+        const pagination = {...threads.data}
+        delete pagination.docs
+        dispatch({type: FETCH_THREADS, threads: threads.data.docs, threadsPagination: pagination});
         dispatch({type:STOP_LOADING});
     } catch (err) {
         console.error(err);
@@ -59,15 +62,15 @@ export const newThread = (threadData) => async dispatch => {
 }
 
 
-export const newPost = (threadData, threadId) => async dispatch => {
-    const data = {content: threadData.content, threadId: threadId};
+export const newPost = (content, threadId) => async dispatch => {
+    const data = {content: content, threadId: threadId};
+    console.log(data)
 
     try {
-        const post = await axios.post('/user/post', data);
+        await axios.post('/user/post', data);
         dispatch({
             type: NEW_POST
         });
-        return post;
     } catch (err) {
         const errors = err.response.data.errors;
         if(errors) {

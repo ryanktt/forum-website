@@ -10,6 +10,7 @@
     font-size: 22px;
     font-weight: 500;
     color: rgb(29, 29, 29);
+    word-wrap: break-word;
 }
 
 .Location {

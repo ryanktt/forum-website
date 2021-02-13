@@ -7,6 +7,24 @@
    
 }
 
+/*BBCode*/
+.Post blockquote {
+    margin: 8px 0;
+    border-left: 2px solid rgb(255, 145, 0);
+    border-radius: 3px;
+    background-color: rgb(250, 250, 250);
+    padding: 7px 15px;
+    font-size: 14px;
+    color: rgb(59, 59, 59);
+}
+
+.Post blockquote small {
+    display: block;
+    margin-bottom: 5px;
+    color: gray;
+}
+
+
 .UserDetails {
     padding: 15px;
     padding-bottom: 3px;
@@ -59,6 +77,11 @@
     justify-content: space-between;
     width: 100%;
     min-height: 200px;
+    word-wrap: break-word;
+}
+
+.Content p {
+    color: rgb(29, 29, 29);
 }
 
 .Content div  {
@@ -77,15 +100,7 @@
     color: rgba(0, 0, 0, 0.548);
 }
 
-.Content .ContentFont p {
-    color: rgb(34, 34, 34);
-    font-size: 16px;
-    -webkit-text-stroke: .01em rgb(34, 34, 34);
-    text-rendering: optimizeLegibility !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important; 
 
-}
 
 .UserActions {
     display: flex;
@@ -104,6 +119,13 @@
     height: fit-content;
     margin-bottom: 0;
 }
+
+
+.Action:hover, .Action:hover i, .Action:hover p {
+    color: rgb(0, 86, 136);
+    cursor: pointer;
+}
+
 
 .Action i {
     font-size: 14px;

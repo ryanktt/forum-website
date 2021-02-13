@@ -72,7 +72,7 @@ async (req, res) => {
         threadId,
         postId
     } = req.body    
-    console.log(req.body)
+
 
     try {
        
@@ -91,7 +91,7 @@ async (req, res) => {
         await Thread.findByIdAndUpdate(threadId, { $push: { posts: {post: post.id} }})
 
         await post.save();
-
+        console.log(post)
         return res.json({id: post.id})
     
         

@@ -1,19 +1,28 @@
 import React from 'react'
 import style from './Post.module.css';
 import {dateFormat} from '../../../utils/dateFormat';
+import parser from 'bbcode-to-react';
 
 const Post = (props) => {
-    const {post, user, postNumber} = props
+    const {post, user, postNumber, quoted} = props;
+
+    const parsedContent = parser.toReact(post.content)
+    const username = user.name;
+    const createdAt = user.createdAt;
+    const postLikes = post.likes.length;
+    const postDislikes = post.dislikes.length;
+
+
 
     return (
         <div  className={style.Post}>
             <div className={style.UserDetails}>
                 <img src={user.profile.userImg} alt='user-img'/>
-                <h4>{user.name}</h4>
+                <h4>{username}</h4>
                 <div className={style.UserDetailsBox}>
                     <div>
                         <i class="far fa-user"></i>
-                        <p>{dateFormat(user.createdAt)}</p>
+                        <p>{dateFormat(createdAt)}</p>
                     </div>
                     <div>
                         <i class="far fa-comments"></i>
@@ -21,11 +30,11 @@ const Post = (props) => {
                     </div>
                     <div>
                         <i class="far fa-thumbs-up"></i>
-                        <p>{post.likes.length}</p>
+                        <p>{postLikes}</p>
                     </div>
                     <div>
-                    <i class="far fa-thumbs-down"></i>
-                        <p>{post.dislikes.length}</p>
+                        <i class="far fa-thumbs-down"></i>
+                        <p>{postDislikes}</p>
                     </div>
                 </div>
             </div>
@@ -36,7 +45,7 @@ const Post = (props) => {
                         <p>{dateFormat(post.createdAt)}</p>
                         <p>{`#${postNumber}`}</p>
                     </div>
-                    <p className={style.ContentFont}>{post.content}</p>
+                    <p style={{whiteSpace: 'pre-line'}} >{parsedContent}</p>
                 </div>
                 
                 <div className={style.UserActions}>              
@@ -54,10 +63,12 @@ const Post = (props) => {
                             <i class="far fa-thumbs-down"></i>
                             <p className={style.actionParagraph}>Dislike</p>
                         </div>
-                        <div className={style.Action}>
-                            <i class="fas fa-reply"></i>
-                            <p className={style.actionParagraph}>Responder</p>
-                        </div>   
+                        <a href='#new-post' onClick={() => quoted(post.content, post._id, {name: user.name, id: user._id})} style={{textDecoration: 'none'}}>
+                            <div className={style.Action} >
+                                <i class="fas fa-reply"></i>
+                                <p className={style.actionParagraph}>Responder</p>
+                            </div>   
+                        </a>
                     </div>
  
                 </div>

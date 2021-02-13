@@ -19,7 +19,7 @@
     display: flex;
     align-items: center;
     padding: 4px 8px;
-    background-color: rgb(29, 29, 29);
+    background-color: rgb(39, 39, 39);
 }
 
 .PageLocation .Pages div:hover {
@@ -59,7 +59,7 @@
 .Next, .Prev {
     display: flex;
     align-items: center;
-    background-color: rgb(29, 29, 29);
+    background-color: rgb(39, 39, 39);
     padding: 4px 8px;
     border-radius: 2px;
     

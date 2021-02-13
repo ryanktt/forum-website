@@ -1,5 +1,5 @@
 import axios from '../../utils/axios';
-import {NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_THREAD, FETCH_START, REFETCH} from './actionTypes/threadTypes';
+import {NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_THREAD, FETCH_START, REFETCH, SET_QUOTE, QUOTED} from './actionTypes/threadTypes';
 import {LOADING, STOP_LOADING} from './actionTypes/commonTypes';
 
 

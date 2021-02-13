@@ -2,7 +2,6 @@ import React from 'react';
 import style from './Loading.module.css';
 
 const Loading = () => {
-    window.scrollTo(0, 0)
 
     return (
         <>

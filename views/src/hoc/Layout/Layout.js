@@ -5,7 +5,7 @@ import Footer from '../../components/Footer/Footer';
 import style from './Layout.module.css';
 import Wrapper from './Wrapper/Wrapper';
 import Loading from '../../components/UI/Loading/Loading';
-import Backdrop from '../../components/UI/Backdrop/Backdrop';
+
 
 const Layout = (props) => {
 
@@ -26,8 +26,8 @@ const Layout = (props) => {
     return (
         <div className={style.Layout}>
             <Navigation/>
+            {loading}
                 <Wrapper>
-                    {loading}
                     {props.children}
                 </Wrapper>
             <Footer />

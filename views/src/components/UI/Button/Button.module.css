@@ -37,6 +37,17 @@
     padding: 6px;
 }
 
+.Medium {
+    font-size: 14px;
+    padding: 5px;
+}
+
+.Small {
+    font-size: 12px;
+    padding: 3px;
+}
+
+
 .Intense {
     background-color: rgb(255, 176, 30);
 }

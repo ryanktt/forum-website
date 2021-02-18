@@ -8,6 +8,7 @@ import Thread from './containers/Thread/Thread';
 import Auth from './containers/Auth/Auth';
 import NewThread from './containers/NewThread/NewThread';
 import Admin from './containers/Admin/Admin';
+import UserPage from './containers/User/UserPage/UserPage';
 import {loadUser, logout} from './redux/actions/auth';
 import setAuthToken from './utils/setAuthToken';
 
@@ -39,6 +40,7 @@ const App = (props) => {
       <Route path='/auth/login' exact component={Auth}/>
       <Route path='/auth/signup' exact component={Auth}/>
       <Route path='/user/new-thread' exact component={NewThread}/>
+      <Route path='/user/:id' exact component={UserPage}/>
       <Route path='/admin/panel' exact component={Admin}/>
     </Layout>
     

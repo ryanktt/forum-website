@@ -4,8 +4,8 @@ import style from './NewThread.module.css';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Form from '../../components/UI/Form/Form';
-import Post from '../../components/Post/Post';
-import {newThread, reFetchPage} from '../../redux/actions/thread';
+import NewPost from '../../containers/NewPost/NewPost';
+import {newPost, newThread, reFetchPage} from '../../redux/actions/thread';
 import Validation from '../../components/UI/Validation/ValidationMsgs';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import {categories} from '../../utils/categories';
@@ -19,7 +19,7 @@ const NewThread = (props) => {
         content: '',
         category: '',
     })
-
+    
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -44,6 +44,13 @@ const NewThread = (props) => {
         })
     }
 
+    const onGetContent = content => {
+        setThreadData({
+            ...threadData,
+            content: content
+        })
+    }
+
     
     return (
         <>
@@ -55,7 +62,7 @@ const NewThread = (props) => {
                     <div style={{margin:'15px 0'}}>
                         <Dropdown options={categories} placeholder='Escolha uma categoria' required change={onChange}/>
                     </div>
-                    <Post change={onChange}/>
+                    <NewPost getContent={onGetContent}/>
                     <div className={style.Button}>
                         <Button button>Postar Tópico</Button>
                     </div>

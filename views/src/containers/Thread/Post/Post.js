@@ -1,10 +1,52 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux';
 import style from './Post.module.css';
+import axios from '../../../utils/axios';
 import {dateFormat} from '../../../utils/dateFormat';
 import parser from 'bbcode-to-react';
+import {reFetchPage} from '../../../redux/actions/thread';
 
 const Post = (props) => {
-    const {post, user, postNumber, quoted} = props;
+    const {post, user, postNumber, quoted, reFetch, clientUser} = props;
+    const [reaction, setReaction] = useState({
+        like: false,
+        dislike: false
+    });
+    const [reactionStyle, setReactionStyle] = useState({
+        like: [style.Action],
+        dislike: [style.Action]
+    });
+    const [reactionAction, setReactionAction] = useState({
+        like: 'like',
+        dislike: 'dislike'
+    });
+
+    useEffect(() => {
+        if (post.likes.some((like) => like.user.toString() === clientUser._id)) {
+            return setReaction({like: true, dislike: false});
+        }
+        if (post.dislikes.some((dislike) => dislike.user.toString() === clientUser._id)) {
+            return setReaction({like: false, dislike: true});
+        }
+        setReaction({like: false, dislike: false})
+    }, [post.dislikes, post.likes]);
+    
+    useEffect(() => {
+        if(reaction.like) {
+            setReactionAction({dislike: 'dislike', like: 'unlike'})
+            setReactionStyle({like: [style.Action, style.Active], dislike: [style.Action]});
+            return;
+        };
+        if(reaction.dislike) {
+            setReactionAction({like: 'like', dislike: 'undo-dislike'})
+            setReactionStyle({dislike: [style.Action, style.Active], like: [style.Action]});
+            return;
+        };
+        setReactionAction({like: 'like', dislike: 'dislike'})
+        setReactionStyle({dislike: [style.Action], like: [style.Action]});
+
+    }, [reaction]);
+
 
     const parsedContent = parser.toReact(post.content)
     const username = user.name;
@@ -12,6 +54,31 @@ const Post = (props) => {
     const postLikes = post.likes.length;
     const postDislikes = post.dislikes.length;
 
+
+    const postActions = async (postId, action) => {
+        let request = null;
+        switch(action) {
+            case 'like':
+            case 'dislike':
+            case 'unlike':
+            case 'undo-dislike': {
+                request = () => axios.put(`/user/${action}/${postId}`);
+                break
+            }
+            case 'delete': {
+                request = () => axios.delete(`user/post/${postId}`);
+                break
+            }
+            default: break;       
+        }
+        try {
+     
+            await request();
+            reFetch();
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
 
     return (
@@ -55,11 +122,11 @@ const Post = (props) => {
                     </div>
 
                     <div className={style.Actions}> 
-                        <div className={style.Action}>
+                        <div onClick={() => postActions(post._id, reactionAction.like)} className={reactionStyle.like.join(' ')}>
                             <i class="far fa-thumbs-up"></i>
                             <p className={style.actionParagraph}>Like</p>
                         </div>
-                        <div className={style.Action}>
+                        <div onClick={() => postActions(post._id, reactionAction.dislike)} className={reactionStyle.dislike.join(' ')}>
                             <i class="far fa-thumbs-down"></i>
                             <p className={style.actionParagraph}>Dislike</p>
                         </div>
@@ -78,4 +145,17 @@ const Post = (props) => {
     )
 }
 
-export default Post;
+const mapStateToProps = state => {
+    return {
+        clientUser: state.auth.user
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        reFetch: () => dispatch(reFetchPage)
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

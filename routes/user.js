@@ -52,7 +52,7 @@ async (req, res) => {
         return res.json({id: thread._id});
     }catch(err) {
         console.error(err);
-        res.status(500).json('Erro de Servidor')
+        res.status(500).json('Erro de Servidor');
     }
 });
 
@@ -73,7 +73,7 @@ async (req, res) => {
         postId
     } = req.body    
 
-
+    
     try {
        
         if(postId) {
@@ -91,7 +91,7 @@ async (req, res) => {
         await Thread.findByIdAndUpdate(threadId, { $push: { posts: {post: post.id} }})
 
         await post.save();
-        console.log(post)
+   
         return res.json({id: post.id})
     
         
@@ -155,27 +155,28 @@ router.put('/like/:id', checkObjectId('id'), async (req, res) => {
     let post;
     let type = 'Post'
     try {
-        //Check if it's a post or a thread
-        if(req.query.type === 'thread') {
-            type = 'Thread';
-            post = await Thread.findById(req.params.id);
-        } else {
-            post = await Post.findById(req.params.id);
+
+        post = await Post.findById(req.params.id);
+
+        // Check if the post has already been liked
+        console.log(post)
+        if (post.likes.some((like) => like.user.toString() === req.user.id)) {
+            return res.status(400).json({ msg: `${type} already liked` });
         }
-  
-      // Check if the post has already been liked
-      if (post.likes.some((like) => like.user.toString() === req.user.id)) {
-        return res.status(400).json({ msg: `${type} already liked` });
-      }
-  
-      post.likes.unshift({ user: req.user.id });
-  
-      await post.save();
-  
-      return res.json(post.likes);
+        
+        // remove the dislike
+        post.dislikes = post.dislikes.filter(
+            ({ user }) => user.toString() !== req.user.id
+            );
+        
+        post.likes.unshift({ user: req.user.id });
+    
+        await post.save();
+    
+        return res.json(post.likes);
     } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+        console.error(err);
+        res.status(500).send('Server Error');
     }
   });
   
@@ -219,6 +220,7 @@ router.put('/unlike/:id', checkObjectId('id'), async (req, res) => {
 router.put('/dislike/:id', checkObjectId('id'), async (req, res) => {
     let post;
     let type = 'Post'
+    console.log(req.params.id)
     try {
         //Check if it's a post or a thread
         // if(req.query.type === 'thread') {
@@ -230,15 +232,20 @@ router.put('/dislike/:id', checkObjectId('id'), async (req, res) => {
   
         // Check if the post has already been disliked
         
-        if (post.unlikes.some((unlike) => unlike.user.toString() === req.user.id)) {
+        if (post.dislikes.some((dislike) => dislike.user.toString() === req.user.id)) {
             return res.status(400).json({ msg: `${type} already disliked` });
         }
-    
-        post.unlikes.unshift({ user: req.user.id });
+        
+        // remove the like
+        post.likes = post.likes.filter(
+            ({ user }) => user.toString() !== req.user.id
+            );
+
+        post.dislikes.unshift({ user: req.user.id });
     
         await post.save();
     
-        return res.json(post.unlikes);
+        return res.json(post.dislikes);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
@@ -260,18 +267,18 @@ router.put('/undo-dislike/:id', checkObjectId('id'), async (req, res) => {
         post = await Post.findById(req.params.id);
         // }
         // Check if the post has not yet been disliked
-        if (!post.unlikes.some((unlike) => unlike.user.toString() === req.user.id)) {
+        if (!post.dislikes.some((dislike) => dislike.user.toString() === req.user.id)) {
         return res.status(400).json({ msg: `${type} has not yet been disliked` });
         }
 
         // remove the dislike
-        post.unlikes = post.unlikes.filter(
+        post.dislikes = post.dislikes.filter(
         ({ user }) => user.toString() !== req.user.id
         );
 
         await post.save();
 
-        return res.json(post.unlikes);
+        return res.json(post.dislikes);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

@@ -1,7 +1,11 @@
 import axios from '../../utils/axios';
-import {NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_THREAD, FETCH_START, REFETCH, SET_QUOTE, QUOTED} from './actionTypes/threadTypes';
+import {NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_THREAD, FETCH_START, REFETCH} from './actionTypes/threadTypes';
 import {LOADING, STOP_LOADING} from './actionTypes/commonTypes';
 
+
+export const reFetchPage  = dispatch => {
+    dispatch({type: REFETCH});
+}
 
 export const fetchThreads = param => async dispatch => {
     dispatch({type: FETCH_START});
@@ -61,10 +65,8 @@ export const newThread = (threadData) => async dispatch => {
     }
 }
 
-
 export const newPost = (content, threadId) => async dispatch => {
     const data = {content: content, threadId: threadId};
-    console.log(data)
 
     try {
         await axios.post('/user/post', data);
@@ -81,6 +83,11 @@ export const newPost = (content, threadId) => async dispatch => {
     }
 }
 
-export const reFetchPage  = dispatch => {
-    dispatch({type: REFETCH});
+export const likePost = postId => async dispatch => {
+    try {
+        
+    } catch (err) {
+        console.log(err)
+    }
 }
+

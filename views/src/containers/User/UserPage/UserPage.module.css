@@ -1,0 +1,74 @@
+.UserPage h3, h5, p {
+    margin: 0;
+}
+
+.UserPage {
+    border-radius: 5px;
+    background-color: rgb(39, 39, 39);
+    padding: 20px;
+}
+
+.UserPage .UserPageBox {
+    display: flex;
+}
+
+.UserPage h3 {
+    
+    color: rgb(240, 240, 240);
+}
+.UserPage .Img {
+    width: 200px;
+    margin: 0 auto;
+}
+.UserPage img {
+
+    width: 100%;
+    height: 100%;
+    
+}
+
+.UserPage .UserContent {
+    width: 100%;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.UserPage .UserStatistics {
+    width: fit-content;
+    text-align: center;
+}
+
+.UserPage h5 {
+    color: rgb(158, 158, 158);
+}
+
+.UserPage p {
+    font-size: 14px;
+    font-family: 'Roboto';
+    color: rgb(228, 228, 228);
+}
+
+@media only screen and (max-width: 635px) {
+
+    .UserPageBox {
+        flex-direction: column;
+    }
+
+    .UserPage .Img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .UserPage .UserContent {
+        padding: 0;
+        height: 130px;
+    }
+}
+
+@media only screen and (max-width: 501px) {
+    .UserPage {
+        border-radius: 0;
+    }
+}

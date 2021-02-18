@@ -1,4 +1,4 @@
-import { NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_START, FETCH_THREAD, REFETCH, SET_QUOTE, QUOTED } from '../actions/actionTypes/threadTypes';
+import { NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_START, FETCH_THREAD, REFETCH} from '../actions/actionTypes/threadTypes';
 
 const initialState = {
     threadList: null,

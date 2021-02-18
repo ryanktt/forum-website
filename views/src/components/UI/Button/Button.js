@@ -7,6 +7,8 @@ const Button = (props) => {
     let buttonSize = '';
     let buttonColor = '';
     
+    if(props.medium) buttonSize = style.Medium
+    if(props.small) buttonSize = style.Small;
     if(props.danger) buttonStyle = style.Danger;
     if(props.success) buttonStyle = style.Success;
     if(props.large) buttonSize = style.Large;

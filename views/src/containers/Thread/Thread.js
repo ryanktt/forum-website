@@ -2,14 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import style from './Thread.module.css';
 import Post from './Post/Post';
-import {fetchThread} from '../../redux/actions/thread';
-import {setQuote} from '../../redux/actions/makePost';
+import {fetchThread, newPost, reFetchPage} from '../../redux/actions/thread';
+import {validationAlert} from '../../redux/actions/validationAlert';
+import {setQuote, quoted} from '../../redux/actions/post';
 import Location from '../../components/Location/Location';
 import {categories} from '../../utils/categories';
 import NewPost from '../../containers/NewPost/NewPost';
 
 const Thread = (props) => {
-    const {fetchThread, thread, fetching, match, reFetch, quote, setQuote} = props;
+    const {fetchThread, thread, fetching, match, reFetch, setReFetch, quote, setQuote, quoted, makeNewPost, setAlert, isAuth} = props;
     const [threadId, setThreadId] = useState('');
 
     //check if it's fetching or if the thread has not been fetched before fetching again
@@ -17,20 +18,31 @@ const Thread = (props) => {
         if(!thread && !fetching ) {
             return fetchThread(match.params.id);
         }
-      
         if(reFetch && !fetching) {
             return fetchThread(match.params.id);
         }
-        
+    
     }, [reFetch]);
-
 
     useEffect(() => {
         if(thread) setThreadId(thread.id);
     }, [thread])  
 
+
+    const onSubmit = async (e, content) => {
+        e.preventDefault();
+
+        if(content === '') {
+            return setAlert('Texto Vazio', 'danger');
+        }
+
+        await makeNewPost(content, threadId);
+    
+        setReFetch();
+        quoted();
+    }
+
     const onQuote = (content, postId, user) => {
-        console.log('aq')
         const quotedMsg = `[quote=${user.name}, member=${user.id}, post=${postId}]${content}[/quote]`;
         setQuote({message: quotedMsg, toggler: !quote.toggler});
     }
@@ -51,6 +63,11 @@ const Thread = (props) => {
             key={post._id}/>
         </div>
     })
+
+    let newPost = null;
+    if(isAuth) {
+        newPost = <NewPost button submit={onSubmit}/>;
+    }
 
 
        //get category name by param
@@ -74,7 +91,7 @@ const Thread = (props) => {
         <div className={style.Thread}>
             {posts}
         </div>
-        <NewPost quote={quote} threadId={threadId}/>
+        {newPost}
         
         </>
     )
@@ -83,16 +100,21 @@ const Thread = (props) => {
 const mapStateToProps = state => {
     return {
         thread: state.thread.thread,
-        quote: state.makePost.quote,
+        quote: state.post.quote,
         fetching: state.thread.fetching,
-        reFetch: state.thread.reFetch
+        reFetch: state.thread.reFetch,
+        isAuth: state.auth.isAuthenticated
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         fetchThread: (threadId) => dispatch(fetchThread(threadId)),
-        setQuote: (quote) => dispatch(setQuote(quote))
+        setQuote: (quote) => dispatch(setQuote(quote)),
+        quoted: () => dispatch(quoted),
+        makeNewPost: (content, threadId) => dispatch(newPost(content, threadId)),
+        setReFetch: () => dispatch(reFetchPage),
+        setAlert: (msg, type) => dispatch(validationAlert(msg, type))
     }
 }
 

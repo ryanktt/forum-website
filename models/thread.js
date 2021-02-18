@@ -20,22 +20,6 @@ const ThreadSchema = new Schema({
         type: Number,
         default: 0
     },
-    likes: [
-        {
-            user: {
-                type: Schema.Types.ObjectId,
-                ref: 'user'
-            }
-        }
-    ],
-    dislikes: [
-        {
-            user: {
-                type: Schema.Types.ObjectId,
-                ref: 'user'
-            }
-        }
-    ],
     posts: [
         {
             post: {

@@ -10,17 +10,17 @@
     border-right-width: 0;
     border-top-left-radius: 9px;
     border-top-right-radius: 0;
+    display: flex;
+    align-items: center;
 }
 
 .ThreadsCategory p {
     font-family: 'Ubuntu', sans-serif;
     font-weight: 500;
     font-size: 20px;
-    position: relative;
-    bottom: 10px;
-    left: 15px;
     color: rgb(255, 186, 59);
     width: fit-content;
+    margin-left: 20px;
 }
 
 .Thread h4 {

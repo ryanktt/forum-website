@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { renderToString } from 'react-dom/server'
+import { renderToString } from 'react-dom/server';
 import {connect} from 'react-redux';
 import style from './NewPost.module.css';
 import Post from '../../components/Post/Post';
-import {newPost, reFetchPage} from '../../redux/actions/thread';
-import {quoted} from '../../redux/actions/makePost';
-import {validationAlert} from '../../redux/actions/validationAlert';
 import ValidationMsgs from '../../components/UI/Validation/ValidationMsgs';
 import {getSubstringsBetween} from '../../utils/textFormat';
 
 
+
 const NewPost = (props) => {
-    const {makeNewPost, threadId, reFetch, setAlert, quote, quoted} = props;
+    const {quote, submit, button, getContent} = props;
     const [content, setContent] = useState('');
     const [selectedContent, setSelectedContent] = useState({
         startIndex: 0,
         endIndex: 0,
         text: ''
     })
+    const [chosenEmoji, setChosenEmoji] = useState({
+        emoji: null
+    });
+    
 
     useEffect(() => {
         if(quote === '') return;
@@ -25,29 +27,37 @@ const NewPost = (props) => {
         setContent(content + quote.message);
     }, [quote]);
 
+    useEffect(() => {
+        if(getContent) getContent(content);
+    }, [content])
+
+
     const parseBBCode = (postContent) => {
        const getQuoteInfo = getSubstringsBetween(postContent, '[quote', ']');
     }
 
-    const onSubmit = async e => {
-        parseBBCode(content)
-
-        e.preventDefault();
-        if(content === '') {
-            return setAlert('Texto Vazio', 'danger');
-        }
-
-        await makeNewPost(content, threadId);
-        reFetch();
-        setContent('');
-        quoted();
-    }
-
     const onChange = e => {
-        setContent(e.target.value)
+        setContent(e.target.value) 
         
     }
-    console.log(selectedContent);
+
+    const onEmojiClick = (event, emojiObject) => {
+        setChosenEmoji(emojiObject);
+        const firstPart = content.substr(0, selectedContent.startIndex);
+        const lastPart = content.substr(selectedContent.startIndex, content.length)
+        const emojiAdded = `${firstPart}${emojiObject.emoji}${lastPart}`
+        setContent(emojiAdded);
+        
+    };
+    
+
+    const onClickTag = tagType => {
+        const firstPart = content.substr(0, selectedContent.startIndex);
+        const lastPart = content.substr(selectedContent.endIndex, content.length)
+        const tagWrappedText = `[${tagType}]${selectedContent.text}[/${tagType}]`
+        setContent(firstPart + tagWrappedText + lastPart);
+    }
+
     const onSelect = e => {
         const startIndex = e.currentTarget.selectionStart
         const endIndex = e.currentTarget.selectionEnd
@@ -58,26 +68,25 @@ const NewPost = (props) => {
             text: text
         })
     }
+
+
     return (
         <>
         <ValidationMsgs/>
         <div className={style.NewPost}>
-            <form onSubmit={(e) => onSubmit(e)}>
-                <Post button select={onSelect} content={content} change={onChange} quote={quote}/>
+            <form style={{padding: '0'}} onSubmit={(e) => {submit(e, content); setContent('')}}>
+                <Post button={button} chosenEmoji={chosenEmoji.emoji} emojiClicked={onEmojiClick} select={onSelect} tagClicked={onClickTag} content={content} change={onChange} quote={quote}/>
             </form>
         </div>
         </>
     )
 }
 
-
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
     return {
-        makeNewPost: (content, threadId) => dispatch(newPost(content, threadId)),
-        reFetch: () => dispatch(reFetchPage),
-        setAlert: (msg, type) => dispatch(validationAlert(msg, type)),
-        quoted: () => dispatch(quoted)
+        quote: state.post.quote
+        
     }
 }
 
-export default connect(null, mapDispatchToProps)(NewPost);
+export default connect(mapStateToProps)(NewPost);

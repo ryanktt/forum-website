@@ -1,5 +1,4 @@
-import {LOGIN, SIGNUP, LOGOUT, AUTH_ERROR, LOAD_USER, USER_LOADING, USER_STOP_LOADING} from '../actions/actionTypes/authTypes'
-import {LOADING} from '../actions/actionTypes/commonTypes';
+import {LOGIN, SIGNUP, LOGOUT, AUTH_ERROR, LOAD_USER, USER_LOADING, USER_STOP_LOADING} from '../actions/actionTypes/authTypes';
 
 const initialState = {
     token: localStorage.getItem('token'),

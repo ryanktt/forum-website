@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import style from './PageLocation.module.css';
 import {reFetchPage} from '../../redux/actions/thread';

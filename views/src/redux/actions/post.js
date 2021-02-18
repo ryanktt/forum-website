@@ -1,4 +1,6 @@
+import axios from '../../utils/axios';
 import {SET_QUOTE, QUOTED} from './actionTypes/postTypes';
+
 
 export const setQuote = quote => dispatch => {
     dispatch({type: SET_QUOTE, payload: quote});

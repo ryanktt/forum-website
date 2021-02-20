@@ -10,8 +10,8 @@ const Location = (props) => {
             <div key={item.value}>
                 <i key={i} class="fas fa-chevron-right"></i>
                 {items[items.length - 1] === item 
-                    ?<FetchLink key={item.name} underline classes={style.Current} path={item.path}>{item.name}</FetchLink>
-                    :<FetchLink key={item.name} underline path={item.path}>{item.name}</FetchLink>
+                    ?<FetchLink key={item.name}  underline path={item.path}><p className={style.Current}>{item.name}</p></FetchLink>
+                    :<FetchLink key={item.name} underline path={item.path}><p>{item.name}</p></FetchLink>
                 }
 
             </div>

@@ -4,12 +4,12 @@ import style from './PageLocation.module.css';
 import {reFetchPage} from '../../redux/actions/thread';
 
 const LocationItem = (props) => {
-    const {category, pageNumber, selected, history, reFetchPage, content, classes} = props;
+    const {category, pageNumber, selected, history, reFetchPage, content, classes, path} = props;
 
     const onClick = () => {
-        console.log(pageNumber)
+        
         reFetchPage();
-        history.push(`/threads/${category}?page=${pageNumber}`);
+        history.push(path(category, pageNumber));
     
     }
     let selectedItem = null;

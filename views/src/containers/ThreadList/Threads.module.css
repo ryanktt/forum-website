@@ -81,12 +81,10 @@
         display: block;
     }
 
-    .LocationBar {
-        padding: 0 15px;
-    }
-
-    .PageLocation {
+    .LocationBar, .PageLocation {
         margin-left: 10px;
     }
+
+
 }
 

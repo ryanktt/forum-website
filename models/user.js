@@ -22,6 +22,14 @@ const UserSchema = new Schema({
         userImg: {
           type: String,
           default: 'https://i.imgur.com/aFUANXE.png'
+        },
+        likes: {
+            type: Number,
+            default: 0
+        },
+        dislikes: {
+            type: Number,
+            default: 0
         }
     },
     settings: {

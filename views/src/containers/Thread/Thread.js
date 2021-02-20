@@ -86,7 +86,7 @@ const Thread = (props) => {
     return (
         <>
         <h2 className={style.ThreadTitle}>{thread ? thread.title : null}</h2>
-        <div className={style.Location}><Location items=
+        <div className={style.LocationBar}><Location items=
         {locationItems}/></div>
         <div className={style.Thread}>
             {posts}

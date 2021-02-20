@@ -37,17 +37,28 @@
 
 .UserPage .UserStatistics {
     width: fit-content;
-    text-align: center;
 }
 
-.UserPage h5 {
-    color: rgb(158, 158, 158);
+.UserPage .UserStatistics h5 {
+    color: rgb(187, 187, 187);
 }
 
 .UserPage p {
-    font-size: 14px;
+    font-size: 13px;
+    margin-left: 10px;
     font-family: 'Roboto';
     color: rgb(228, 228, 228);
+}
+
+.PageLocation {
+    margin-top: 15px;
+}
+
+.LocationBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 @media only screen and (max-width: 635px) {
@@ -70,5 +81,13 @@
 @media only screen and (max-width: 501px) {
     .UserPage {
         border-radius: 0;
+    }
+    
+    .PageLocation {
+        margin-left: 10px;
+    }
+
+    .LocationBar {
+        margin-left: 10px;
     }
 }

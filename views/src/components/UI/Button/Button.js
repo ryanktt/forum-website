@@ -14,7 +14,7 @@ const Button = (props) => {
     if(props.large) buttonSize = style.Large;
     if(props.intense) buttonColor = style.Intense;
    
-    let buttonType = <Link to={props.link} onClick={props.close} className={[style.Button, buttonStyle, buttonSize, buttonColor].join(' ')}>{props.children}</Link>;
+    let buttonType = <Link to={props.link} onClick={props.clicked} className={[style.Button, buttonStyle, buttonSize, buttonColor].join(' ')}>{props.children}</Link>;
     if(props.button) {
         buttonType = <button type='submit'   onClick={props.clicked} className={[style.Button, buttonStyle, buttonSize, buttonColor].join(' ')}>{props.children}</button>
     }

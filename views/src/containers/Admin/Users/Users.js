@@ -22,7 +22,7 @@ const Users = (props) => {
             {backdrop}
             <Modal 
             title='Ações de Administrador'
-            close={() => setModalActive(false)}
+            clicked={() => setModalActive(false)}
             active={modalActive}>
                 <div className={style.Ban}>
                     <Input type='text' change={(e) => setbanTime(e.target.value)} placeholder='Tempo (dias)' />

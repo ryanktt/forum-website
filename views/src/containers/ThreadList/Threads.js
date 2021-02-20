@@ -69,7 +69,9 @@ const Threads = (props) => {
         {name: 'Categorias', path: '/'},
     ]
     
-
+    const pageLocationPath = (category, pageNumber) => {
+        return `/threads/${category}?page=${pageNumber}`
+    }
 
 
     return (
@@ -86,7 +88,7 @@ const Threads = (props) => {
             <div className={style.Thread}>
             {threadList}
             </div>
-            <div className={style.PageLocation}><PageLocation history={history} category={category} {...paginate}/></div>
+            <div className={style.PageLocation}><PageLocation  path={pageLocationPath} history={history} category={category} {...paginate}/></div>
         </>
         
     )

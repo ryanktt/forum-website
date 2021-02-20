@@ -3,21 +3,13 @@ import FetchLink from '../../../components/FetchLink/FetchLink';
 import style from './Thread.module.css';
 import {dateFormat} from '../../../utils/dateFormat';
 import {categories as categoriesArr} from '../../../utils/categories';
+import {Link} from 'react-router-dom';
+
 
 
 
 const Thread = (props) => {
     const {thread, user, match} = props;
-    // const [categoryInf, setCategoryInf] = useState({
-    //     name: '',
-    //     color: 'rgb(134, 134, 134)'
-    // })
-
-    // const changeRgbOpacity = (color, opacity) => {
-    //     const strLength = color.length
-    //     const rgb = color.substring(0, strLength - 1);
-    //     return  `${rgb}, ${opacity})`;
-    // }
 
     const categories = categoriesArr.map(category => {
         if(match.params.category !== thread.category) {
@@ -33,8 +25,6 @@ const Thread = (props) => {
 
     });
     
-
-
     //get last post createdAt from thread
     const postsArr = [...thread.posts];
     const lastPost = postsArr.pop(); 
@@ -46,18 +36,20 @@ const Thread = (props) => {
         <div className={style.Thread}>
 
             <div className={[style.ProfilePic, style.Box].join(' ')}>
-                <img className={style.ThreadOwnerPic} src={user.profile.userImg} alt="user-img"/>
+                <Link to={`/member/${user._id}`}>
+                    <img className={style.ThreadOwnerPic} src={user.profile.userImg} alt="user-img"/>
+                </Link>
             </div>
 
             <div className={[style.Post, style.Box].join(' ')}>
                 <div className={style.PostContent}>
-                <FetchLink  classes={style.Link}
-                    path={`/thread/${match.params.category}/${thread._id}`}
-                    >
-                        <h4>{thread.title}</h4>
+                <FetchLink  
+                classes={style.Link}
+                path={`/thread/${match.params.category}/${thread._id}`}>
+                        <h4 className={style.Title}>{thread.title}</h4>
                 </FetchLink>
                     <div className={style.PostDetails}>
-                        <p>{user.name}</p>
+                        <Link to={`/member/${user._id}`}><p className={style.Name}>{user.name}</p></Link>
                         <p>{dateFormat(thread.createdAt)}</p>
                     </div>
                 </div>
@@ -87,7 +79,7 @@ const Thread = (props) => {
             <div className={[style.LastPost, style.Box].join(' ')}>
                 <div>
                     <p style={{fontSize: '12px'}}>{dateFormat(lastPost.post.createdAt)}</p>
-                    <p style={{fontSize: '12px'}}>{lastPost.post.user.name}</p>
+                    <Link to={`/member/${lastPost.post.user._id}`}><p className={style.Name} style={{fontSize: '12px'}}>{lastPost.post.user.name}</p></Link>
                 </div>
             </div>
 

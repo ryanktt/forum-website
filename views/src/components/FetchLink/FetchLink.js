@@ -17,7 +17,14 @@ const FetchLink = (props) => {
     underline ? underline = style.Underline : underline = ''
 
     return (
-            <Link onClick={fetch} className={[underline, classes].join(' ')} to={path} >{props.children}</Link>
+            <Link 
+            onClick={fetch} 
+            className={[underline, classes].join(' ')} 
+            to={{
+                pathname: path
+            }} >
+                {props.children}
+            </Link>
     )
 }
 

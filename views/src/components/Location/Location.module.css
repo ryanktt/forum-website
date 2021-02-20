@@ -18,12 +18,15 @@
 .Location p, a {
     font-size: 13px;
     font-weight: light;
-    color: rgb(121, 121, 121);
+    color: unset;
+    text-decoration: none;
     
 }
-.Location a {
-    text-decoration: none;
+
+.Location p {
+    color: rgb(121, 121, 121);
 }
+
 
 .Location a:hover {
     text-decoration: underline;

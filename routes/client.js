@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-
+const checkObjectId = require('../middleware/checkObjectId');
 
 const Thread = require('../models/thread');
 const Post = require('../models/post');
+const User = require('../models/user');
 
 // @route    GET /
 // @desc     Fetch threads
@@ -18,12 +19,12 @@ router.get('/threads/:category', async (req, res) => {
     const options = {
         page: page,
         sort: {updatedAt: -1},
-        select: 'title createdAt views category',
+        select: 'title createdAt views category posts',
         populate: [
           {path: 'user', select: 'name profile'},
           {path: 'posts.post', select: 'createdAt user', populate: {path: 'user', select: 'profile name'}}
         ],
-        limit: 15,
+        limit: 1,
         collation: {
           locale: 'en',
         },
@@ -70,8 +71,10 @@ router.get('/thread/:id', async (req, res) => {
 
     
   try {
-      const threadInfo = await Thread.findById({_id: req.params.id}).select('title createdAt');
-      const posts = await Post.paginate({thread: req.params.id}, options)
+      const [threadInfo, posts] = await Promise.all([
+        Thread.findById({_id: req.params.id}).select('title createdAt'),
+        Post.paginate({thread: req.params.id}, options)
+      ]) 
       const thread = {id: threadInfo.id, createdAt: threadInfo.createdAt, title: threadInfo.title, posts: posts.docs}
       res.json(thread);
       
@@ -84,4 +87,84 @@ router.get('/thread/:id', async (req, res) => {
 
 })
 
+router.get('/member/:id', checkObjectId('id'), async(req, res) => {
+  try {
+    // const user = await User.findById(req.params.id).select('-settings -ip -email -password')
+    // const postCount = await Post.countDocuments({user: req.params.id})
+    // const threadCount = await Thread.countDocuments({user: req.params.id})
+
+    //Running many awaits at the same time with promise.all
+    const [user, postCount, threadCount] = await Promise.all(
+      [
+        User.findById(req.params.id).select('-settings -ip -email -password').lean(),
+        Post.countDocuments({user: req.params.id}),
+        Thread.countDocuments({user: req.params.id})
+      ]
+    )
+    
+    const data = {...user, postCount: postCount, threadCount: threadCount}
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json('Erro de Servidor');
+  }
+})
+
+router.get('/member/threads/:id', checkObjectId('id'), async(req, res) => {
+  //Pagination
+  let page = Number(req.query.page);
+
+  if(!page) {
+    page = 1;
+  }
+
+  
+  const options = {
+    page: page,
+    sort: {createdAt: -1},
+    select: 'title createdAt views category posts',
+    populate: {path: 'posts.post', select: 'createdAt user', populate: {path: 'user', select: 'profile name'}},
+    limit: 1,
+    collation: {
+      locale: 'en',
+    },
+    lean: true
+  };
+
+  try {
+    const threads = await Thread.paginate({user: req.params.id}, options)
+
+    res.json(threads);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json('Erro de Servidor');
+  }
+}) 
+
+router.get('/member/posts/:id', checkObjectId('id'), async(req, res) => {
+  //Pagination
+  let page = Number(req.query.page);
+  if(!page) {
+    page = 1;
+  }
+
+  const options = {
+    page: page,
+    sort: {createdAt: -1},
+    limit: 35,
+    collation: {
+      locale: 'en',
+    },
+    lean: true
+  };
+
+  try {
+    const posts = await Post.paginate({user: req.params.id}, options)
+    res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json('Erro de Servidor');
+  }
+}) 
+ 
 module.exports = router;

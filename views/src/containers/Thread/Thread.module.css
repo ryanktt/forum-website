@@ -13,7 +13,10 @@
     word-wrap: break-word;
 }
 
-.Location {
+.LocationBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 10px;
 }
 
@@ -25,5 +28,16 @@
     
     .Thread .Post {
         margin-bottom: 15px;
+    }
+}
+
+@media only screen and (max-width: 501px) {
+    .ThreadTitle {
+        font-size: 17px;
+        margin-left: 10px;
+    }
+
+    .LocationBar {
+        margin-left: 10px;
     }
 }

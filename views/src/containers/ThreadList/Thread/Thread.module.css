@@ -63,6 +63,10 @@
     margin-right: 15px;
 }
 
+.PostDetails .Name:hover, .LastPost .Name:hover{
+    text-decoration: underline;
+}
+
 .PostContent{
     flex-direction: column;
     align-items: baseline;

@@ -115,7 +115,7 @@
 
 .Action {
     display: flex;
-    margin-right: 30px;
+    margin-right: 25px;
     height: fit-content;
     margin-bottom: 0;
 }
@@ -177,7 +177,7 @@
         display: flex;
         flex-direction: row;
         position: relative;
-        right: 70px;
+        right: 68px;
         top: 30px;
         min-width: 250px;
     }
@@ -185,7 +185,7 @@
     
     .UserDetails img {
         width: 50px;
-        margin-right: 10px;
+        margin-right: 20px;
     }
     
     .UserDetails div {

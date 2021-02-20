@@ -51,8 +51,8 @@ const Post = (props) => {
     const parsedContent = parser.toReact(post.content)
     const username = user.name;
     const createdAt = user.createdAt;
-    const postLikes = post.likes.length;
-    const postDislikes = post.dislikes.length;
+    const postLikes = user.profile.likes;
+    const postDislikes = user.profile.dislikes;
 
 
     const postActions = async (postId, action) => {

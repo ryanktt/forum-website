@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Route} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import Layout from './hoc/Layout/Layout'
 import ThreadList from './containers/ThreadList/Threads';
 import Categories from './containers/Categories/Categories';
@@ -40,7 +40,7 @@ const App = (props) => {
       <Route path='/auth/login' exact component={Auth}/>
       <Route path='/auth/signup' exact component={Auth}/>
       <Route path='/user/new-thread' exact component={NewThread}/>
-      <Route path='/user/:id' exact component={UserPage}/>
+      <Route path='/member/:id' exact component={UserPage}/>
       <Route path='/admin/panel' exact component={Admin}/>
     </Layout>
     

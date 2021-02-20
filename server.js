@@ -20,13 +20,13 @@ const clientRoute = require('./routes/client');
 //Define Routes
 app.use('/auth', authRoute);
 app.use('/user', auth, userRoute);
-app.use(clientRoute, auth);
+app.use(clientRoute);
 
 
 app.get('/', (req,res) => {
     res.send('<h1>test</h1>')
 })
-
+ 
 
 app.listen(5000, () => {
     console.log('running on port 5000')

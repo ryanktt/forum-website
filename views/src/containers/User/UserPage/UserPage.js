@@ -7,24 +7,27 @@ import {dateFormat} from '../../../utils/dateFormat';
 import Thread from '../../ThreadList/Thread/Thread';
 import PageLocation from '../../../components/PageLocation/PageLocation';
 import Location from '../../../components/Location/Location';
+import Post from '../../../components/PostList/Post';
 
 
 const UserPage = (props) => {
-    const {fetchUser, fetchThreads, fetchPosts, user, threads, posts, match, reset, history, location} = props;
+    const {fetchUser, fetchThreads, fetchPosts, user, threads, posts, match, reset, history, location, isAuth, clientUser} = props;
     const [threadList, setThreadList] = useState(null);
-    const [load, setLoad] = useState(true)
+    const [postList, setPostList] = useState(null);
+    const [load, setLoad] = useState(true); //prevent posts or threads from loading before user asks for it
     
     const currentPage = location.search;
     const userId = match.params.id;
-    const param = {userId: userId, currentPage: currentPage}
-
+    const threadParam = {userId: userId, currentPage: currentPage}
+    const postParam = {userId: userId, currentPage: currentPage}
+    
     useEffect(() => {
         fetchUser(userId);
        
     }, [userId]);
 
     useEffect(() => {
-        if (threads) {
+        if (threads || posts) {
             reset('threads');
             reset('posts')
             setLoad(true);
@@ -40,23 +43,35 @@ const UserPage = (props) => {
         }
     }, [threads]);
 
+    useEffect(() => {
+        if(posts) {
+            setPostList(posts.data.map(post => {
+                return <Post post={post} thread={post.thread} user={user} match={match} />
+            }));
+        }
+    }, [posts]);
+
 
     useEffect(() => {
-        if(threads && !load) fetchThreads(param)
-    }, [currentPage])
-
-
-    
+        if(threads && !load) fetchThreads(threadParam)
+    }, [currentPage]);
 
 
     const onClickTopics =  () => {
-        fetchThreads(param);
-        setLoad(false)
+        reset('posts');
+        fetchThreads(threadParam);
+        setLoad(false) 
 
     }
 
     const onClickPosts = () => {
-        fetchPosts(userId);
+        reset('threads');
+        fetchPosts(postParam);
+        setLoad(false) 
+    }
+
+    const onClickPrivateMessage = () => {
+        history.push(`/user/new-conversation?with=${user.name}`)
     }
 
     const pageLocationPath = (category, pageNumber) => {
@@ -70,12 +85,21 @@ const UserPage = (props) => {
     let threadsSection = null
     if(threads) threadsSection = (
             <>
-                
                 {threadList}
                 <div className={style.PageLocation}><PageLocation path={pageLocationPath} history={history} {...threads.pagination}/></div>
             </>
-        )
-
+    )
+        
+    let postsSection = null
+    if(posts) postsSection = (
+            <>
+                {postList}
+                <div className={style.PageLocation}><PageLocation path={pageLocationPath} history={history} {...posts.pagination}/></div>
+            </>
+    )
+    let pmButton = null
+    if(isAuth && clientUser._id !== userId) pmButton = <Button button clicked={onClickPrivateMessage} intense small>Mensagem Privada</Button>
+    
     return (
         <>
         <div className={style.LocationBar}>
@@ -91,13 +115,13 @@ const UserPage = (props) => {
                         <h3>{user.name}</h3>
                         <div style={{display: 'flex', justifyContent: 'space-between'}}>
                             <div className={style.UserStatistics}>
-                                <h5>Postagens</h5><p>{user.postCount}</p></div>
+                                <h5>Postagens</h5><p>{user.profile.postCount}</p></div>
                             <div className={style.UserStatistics}>
                                 <h5>Likes</h5><p>{user.profile.likes}</p></div>
                             <div className={style.UserStatistics}>
                                 <h5>Dislikes</h5><p>{user.profile.dislikes}</p></div>
                             <div className={style.UserStatistics}>
-                                <h5>Tópicos</h5><p>{user.threadCount}</p></div>
+                                <h5>Tópicos</h5><p>{user.profile.threadCount}</p></div>
                         </div>
                         <hr style={{border: '1px solid grey', borderBottom: '0'}} />
                         <div style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -105,11 +129,11 @@ const UserPage = (props) => {
                                 <h5>Cadastro</h5>
                                 <p>{dateFormat(user.createdAt)}</p>
                             </div>
-                            <div style={{display: 'flex', alignItems: 'end'}}>
-                                <div style={{display: 'flex', justifyContent: 'space-between', width: '220px'}}>
+                            <div style={{position: 'relative'}}>
+                                <div className={style.ButtonsBox}>
                                     <Button button clicked={onClickTopics} intense small>Tópicos</Button>
                                     <Button button intense clicked={onClickPosts} small>Posts</Button>
-                                    <Button button intense small>Mensagem Privada</Button>
+                                    {pmButton}
                                 </div>
 
                             </div>
@@ -120,16 +144,20 @@ const UserPage = (props) => {
                 <div></div>
             </div>
             : <h2 style={{color: 'rgb(29,29,29)', marginLeft: '25px'}}>Usuário não Encontrado :(</h2>}
-            <div>
+            <div style={{marginTop: '15px'}} >
                 {threadsSection}
+                {postsSection}
             </div>
+            
         </>
     )
 }
 
 const mapStateToProps = state => {
     return {
+        isAuth: state.auth.isAuthenticated,
         user: state.user.data,
+        clientUser: state.auth.user,
         threads: state.user.threads,
         posts: state.user.posts
     }

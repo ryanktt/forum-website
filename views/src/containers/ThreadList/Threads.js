@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import style from './Threads.module.css';
 import Thread from './Thread/Thread';
 import Button from '../../components/UI/Button/Button';
-import {fetchThreads} from '../../redux/actions/thread';
+import {fetchThreads, fetchPrivateThreads, reFetchPage} from '../../redux/actions/thread';
 import Location from '../../components/Location/Location';
 import {categories} from '../../utils/categories';
 import PageLocation from '../../components/PageLocation/PageLocation';
@@ -18,42 +18,65 @@ const Threads = (props) => {
         match, 
         history,
         paginate,
-        location
+        location,
+        fetchPrivateThreads,
+        setReFetch
     } = props
 
+    const isConversation = location.pathname === '/user/conversations';
+
     const category = match.params.category;
-    const currentPage = location.search
+    const currentPage = location.search;
+    const currentPath = location.pathname;
     let newThreadBtn = null;
+
+    let btnText = 'Novo Tópico';
+    let link = `/user/new-thread?ctgry=${category}`;
+
+    if(isConversation) {
+        btnText = 'Iniciar Conversa';
+        link = '/user/new-conversation';
+    }
 
     if(isAuth) {
         newThreadBtn = <div className={style.ThreadsBtn}>
-        <Button  link={`/user/new-thread?ctgry=${category}`} intense >Novo Tópico</Button>
+        <Button  link={link} intense >{btnText}</Button>
         </div>
     }    
 
     //MAKE SO THAT THE THREADS ONLY FETCH ONCE (LOADING BUG)
     useEffect(() => {
+        if(isConversation && !threads  
+            || reFetch && isConversation ) {
+            return fetchPrivateThreads(currentPage);
+
+        }
         const param = {category: category, currentPage: currentPage}
-        if(!threads && !fetching ) {
+        if(!threads && !fetching && !isConversation) {
             return fetchThreads(param);
         }
       
-        if(reFetch && !fetching) {
+        if(reFetch && !fetching && !isConversation) {
             return fetchThreads(param);
         }
         
     }, [reFetch])
 
-     //get category name by param
-     const currentCategory = categories.filter(el => {
+    useEffect(() => {
+        setReFetch();
+    }, [currentPath])
+
+    //get category name by param
+    const currentCategory = categories.filter(el => {
         return el.value === category
     })
 
-    if(!currentCategory[0]) {
-        history.push('/') 
-        return null
+    if(!isConversation) if(!currentCategory[0]) {
+        history.push('/');
+        return null;
     }
-    const categoryName = currentCategory[0].name;
+    let categoryName = null;
+    isConversation ? categoryName = 'Mensagens Privadas': categoryName = currentCategory[0].name;
 
     let threadList = []
     
@@ -65,13 +88,17 @@ const Threads = (props) => {
 
 
 
-    const locationItems = [
+    let locationItems = [
         {name: 'Categorias', path: '/'},
     ]
+
     
     const pageLocationPath = (category, pageNumber) => {
         return `/threads/${category}?page=${pageNumber}`
     }
+
+    //
+
 
 
     return (
@@ -106,7 +133,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        setReFetch: () => dispatch(reFetchPage),
         fetchThreads: (category) => dispatch(fetchThreads(category)),
+        fetchPrivateThreads: (page) => dispatch(fetchPrivateThreads(page))
     }
 }
  

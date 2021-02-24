@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { renderToString } from 'react-dom/server';
 import {connect} from 'react-redux';
 import style from './NewPost.module.css';
 import Post from '../../components/Post/Post';
-import ValidationMsgs from '../../components/UI/Validation/ValidationMsgs';
 import {getSubstringsBetween} from '../../utils/textFormat';
 
 
@@ -72,7 +70,6 @@ const NewPost = (props) => {
 
     return (
         <>
-        <ValidationMsgs/>
         <div className={style.NewPost}>
             <form style={{padding: '0'}} onSubmit={(e) => {submit(e, content); setContent('')}}>
                 <Post button={button} chosenEmoji={chosenEmoji.emoji} emojiClicked={onEmojiClick} select={onSelect} tagClicked={onClickTag} content={content} change={onChange} quote={quote}/>

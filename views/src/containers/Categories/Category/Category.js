@@ -1,12 +1,16 @@
 import React from 'react'
 import style from './Category.module.css';
 import FetchLink from '../../../components/FetchLink/FetchLink';
+import {dateFormat} from '../../../utils/dateFormat';
 
 const Category = (props) => {
-    let {path, fontAwesome, color, description, categoryName} = props;
-    if(!path)  path = '' ;
+    const {fontAwesome, color, description, categoryName, categoryPath, postCount, threadCount, lastPost} = props;
+    let {path} = props;
 
  
+    if(!path)  path = '' ;
+    console.log(lastPost)
+
     return (
         <div  className={style.Category} style={{borderColor: color}}>
             <div className={style.Introduction}>
@@ -21,24 +25,24 @@ const Category = (props) => {
                         <div className={style.CategoryDetailsBox}>
                             <div>
                                 <i class="far fa-comment"></i>
-                                <p>789</p>
+                                <p>{threadCount}</p>
                             </div>
                             <div>
                                 <i class="far fa-comments"></i>
-                                <p>3558</p>
+                                <p>{postCount}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className={style.LastPost}>
-                <h4>Lorem Ipsum Dolores Matheo...</h4>
+            {lastPost ? <div className={style.LastPost}>
+                <FetchLink path={`/thread/${categoryPath}/${lastPost.thread._id}`}><h4>{lastPost.thread.title}</h4></FetchLink>
                 <div>
-                    <p>Today at 4:55 PM</p>
-                    <p>Lorensio</p>
+                    <p>{dateFormat(lastPost.createdAt)}</p>
+                    <FetchLink path={`/member/${lastPost.user._id}`} ><p className={style.Name}>{lastPost.user.name}</p></FetchLink>
                 </div>
-            </div>
+            </div> : null}
 
 
             

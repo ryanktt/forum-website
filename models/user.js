@@ -23,6 +23,8 @@ const UserSchema = new Schema({
           type: String,
           default: 'https://i.imgur.com/aFUANXE.png'
         },
+        postCount: {type: Number, default: 0},
+        threadCount: {type: Number, default: 0},
         likes: {
             type: Number,
             default: 0

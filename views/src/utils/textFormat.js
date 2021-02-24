@@ -20,8 +20,17 @@ export const getSubstringsBetween = (str, startDelimiter, endDelimiter) => {
 
     return contents;
 }
-export const strpos = (haystack, needle, offset)  =>
+const strpos = (haystack, needle, offset)  =>
 {
     var i = (haystack+'').indexOf(needle, (offset || 0));
     return i === -1 ? false : i;
+}
+
+export const trimString = (str, length) => {
+    if(str.length > length - 3){
+        return str.substring(0, length).trimEnd() + "..."
+    }
+    else{
+        return str
+    }
 }

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import style from './Thread.module.css';
 import Post from './Post/Post';
-import {fetchThread, newPost, reFetchPage} from '../../redux/actions/thread';
+import {fetchThread, newPost, reFetchPage, fetchPrivateThread} from '../../redux/actions/thread';
 import {validationAlert} from '../../redux/actions/validationAlert';
 import {setQuote, quoted} from '../../redux/actions/post';
 import Location from '../../components/Location/Location';
@@ -10,24 +10,32 @@ import {categories} from '../../utils/categories';
 import NewPost from '../../containers/NewPost/NewPost';
 
 const Thread = (props) => {
-    const {fetchThread, thread, fetching, match, reFetch, setReFetch, quote, setQuote, quoted, makeNewPost, setAlert, isAuth} = props;
-    const [threadId, setThreadId] = useState('');
+    const {fetchThread, thread, fetching, match, reFetch, setReFetch, quote, setQuote, quoted, makeNewPost, setAlert, isAuth, fetchPrivateThread, location} = props;
+    //const [threadId, setThreadId] = useState('');
 
+    const isConversation = location.pathname === `/user/conversation/${match.params.id}`;
     //check if it's fetching or if the thread has not been fetched before fetching again
+  
     useEffect(() => {
-        if(!thread && !fetching ) {
+        if(isConversation && !thread ) {
+            return fetchPrivateThread(match.params.id);
+        } 
+        if(isConversation && reFetch ) {
+            return fetchPrivateThread(match.params.id);
+        } 
+
+        if(!thread && !fetching && !isConversation) {
             return fetchThread(match.params.id);
         }
-        if(reFetch && !fetching) {
+        if(reFetch && !fetching && !isConversation) {
             return fetchThread(match.params.id);
         }
     
     }, [reFetch]);
 
-    useEffect(() => {
-        if(thread) setThreadId(thread.id);
-    }, [thread])  
-
+    // useEffect(() => {
+    //     if(thread) setThreadId(thread.id);
+    // }, [thread])  
 
     const onSubmit = async (e, content) => {
         e.preventDefault();
@@ -35,15 +43,16 @@ const Thread = (props) => {
         if(content === '') {
             return setAlert('Texto Vazio', 'danger');
         }
-
-        await makeNewPost(content, threadId);
+        let status = 'public'
+        if(isConversation) status = 'private'
+        await makeNewPost(content, match.params.id, status, match.params.category);
     
         setReFetch();
         quoted();
     }
 
     const onQuote = (content, postId, user) => {
-        const quotedMsg = `[quote=${user.name}, member=${user.id}, post=${postId}]${content}[/quote]`;
+        const quotedMsg = `[quote=${user.name}, post=${postId}]${content}[/quote]`;
         setQuote({message: quotedMsg, toggler: !quote.toggler});
     }
 
@@ -69,19 +78,37 @@ const Thread = (props) => {
         newPost = <NewPost button submit={onSubmit}/>;
     }
 
-
-       //get category name by param
-       const currentCategory = categories.filter(el => {
-        return el.value === props.match.params.category
+    //get category name by param
+    const currentCategory = categories.filter(el => {
+        
+        return el.value === match.params.category
     })
-    const categoryName = currentCategory[0].name;
-    const categoryPath = currentCategory[0].value;
 
 
-    const locationItems = [
+    let categoryName = ''
+    let categoryPath = ''
+    if(isConversation) {
+        categoryName = 'Conversas';
+        categoryPath = 'Conversation';
+    } else {
+        categoryName = currentCategory[0].name;
+        categoryPath = currentCategory[0].value;
+    }
+
+
+
+
+    let locationItems = [
         {name: 'Categorias', path: '/'},
         {name: categoryName, path: `/threads/${categoryPath}`}
     ]
+    if(isConversation) {
+        locationItems = [
+            {name: 'Categorias', path: '/'},
+            {name: 'Conversas', path: '/user/conversations'}
+        ]
+    }
+
 
     return (
         <>
@@ -110,9 +137,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchThread: (threadId) => dispatch(fetchThread(threadId)),
+        fetchPrivateThread: (threadId) => dispatch(fetchPrivateThread(threadId)),
         setQuote: (quote) => dispatch(setQuote(quote)),
         quoted: () => dispatch(quoted),
-        makeNewPost: (content, threadId) => dispatch(newPost(content, threadId)),
+        makeNewPost: (content, threadId, status, category) => dispatch(newPost(content, threadId, status, category)),
         setReFetch: () => dispatch(reFetchPage),
         setAlert: (msg, type) => dispatch(validationAlert(msg, type))
     }

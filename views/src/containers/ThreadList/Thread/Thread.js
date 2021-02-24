@@ -9,10 +9,11 @@ import {Link} from 'react-router-dom';
 
 
 const Thread = (props) => {
-    const {thread, user, match} = props;
-
+    const {thread, user, match, location} = props;
+    const isConversation = location.pathname === '/user/conversations';
+    
     const categories = categoriesArr.map(category => {
-        if(match.params.category !== thread.category) {
+        if(!isConversation) if(match.params.category !== thread.category) {
             if(thread.category === category.value)  {
                 //const brighter = changeRgbOpacity(category.color, 1)
 
@@ -29,7 +30,14 @@ const Thread = (props) => {
     const postsArr = [...thread.posts];
     const lastPost = postsArr.pop(); 
 
+    let category = match.params.category;
+    let threadPath = `/thread/${category}/${thread._id}`;
     
+    if(!match.params.category) category = thread.category;
+    if(isConversation) {
+        category = 'conversation'; 
+        threadPath = `/user/${category}/${thread._id}`;
+    }
 
     return (
         <>
@@ -45,7 +53,7 @@ const Thread = (props) => {
                 <div className={style.PostContent}>
                 <FetchLink  
                 classes={style.Link}
-                path={`/thread/${match.params.category}/${thread._id}`}>
+                path={threadPath}>
                         <h4 className={style.Title}>{thread.title}</h4>
                 </FetchLink>
                     <div className={style.PostDetails}>

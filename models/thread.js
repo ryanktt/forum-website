@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const mongoosePaginate = require('mongoose-paginate-v2')
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const ThreadSchema = new Schema({
     user: {
@@ -15,6 +15,13 @@ const ThreadSchema = new Schema({
     category: {
         type: String,
         required: true
+    },
+    settings: {
+        status: {type: String, default: 'public'},
+        participants: [{
+                type: String
+            }
+        ]
     },
     views: {
         type: Number,

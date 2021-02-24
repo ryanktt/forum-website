@@ -21,6 +21,7 @@ export const fetchThreads = param => async dispatch => {
     dispatch({type: LOADING});
     try {
         const userThreads = await axios.get(`/member/threads/${userId}${currentPage}`);
+        
         const pagination = {...userThreads.data}
         delete pagination.docs;
         dispatch({type: FETCH_THREADS, payload: {data: userThreads.data.docs, pagination: pagination }});
@@ -32,11 +33,15 @@ export const fetchThreads = param => async dispatch => {
     }
 }
 
-export const fetchPosts = userId => async dispatch => {
+export const fetchPosts = param => async dispatch => {
+    const {userId, currentPage} = param;
+
     dispatch({type: LOADING});
     try {
-        const userPosts = await axios.get(`/member/posts/${userId}`);
-        dispatch({type: FETCH_POSTS, payload: userPosts.data});
+        const userPosts = await axios.get(`/member/posts/${userId}${currentPage}`);
+        const pagination = {...userPosts.data}
+        delete pagination.docs;
+        dispatch({type: FETCH_POSTS, payload: {data: userPosts.data.docs, pagination: pagination }});
 
         dispatch({type: STOP_LOADING});
     } catch (err) {

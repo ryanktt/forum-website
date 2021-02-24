@@ -15,6 +15,14 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        default: 'public'
+    },
     likes: [
         {
             user: {

@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 const Post = require('../models/post');
 const Thread = require('../models/thread');
+const MessageToUser = require('../models/messageToUser');
+const { now } = require('moment');
 
 
 
@@ -26,20 +28,112 @@ router.get('/', async(req, res) => {
     }
   })
 
+// @route    GET /
+// @desc     Get private threads
+// @access   Private
+router.get('/threads', async (req, res) => {
+    //Pagination
+    let page = Number(req.query.page);
+    if(!page) {
+      page = 1;
+    }
+    const options = {
+        page: page,
+        sort: {updatedAt: -1},
+        select: 'thread',
+        populate: {
+            path: 'thread', 
+            select: 'title createdAt views category posts user',
+            populate: [
+                {path: 'user', select: 'name profile'},
+                {path: 'posts.post', select: 'createdAt user', populate: {path: 'user', select: 'profile name'}}
+              ]
+        },
+        limit: 35,
+        collation: {
+          locale: 'en',
+        },
+        lean: true
+      };
+    try {
+        await req.user.id;
+        let threads =  await MessageToUser.paginate({receiver: req.user.id}, options);
+        threads.docs = threads.docs.map(thread => {
+            return thread.thread;
+        })
+       
+        res.json(threads);
+    } catch (err) { 
+        console.error(err)
+      
+        res.status(500).json('Erro de Servidor');
+
+    }
+
+})
+
+// @route    GET /
+// @desc     Fetch private thread and posts
+// @access   Private
+router.get('/thread/:id', async (req, res) => {
+    //Pagination
+    let page = Number(req.query.page);
+    if(!page) {
+      page = 1;
+    }
+  
+    const options = {
+      page: page,
+      sort: {updatedAt: 1},
+      populate: {path: 'user', select: 'name createdAt deslikes likes profile'},
+      limit: 25,
+      collation: {
+        locale: 'en',
+      },
+      lean: true
+    };
+  
+      
+    try {
+        const user = await User.findById(req.user.id).select('name').lean();
+
+        const threadInf = await Thread.findById(req.params.id).select('title settings createdAt').lean();
+
+        const isAuthorized =  threadInf.settings.participants.some(participant => { 
+            return participant === user.name;
+        });
+
+        if(!isAuthorized) return res.status(400).json('Não Autorizado');
+
+        const posts = await Post.paginate({thread: req.params.id, status: 'private'}, options);
+       
+        const thread = {id: threadInf.id, createdAt: threadInf.createdAt, title: threadInf.title, posts: posts.docs};
+        res.json(thread);
+        
+  
+    } catch (err) {
+        console.error(err)
+        res.status(500).json('Erro de Servidor');
+  
+    }
+  
+  })
+
 // @route    POST /
 // @desc     Make new thread
 // @access   Private
 router.post('/thread',
-check('title', 'Título é obrigatório').exists(),
-check('category', 'Categoria é obrigatório').exists(),
+check('title', 'Título é obrigatório').isString().isLength({min: 3}),
+check('category', 'Categoria é obrigatório').isString().isLength({min: 1}),
 async (req, res) => {
     const errors = validationResult(req);
+
     if(!errors.isEmpty()) {
-        res.status(400).json({errors: errors.array()});
+        return res.status(400).json({errors: errors.array()});
     }
 
     const { title, category, postId} = req.body;
-   
+
     try {
         const thread = new Thread({
             user: req.user.id,
@@ -48,9 +142,75 @@ async (req, res) => {
             posts: [{post: postId}]
         });
         
-
-        await thread.save();
+        await Promise.all([
+            User.findOneAndUpdate({_id :req.user.id}, {$inc : {'profile.threadCount' : 1}}),
+            thread.save()
+        ]);
         return res.json({id: thread._id});
+    }catch(err) {
+        console.error(err);
+        res.status(500).json('Erro de Servidor');
+    }
+});
+
+// @route    POST /
+// @desc     Make new private thread
+// @access   Private
+router.post('/private-thread',
+check('title', 'Título é obrigatório').exists().isLength({min: 3}),
+async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+
+    let {title, postId, settings} = req.body;
+    
+    if(settings.status !== 'private') {
+        return res.json({errors: [{msg: 'Caminho Inválido'}]})
+    }
+
+    try {
+        const clientUser = await User.findById(req.user.id).select('name').lean();
+        settings.participants.unshift(clientUser.name);
+        
+        const thread = new Thread({
+            user: req.user.id,
+            title,
+            category: 'vale-tudo',
+            settings: settings,
+            posts: [{post: postId}],
+            
+        });
+
+        const isUser =  await Promise.all(settings.participants.map(async participant => {
+            const user = await User.findOne({name: participant}).select('_id').lean();
+            return !user
+        }))
+
+        if(isUser.some(isIt => isIt )) {
+                return res.status(400).json({errors: [{msg: 'Usuário Não Encontrado'}]});
+            
+        }
+
+        settings.participants.map(async participant => {
+                const user = await User.findOne({name: participant}).select('_id').lean();
+                
+                const messageToUser = new MessageToUser({
+                    thread: thread._id,
+                    receiver: user._id
+                });
+                await messageToUser.save();
+        })
+        
+        await Promise.all([
+            User.findOneAndUpdate({_id :req.user.id}, {$inc : {'profile.threadCount' : 1}}),
+            thread.save()
+        ])
+
+        return res.json({id: thread._id});
+
+        
     }catch(err) {
         console.error(err);
         res.status(500).json('Erro de Servidor');
@@ -61,37 +221,60 @@ async (req, res) => {
 // @desc     Make new post
 // @access   Private
 router.post('/post', 
-check('content', 'Conteúdo é obrigatório').exists(),
+check('content', 'Conteúdo é obrigatório').isString().isLength({min: 1}),
 async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         res.status(400).json({errors: errors.array()});
     }
 
-    const {
+    let {
+        status,
         content,
         threadId,
-        postId
+        postId,
+        category
     } = req.body    
-
     
+    if(!status) status = 'public';
     try {
        
         if(postId) {
-            await Post.updateOne({_id: postId}, {$set: { thread: threadId}})
+            let post = await Post.findOne({_id: postId})
+            post.thread = threadId;
+            post.createdAt = now();
+            post.save()
             return res.json('Sucesso')
         }
         
       
-        const post = new Post({
+        post = new Post({
+            status: status,
             thread: threadId,
             user: req.user.id,
-            content: content
+            content: content,
+            category: category
         });
 
-        await Thread.findByIdAndUpdate(threadId, { $push: { posts: {post: post.id} }})
+        if(status === 'private' && threadId) {
+            post.category = 'conversation';
+            const [thread, user] = await Promise.all([
+                Thread.findById(threadId).select('settings.participants').lean(),
+                User.findById(req.user.id).select('name').lean()
+            ]);
 
-        await post.save();
+            const isAuthorized =  thread.settings.participants.some(participant => { 
+                return participant === user.name;
+            });
+
+            if(!isAuthorized) return res.status(400).json('Não Autorizado');
+        }
+
+        await Promise.all([
+            User.findOneAndUpdate({_id :req.user.id}, {$inc : {'profile.postCount' : 1}}),
+            Thread.findByIdAndUpdate(threadId, { $push: { posts: {post: post.id} }}),
+            post.save()
+        ])
    
         return res.json({id: post.id})
     
@@ -103,6 +286,7 @@ async (req, res) => {
     }
 
 });
+
 
 // @route    DELETE /
 // @desc     Delete post if admin
@@ -147,7 +331,6 @@ async (req, res) => {
     }
 
 });
-
 
 // @route    PUT /like/:id
 // @desc     Like a post/thread

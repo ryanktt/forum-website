@@ -1,0 +1,118 @@
+
+.PostItem h4 {
+    color: rgb(224, 127, 0);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 3px;
+    
+}
+.PostItem h4:hover {
+    color: rgb(187, 106, 0);
+}
+
+
+.PostItem * {
+    margin: 0;
+}
+
+.PostItem {
+    margin: 10px 0;
+    display:  flex;;
+}
+
+.PostItem p {
+    display: inline-block;
+    font-size: small;
+    color: rgba(0, 0, 0, 0.678);
+}
+
+.Post {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.PostDetails {
+    margin-top: 3px;
+}
+
+.PostDetails p {
+    font-size: 13px;
+    margin-right: 15px;
+}
+
+.PostDetails .Name:hover, .LastPost .Name:hover{
+    text-decoration: underline;
+}
+
+.PostContent{
+    flex-direction: column;
+    align-items: baseline;
+    position: relative;
+    justify-content: space-around;
+}
+
+
+.PostContent  .Content{
+    color: rgb(44, 44, 44);
+    font-size: 15px;
+}
+
+.ProfilePic {
+    width: 80px;
+    justify-content: center;
+    margin: 0  10px;
+}
+
+.ProfilePic2 {
+    width: 80px;
+    justify-content: center;
+}
+
+.PostOwnerPic {
+    object-fit: cover;
+    width: 45px;
+    height: 45px;
+
+}
+
+.Link {
+    text-decoration: none;
+}
+
+
+.Box {
+    display: flex;
+    align-items: center;
+}
+
+
+@media only screen and (max-width: 767px) {
+    
+    .PostItem h4 {
+        font-size: 15px;
+
+    }
+    .PostItem {
+        padding: 0px;
+    }
+    
+    .ProfilePic {
+        width: fit-content;
+        justify-content: center;
+        margin: 0  5px;
+    }
+
+    .PostOwnerPic {
+        object-fit: cover;
+        width: 40px;
+        height: 40px;
+    
+    }
+
+    .PostContent  .Content{
+        font-size: 14px;
+    }
+}

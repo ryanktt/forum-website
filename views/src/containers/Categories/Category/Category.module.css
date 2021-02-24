@@ -95,12 +95,25 @@
     margin-right: 5px;
 }
 
+.LastPost .Name:hover {
+    text-decoration: underline;
+    color: rgb(46, 46, 46);
+}
+
 .LastPost h4 {
     display: inline-block;
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 5px;
     color: rgb(29, 29, 29);
+}
+
+.LastPost h4:hover {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: rgb(231, 150, 0);
 }
 
 

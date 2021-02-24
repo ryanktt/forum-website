@@ -24,7 +24,7 @@ const Post = (props) => {
         setDisableEmojiAlert('')
         setTimeout(() => {
             setDisableEmojiAlert(style.Disable)
-        }, 2000);
+        }, 4000);
     }
 
     const emojisOn = () => {
@@ -44,11 +44,12 @@ const Post = (props) => {
     }
 
     return (
-        <div id='new-post' className={style.NewPost}>
+        <div id='quote' className={style.NewPost}>
             {emojiState.backdrop}
             <div className={style.BBbar}>
                 <div onClick={() => tagClicked('b')} className={style.BBItem}><i class="fas fa-bold"></i><div className={style.EmojiDescription} ><p>Bold</p></div></div>
                 <div onClick={() => tagClicked('i')} className={style.BBItem}><i class="fas fa-italic"></i><div className={style.EmojiDescription} ><p>Itálico</p></div></div>
+                <div onClick={() => tagClicked('s')} className={style.BBItem}><i class="fas fa-strikethrough"></i><div className={style.EmojiDescription} ><p>Cortar</p></div></div>
                 <div onClick={() => tagClicked('img')} className={style.BBItem}><i class="far fa-image"></i><div className={style.EmojiDescription} ><p>Inserir Imagem</p></div></div>
                 <div onClick={() => tagClicked('url')} className={style.BBItem}><i class="fas fa-link"></i><div className={style.EmojiDescription} ><p>Inserir Link</p></div></div>
                 <div  className={style.BBItem} onClick={emojisOn}>

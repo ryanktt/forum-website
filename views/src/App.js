@@ -40,6 +40,9 @@ const App = (props) => {
       <Route path='/auth/login' exact component={Auth}/>
       <Route path='/auth/signup' exact component={Auth}/>
       <Route path='/user/new-thread' exact component={NewThread}/>
+      <Route path='/user/new-conversation' exact component={NewThread}/>
+      <Route path='/user/conversations' exact component={ThreadList}/>
+      <Route path='/user/conversation/:id' exact component={Thread}/>
       <Route path='/member/:id' exact component={UserPage}/>
       <Route path='/admin/panel' exact component={Admin}/>
     </Layout>

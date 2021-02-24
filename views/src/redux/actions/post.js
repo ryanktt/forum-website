@@ -1,4 +1,3 @@
-import axios from '../../utils/axios';
 import {SET_QUOTE, QUOTED} from './actionTypes/postTypes';
 
 

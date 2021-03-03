@@ -17,8 +17,8 @@ const Layout = (props) => {
        statesArr.push(states[key]);
     }
 
-    const isLoading = statesArr.filter(obj =>  obj.loading === true)
-    if(isLoading.length > 0) {
+    const isLoading = statesArr.some(obj =>  obj.loading === true)
+    if(isLoading) {
         loading = <><Loading/></>
     }
 
@@ -26,7 +26,7 @@ const Layout = (props) => {
     return (
         <div className={style.Layout}>
             <Navigation/>
-            {loading}
+                {isLoading ? loading : null}
                 <Wrapper>
                     {props.children}
                 </Wrapper>

@@ -57,8 +57,9 @@
 
 .PostContent  .Content{
     color: rgb(44, 44, 44);
-    font-size: 15px;
+    font-size: 14px;
 }
+
 
 .ProfilePic {
     width: 80px;
@@ -113,6 +114,6 @@
     }
 
     .PostContent  .Content{
-        font-size: 14px;
+        font-size: 12px;
     }
 }

@@ -16,7 +16,7 @@ const Modal = (props) => {
                     {props.children}
                 </div>
             <div className={style.Close}>
-                <div ><Button close={props.close} danger>Fechar</Button></div>
+                <div ><Button clicked={props.close} danger>Fechar</Button></div>
             </div>
         </div>
     )

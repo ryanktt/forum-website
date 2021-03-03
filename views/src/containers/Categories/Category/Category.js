@@ -2,15 +2,14 @@ import React from 'react'
 import style from './Category.module.css';
 import FetchLink from '../../../components/FetchLink/FetchLink';
 import {dateFormat} from '../../../utils/dateFormat';
+import {trimString} from '../../../utils/textFormat';
 
 const Category = (props) => {
     const {fontAwesome, color, description, categoryName, categoryPath, postCount, threadCount, lastPost} = props;
     let {path} = props;
-
  
     if(!path)  path = '' ;
     console.log(lastPost)
-
     return (
         <div  className={style.Category} style={{borderColor: color}}>
             <div className={style.Introduction}>
@@ -37,7 +36,7 @@ const Category = (props) => {
             </div>
 
             {lastPost ? <div className={style.LastPost}>
-                <FetchLink path={`/thread/${categoryPath}/${lastPost.thread._id}`}><h4>{lastPost.thread.title}</h4></FetchLink>
+                <FetchLink path={`/thread/${categoryPath}/${lastPost.thread._id}`}><h4>{trimString(lastPost.thread.title, 40)}</h4></FetchLink>
                 <div>
                     <p>{dateFormat(lastPost.createdAt)}</p>
                     <FetchLink path={`/member/${lastPost.user._id}`} ><p className={style.Name}>{lastPost.user.name}</p></FetchLink>

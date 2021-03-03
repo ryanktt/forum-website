@@ -31,6 +31,8 @@ const Thread = (props) => {
     const lastPost = postsArr.pop(); 
 
     let category = match.params.category;
+    if(!category) category = thread.category;
+
     let threadPath = `/thread/${category}/${thread._id}`;
     
     if(!match.params.category) category = thread.category;
@@ -44,7 +46,7 @@ const Thread = (props) => {
         <div className={style.Thread}>
 
             <div className={[style.ProfilePic, style.Box].join(' ')}>
-                <Link to={`/member/${user._id}`}>
+                <Link to={`/member/${user._id}`} >
                     <img className={style.ThreadOwnerPic} src={user.profile.userImg} alt="user-img"/>
                 </Link>
             </div>
@@ -92,7 +94,7 @@ const Thread = (props) => {
             </div>
 
             <div className={[style.ProfilePic2, style.Box].join(' ')}>
-                <img className={style.LastPostPic} alt="user-img" src={lastPost.post.user.profile.userImg}/>
+                <Link to={`/member/${lastPost.post.user._id}`}><img className={style.LastPostPic} alt="user-img" src={lastPost.post.user.profile.userImg}/></Link>
             </div>
         </div>
         <hr className={style.Hr}/>

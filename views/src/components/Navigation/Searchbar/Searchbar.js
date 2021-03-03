@@ -6,7 +6,7 @@ const Searchbar = (props) => {
         
         <div className={style.Searchbar}>
             <input placeholder="O que procura?"></input>
-            <button><i class="fas fa-search"></i></button>
+            <button><i className="fas fa-search"></i></button>
         </div>
     )
 }

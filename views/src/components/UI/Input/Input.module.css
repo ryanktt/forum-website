@@ -21,3 +21,18 @@
     font-size: 15px;
     margin-bottom: 2px;
 }
+
+.Input .Textarea {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: rgb(39, 39, 39);
+    padding: 10px;
+    height: 100%;
+    resize: none;
+    width: 100%;
+    outline-style: none;
+    border: 1px solid rgb(231, 231, 231);
+    border-radius: 2px;
+    background-color: rgb(245, 245, 245);
+    
+}

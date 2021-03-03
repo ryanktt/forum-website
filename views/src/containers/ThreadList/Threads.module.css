@@ -26,6 +26,7 @@
 .Thread h4 {
     color: rgba(0, 0, 0, 0.822);
     font-weight: 400;
+    word-wrap: break-word;
 }
 .Thread {
     border: 1px solid rgb(226, 226, 226);
@@ -34,7 +35,7 @@
     border-top-right-radius: 0;
     border-left-color: rgb(255, 176, 29);
     border-left-width: 2px;
-    padding-top: 20px;
+    padding-top: 5px;
     
 }
 

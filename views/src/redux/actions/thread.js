@@ -1,5 +1,5 @@
 import axios from '../../utils/axios';
-import {NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_THREAD, FETCH_START, REFETCH, NEW_PRIVATE_THREAD, FETCH_PRIVATE_THREADS, FETCH_PRIVATE_THREAD} from './actionTypes/threadTypes';
+import {NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_THREAD, FETCH_START, REFETCH, NEW_PRIVATE_THREAD, FETCH_PRIVATE_THREADS, FETCH_PRIVATE_THREAD, SET_PATH} from './actionTypes/threadTypes';
 import {LOADING, STOP_LOADING} from './actionTypes/commonTypes';
 import {validationAlert as valAlert} from './validationAlert';
 
@@ -100,7 +100,7 @@ export const newPost = (content, threadId, status, category) => async dispatch =
 export const newPrivateThread = (threadData) => async dispatch => {
     dispatch({type: LOADING});
     let thread = {title: threadData.title, settings: threadData.settings};
-    const threadPost = {content: threadData.content, status: 'private'};
+    const threadPost = {content: threadData.content, status: 'private', category: threadData.category};
     try {
         //make the post and get its id
         let postId = await axios.post('/user/post', threadPost);
@@ -163,3 +163,7 @@ export const fetchPrivateThread = threadId => async dispatch => {
         dispatch({type:STOP_LOADING});
     }
 } 
+
+export const setPath = path => dispatch => {
+    dispatch({type: SET_PATH, payload: path});
+}

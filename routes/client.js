@@ -73,13 +73,28 @@ router.get('/thread/:id', async (req, res) => {
     
   try {
       const [threadInfo, posts] = await Promise.all([
-        Thread.findById({_id: req.params.id, 'settings.status': 'public'}).select('title createdAt'),
+        Thread.findById({_id: req.params.id, 'settings.status': 'public'}).select('title createdAt category'),
         Post.paginate({thread: req.params.id, status: 'public'}, options)
       ]) 
-      const thread = {id: threadInfo.id, createdAt: threadInfo.createdAt, title: threadInfo.title, posts: posts.docs}
+      const thread = {id: threadInfo.id, createdAt: threadInfo.createdAt, title: threadInfo.title, category: threadInfo.category, posts: posts.docs}
       res.json(thread);
       
 
+  } catch (err) {
+      console.error(err)
+      res.status(500).json('Erro de Servidor');
+
+  }
+
+});
+
+// @route    GET /
+// @desc     Fetch post
+// @access   Public
+router.get('/post/:id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id).lean();
+    res.json(post)
   } catch (err) {
       console.error(err)
       res.status(500).json('Erro de Servidor');

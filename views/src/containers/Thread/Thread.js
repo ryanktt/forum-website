@@ -8,12 +8,32 @@ import {setQuote, quoted} from '../../redux/actions/post';
 import Location from '../../components/Location/Location';
 import {categories} from '../../utils/categories';
 import NewPost from '../../containers/NewPost/NewPost';
+import Loading from '../../components/UI/Loading/Loading';
+
+
 
 const Thread = (props) => {
-    const {fetchThread, thread, fetching, match, reFetch, setReFetch, quote, setQuote, quoted, makeNewPost, setAlert, isAuth, fetchPrivateThread, location} = props;
-    //const [threadId, setThreadId] = useState('');
+    const {
+        fetchThread, 
+        thread, 
+        fetching, 
+        match, 
+        reFetch, 
+        setReFetch, 
+        quote, 
+        setQuote, 
+        quoted, 
+        makeNewPost, 
+        setAlert, 
+        isAuth, 
+        fetchPrivateThread, 
+        location, 
+        history} = props;
 
     const isConversation = location.pathname === `/user/conversation/${match.params.id}`;
+    const [posts, setPosts] = useState(null);
+    const [newPost, setNewPost] = useState(null);
+    const [loading, setLoading] = useState(true);
     //check if it's fetching or if the thread has not been fetched before fetching again
   
     useEffect(() => {
@@ -56,70 +76,79 @@ const Thread = (props) => {
         setQuote({message: quotedMsg, toggler: !quote.toggler});
     }
 
-
-    let posts = null;
     let postNumber = 0
-    if(thread) posts = thread.posts.map(post => {
-        postNumber++
-        return <div 
-        className={style.Post} 
-        key={post._id +1}>
-            <Post 
-            post={post} 
-            user={post.user} 
-            postNumber={postNumber} 
-            quoted={onQuote}
-            key={post._id}/>
-        </div>
-    })
 
-    let newPost = null;
-    if(isAuth) {
-        newPost = <NewPost button submit={onSubmit}/>;
-    }
+    useEffect(() => {
+        if(isAuth) setNewPost(<NewPost button submit={onSubmit}/>)
+
+        if(thread) setPosts(thread.posts.map(post => {
+            postNumber++
+            return <div 
+            className={style.Post} 
+            key={post._id +1}>
+                <Post 
+                post={post} 
+                user={post.user} 
+                postNumber={postNumber} 
+                quoted={onQuote}
+                key={post._id}
+                match={match}
+                history={history}
+                />
+            </div>
+        }));
+        setLoading(false)
+    }, [thread])
+
+    
+    // if(isAuth) {
+    //     newPost = <NewPost button submit={onSubmit}/>;
+    // }
 
     //get category name by param
     const currentCategory = categories.filter(el => {
-        
         return el.value === match.params.category
-    })
+    });
 
 
     let categoryName = ''
     let categoryPath = ''
-    if(isConversation) {
-        categoryName = 'Conversas';
-        categoryPath = 'Conversation';
-    } else {
-        categoryName = currentCategory[0].name;
-        categoryPath = currentCategory[0].value;
-    }
-
-
-
-
+    
     let locationItems = [
         {name: 'Categorias', path: '/'},
         {name: categoryName, path: `/threads/${categoryPath}`}
     ]
+
     if(isConversation) {
+        categoryName = 'Conversas';
+        categoryPath = 'Conversation';
+
         locationItems = [
             {name: 'Categorias', path: '/'},
             {name: 'Conversas', path: '/user/conversations'}
         ]
+    } else {
+        categoryName = currentCategory[0].name;
+        categoryPath = currentCategory[0].value;
+        
+        locationItems = [
+            {name: 'Categorias', path: '/'},
+            {name: categoryName, path: `/threads/${categoryPath}`}
+        ]
     }
 
+    
 
     return (
-        <>
-        <h2 className={style.ThreadTitle}>{thread ? thread.title : null}</h2>
-        <div className={style.LocationBar}><Location items=
-        {locationItems}/></div>
-        <div className={style.Thread}>
-            {posts}
-        </div>
-        {newPost}
-        
+        loading ? <Loading/> 
+        :<> 
+            <h2 className={style.ThreadTitle}>{thread ? thread.title : null}</h2>
+            <div className={style.LocationBar}><Location items=
+            {locationItems}/></div>
+            <div className={style.Thread}>
+                {posts}
+            </div>
+            <div>{newPost}</div>
         </>
     )
 }

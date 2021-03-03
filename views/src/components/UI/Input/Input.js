@@ -1,21 +1,22 @@
 import React from 'react'
 import style from './Input.module.css';
+import {TextareaAutosize} from '@material-ui/core';
 
 const Input = (props) => {
+    const {required, change, placeholder, type, name, textarea, label, value} = props;
+    
 
-    let input = <input required={props.required} onChange={(e) => props.change(e)}  placeholder={props.placeholder} type={props.type} name={props.name} id={props.name}/> 
+    let input = <input required={required} onChange={(e) => change(e)} value={value} placeholder={placeholder} type={type} name={name} id={name}/> 
+    if(textarea) input = <TextareaAutosize rowsMin={3} value={value} name='description' id='description' className={style.Textarea} onChange={(e) => change(e)}/>
 
-    if(props.value) {
-        input = <input required={props.required} onChange={(e) => props.change(e)} value={props.value} placeholder={props.placeholder} type={props.type} name={props.name} id={props.name}/> 
-    }
-
-    let label = '';
-    if(props.label) label = <label for={props.name}>{props.label}</label>;
+    let labelJSX = null;
+    if(label) labelJSX = <label for={name}>{label}</label>;
     return (
         <div className={style.Input}>
-            {label}
+            {labelJSX}
             {input}
         </div>
+        
     )
 }
 

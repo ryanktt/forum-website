@@ -5,9 +5,15 @@ import axios from '../../../utils/axios';
 import {dateFormat} from '../../../utils/dateFormat';
 import parser from 'bbcode-to-react';
 import {reFetchPage} from '../../../redux/actions/thread';
+import ThreadModal from '../../Modals/ThreadModal/ThreadModal';
+import Backdrop from '../../../components/UI/Backdrop/Backdrop';
 
 const Post = (props) => {
-    const {post, user, postNumber, quoted, reFetch, clientUser, isAuth} = props;
+    const {post, user, postNumber, quoted, reFetch, clientUser, isAuth, match, history} = props;
+    const [isAdmin, setIsAdmin] = useState(false)
+     
+
+    const [adminModalActive, setAdminModalActive] = useState(false);
     const [reaction, setReaction] = useState({
         like: false,
         dislike: false
@@ -20,6 +26,14 @@ const Post = (props) => {
         like: 'like',
         dislike: 'dislike'
     });
+
+    const adminActionsToggle = () => {
+        setAdminModalActive(!adminModalActive);
+    }
+
+    useEffect(() => {
+        if (isAuth) setIsAdmin(clientUser.settings.role === 2)
+    }, [isAuth])
 
     useEffect(() => {
         if(isAuth) {
@@ -50,9 +64,13 @@ const Post = (props) => {
         }
     }, [reaction]);
 
-
-
-    const parsedContent = parser.toReact(post.content)
+    const parsedContent = parser.toReact(post.content).map(content => {
+        if (typeof content === 'string') return <p>{content}</p>
+        return content
+        
+    });
+ 
+    const threadId = match.params.id
     const username = user.name;
     const createdAt = user.createdAt;
     const postLikes = user.profile.likes;
@@ -70,10 +88,6 @@ const Post = (props) => {
                 request = () => axios.put(`/user/${action}/${postId}`);
                 break
             }
-            case 'delete': {
-                request = () => axios.delete(`user/post/${postId}`);
-                break
-            }
             default: break;       
         }
         try {
@@ -87,51 +101,64 @@ const Post = (props) => {
 
     let actions = null;
     if(isAuth) actions = (
-        <div className={style.UserActions}>              
-                    <div className={style.Action}>
-                        <i class="fas fa-exclamation-circle"></i>
-                        <p>Reportar</p>
-                    </div>
+        <div className={style.UserActions}>            
+            <div className={style.Action} onClick={adminActionsToggle}>
+                {isAdmin ? <>
+                <i className="fas fa-cog"></i>
+                <p>Admin</p> 
+                </>: <>
+                <i className="fas fa-exclamation-circle"></i>
+                <p>Reportar</p></> }
+            </div>
 
-                    <div className={style.Actions}> 
-                        <div onClick={() => postActions(post._id, reactionAction.like)} className={reactionStyle.like.join(' ')}>
-                            <i class="far fa-thumbs-up"></i>
-                            <p className={style.actionParagraph}>Like</p>
-                        </div>
-                        <div onClick={() => postActions(post._id, reactionAction.dislike)} className={reactionStyle.dislike.join(' ')}>
-                            <i class="far fa-thumbs-down"></i>
-                            <p className={style.actionParagraph}>Dislike</p>
-                        </div>
-                        <a href='#quote' onClick={() => quoted(post.content, post._id, {name: user.name, id: user._id})} style={{textDecoration: 'none'}}>
-                            <div className={style.Action} >
-                                <i class="fas fa-reply"></i>
-                                <p className={style.actionParagraph}>Responder</p>
-                            </div>   
-                        </a>
-                    </div>
+            <div className={style.Actions}> 
+                <div onClick={() => postActions(post._id, reactionAction.like)} className={reactionStyle.like.join(' ')}>
+                    <i className="far fa-thumbs-up"></i>
+                    <p className={style.actionParagraph}>Like</p>
                 </div>
+                <div onClick={() => postActions(post._id, reactionAction.dislike)} className={reactionStyle.dislike.join(' ')}>
+                    <i className="far fa-thumbs-down"></i>
+                    <p className={style.actionParagraph}>Dislike</p>
+                </div>
+                <a href='#quote' onClick={() => quoted(post.content, post._id, {name: user.name, id: user._id})} style={{textDecoration: 'none'}}>
+                    <div className={style.Action} >
+                        <i className="fas fa-reply"></i>
+                        <p className={style.actionParagraph}>Responder</p>
+                    </div>   
+                </a>
+            </div>
+        </div>
     )
     
     return (
         <div  className={style.Post}>
+            {adminModalActive ? <Backdrop clicked={adminActionsToggle}/> : null}
+            <ThreadModal 
+                active={adminModalActive} 
+                close={adminActionsToggle} 
+                postId={post._id}  
+                threadId={post.thread} 
+                postNumber={postNumber}
+                {...props}/>
+
             <div className={style.UserDetails}>
                 <img src={user.profile.userImg} alt='user-img'/>
                 <h4>{username}</h4>
                 <div className={style.UserDetailsBox}>
                     <div>
-                        <i class="far fa-user"></i>
+                        <i className="far fa-user"></i>
                         <p>{dateFormat(createdAt)}</p>
                     </div>
                     <div>
-                        <i class="far fa-comments"></i>
+                        <i className="far fa-comments"></i>
                         <p>{postCount}</p>
                     </div>
                     <div>
-                        <i class="far fa-thumbs-up"></i>
+                        <i className="far fa-thumbs-up"></i>
                         <p>{postLikes}</p>
                     </div>
                     <div>
-                        <i class="far fa-thumbs-down"></i>
+                        <i className="far fa-thumbs-down"></i>
                         <p>{postDislikes}</p>
                     </div>
                 </div>
@@ -143,7 +170,10 @@ const Post = (props) => {
                         <p>{dateFormat(post.createdAt)}</p>
                         <p>{`#${postNumber}`}</p>
                     </div>
-                    <p style={{whiteSpace: 'pre-line'}} >{parsedContent}</p>
+                    <div className={style.ContentArea}>
+                        {parsedContent}
+                    </div>
+                    
                 </div>
                 
                 {actions}

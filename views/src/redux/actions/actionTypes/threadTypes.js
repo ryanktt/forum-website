@@ -11,7 +11,8 @@ export const FETCH_PRIVATE_THREAD = 'FETCH_PRIVATE_THREAD';
 
 export const REMOVE_THREAD = 'REMOVE_THREAD';
 
-
 export const NEW_POST = 'NEW_POST';
+
+export const SET_PATH = 'SET_PATH';
 
 

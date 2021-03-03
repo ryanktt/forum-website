@@ -67,7 +67,7 @@ const Auth = (props) => {
                     <div><Input required change={onChange} type='email' name='email' label='Email'/></div>
                     <div><Input required change={onChange} type='password' name='password' label='Senha'/></div>
                     <div><Input required change={onChange} type='password' name='password2' label='Corfirmar Senha'/></div>
-                    <div className={style.Btn}><Button button >Registrar</Button></div>
+                    <div className={style.Btn}><Button type='submit' button >Registrar</Button></div>
             </Form>
     )
 
@@ -79,7 +79,7 @@ const Auth = (props) => {
                         <Link style={{textDecoration: 'none'}} to='/auth/signup'><p className={style.Anchor}>Registre-se</p></Link>
                         <div><Input required change={onChange} type='email' name='email' label='Email'/></div>
                         <div><Input required change={onChange} type='password' name='password' label='Senha'/></div>
-                        <div className={style.Btn}><Button button>Entrar</Button></div>
+                        <div className={style.Btn}><Button type='submit' button>Entrar</Button></div>
                 </Form>
         )
     }

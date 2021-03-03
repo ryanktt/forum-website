@@ -3,6 +3,7 @@ import {SET_ALERT, REMOVE_ALERT} from '../actions/actionTypes/commonTypes';
 
 
 export const validationAlert =  (msg, type, time = 3000) => async (dispatch, getState) => {
+    console.log('alert')
     const id = uuidv4();
     dispatch({
         type: SET_ALERT,
@@ -35,6 +36,6 @@ export const validationAlert =  (msg, type, time = 3000) => async (dispatch, get
 
         }, 50);
     }
-      
+    
 
 }

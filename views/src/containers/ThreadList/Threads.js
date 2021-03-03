@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux';
 import style from './Threads.module.css';
 import Thread from './Thread/Thread';
 import Button from '../../components/UI/Button/Button';
-import {fetchThreads, fetchPrivateThreads, reFetchPage} from '../../redux/actions/thread';
+import {fetchThreads, fetchPrivateThreads, reFetchPage, setPath} from '../../redux/actions/thread';
 import Location from '../../components/Location/Location';
 import {categories} from '../../utils/categories';
 import PageLocation from '../../components/PageLocation/PageLocation';
@@ -20,9 +20,11 @@ const Threads = (props) => {
         paginate,
         location,
         fetchPrivateThreads,
-        setReFetch
+        setReFetch, 
+        setPath, 
+        path
     } = props
-
+    
     const isConversation = location.pathname === '/user/conversations';
 
     const category = match.params.category;
@@ -46,8 +48,9 @@ const Threads = (props) => {
 
     //MAKE SO THAT THE THREADS ONLY FETCH ONCE (LOADING BUG)
     useEffect(() => {
-        if(isConversation && !threads  
-            || reFetch && isConversation ) {
+        setPath(currentPath)
+        if(isConversation && !threads && !fetching  
+            || reFetch && isConversation && !fetching ) {
             return fetchPrivateThreads(currentPage);
 
         }
@@ -63,7 +66,17 @@ const Threads = (props) => {
     }, [reFetch])
 
     useEffect(() => {
-        setReFetch();
+        if(isConversation && !threads  
+            || reFetch && isConversation ) {
+            return fetchPrivateThreads(currentPage);
+
+        }
+    }, [isAuth])
+
+    useEffect(() => {
+       if(currentPath !== path) {
+           setReFetch();
+       }
     }, [currentPath])
 
     //get category name by param
@@ -78,11 +91,11 @@ const Threads = (props) => {
     let categoryName = null;
     isConversation ? categoryName = 'Mensagens Privadas': categoryName = currentCategory[0].name;
 
-    let threadList = []
+    let threadList = [];
     
     if(!fetching) if (threads) {
         threadList = threads.map(thread => {
-            return <Thread {...props} thread={thread} key={thread._id} user={thread.user} />
+            return <Thread {...props} setReFetch={setReFetch} thread={thread} key={thread._id} user={thread.user} />
         })
     }
 
@@ -127,7 +140,8 @@ const mapStateToProps = state => {
         threads: state.thread.threadList,
         fetching: state.thread.fetching,
         reFetch: state.thread.reFetch,
-        paginate: state.thread.threadsPagination
+        paginate: state.thread.threadsPagination,
+        path: state.thread.path
     }
 }
 
@@ -135,7 +149,8 @@ const mapDispatchToProps = dispatch => {
     return {
         setReFetch: () => dispatch(reFetchPage),
         fetchThreads: (category) => dispatch(fetchThreads(category)),
-        fetchPrivateThreads: (page) => dispatch(fetchPrivateThreads(page))
+        fetchPrivateThreads: (page) => dispatch(fetchPrivateThreads(page)),
+        setPath: (path) => dispatch(setPath(path))
     }
 }
  

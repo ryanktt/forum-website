@@ -5,8 +5,8 @@ import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Form from '../../components/UI/Form/Form';
 import NewPost from '../../containers/NewPost/NewPost';
-import {newThread, reFetchPage, newPrivateThread} from '../../redux/actions/thread';
-import {validationAlert} from '../../redux/actions/validationAlert';
+import {newThread, reFetchPage, newPrivateThread, fetchThread} from '../../redux/actions/thread';
+import {editThread} from '../../redux/actions/admin';
 import Validation from '../../components/UI/Validation/ValidationMsgs';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import {categories} from '../../utils/categories';
@@ -14,7 +14,7 @@ import queryString from 'query-string';
 
 
 const NewThread = (props) => {
-    let {location, history, newThread, reFetchPage, setAlert, newPrivateThread} = props;
+    let {location, history, newThread, reFetchPage, newPrivateThread, editThread, match, thread, fetchThread} = props;
 
     const [threadData, setThreadData] = useState({
         title: '',
@@ -51,21 +51,23 @@ const NewThread = (props) => {
         })
     }
 
-
     //Private Message
     const isConversation = path === '/user/new-conversation';
 
     if(isConversation) onSubmit = async (e) => {
         e.preventDefault();
-
-        newPrivateThread(threadData);
-    
+        const res = await newPrivateThread(threadData);
+        if(res !== 'err') {
+            history.push(`/user/conversations`);
+            reFetchPage();
+        }
     }
  
     useEffect(() => {
         if(query) if(query.with) if(isConversation) {
             return setThreadData({
                 ...threadData,
+                category: 'conversation',
                 settings: {
                     status: 'private',
                     participants: query.with.split(',')
@@ -76,6 +78,7 @@ const NewThread = (props) => {
         if(isConversation) {
             return setThreadData({
                 ...threadData,
+                category: 'conversation',
                 settings: {
                     ...threadData.settings,
                     status: 'private'
@@ -83,7 +86,7 @@ const NewThread = (props) => {
             })
         }
 
-    }, [])
+    }, [isConversation])
 
     const onPartsChange = (e) => {
 
@@ -101,11 +104,11 @@ const NewThread = (props) => {
     let title = 'Novo Tópico';
     let participantsInput = null;
     let chooseCategory = <div style={{marginBottom:'15px'}}>
-    <Dropdown options={categories} placeholder='Escolha uma categoria' required={true} change={onChange}/>
+    <Dropdown options={categories} placeholder='Escolha uma categoria' value={threadData.category} required={true} change={onChange}/>
     </div>;
     let btnText = 'Postar Tópico';
 
-    if (location.pathname === '/user/new-conversation') {
+    if (isConversation) {
         title = 'Mensagem Privada';
         participantsInput = <>
         <Input value={threadData.settings.participants} required label='Participantes' change={onPartsChange} name='participants'/>
@@ -117,36 +120,93 @@ const NewThread = (props) => {
         btnText = 'Iniciar Conversa'
 
     }
+    let newThreadContainer = <div className={style.NewThread}>
+        <h2>{title}</h2>
+        <div style={{margin:'0 auto'}}><Validation/></div>
+            <Form submited={(e) => onSubmit(e)} >
+                {participantsInput}
+                <div style={{marginBottom: '15px'}}><Input required label='Título' change={onChange} name='title'/></div>
+                {chooseCategory}
+                <NewPost getContent={onGetContent}/>
+                <div className={style.Button}>
+                    <Button type='submit' button>{btnText}</Button>
+                </div>
+            </Form>
+        </div>
 
+
+    //Edit Thread
+    const threadId = match.params.id;
+    const isEdit = path === `/admin/edit-thread/${threadId}`;
+
+    useEffect(() => {
+        if(isEdit) {
+            if(!thread) (async() => await fetchThread(threadId))();
+            if(thread) setThreadData({
+                title: thread.title,
+                category: thread.category,
+                content: thread.posts[0].content
+            })
+        }
+    }, [isEdit, thread])
+    console.log(threadData)
+    if (isEdit) {
+        title = 'Editar Tópico';
+        btnText= 'Editar Tópico'
+
+        onSubmit = async (e) => {
+            e.preventDefault();
+       
+            const res = await editThread(threadId, threadData);
+            if(res !== 'err') {
+                history.push(`/threads/${query.ctgry}`);
+                reFetchPage();
+            }
+        }
     
-    return (
-        <>
-            <div className={style.NewThread}>
+        newThreadContainer = <div className={style.NewThread}>
                 <h2>{title}</h2>
                 <div style={{margin:'0 auto'}}><Validation/></div>
                 <Form submited={(e) => onSubmit(e)} >
                     {participantsInput}
-                    <div style={{marginBottom: '15px'}}><Input required label='Título' change={onChange} name='title'/></div>
+                    <div style={{marginBottom: '15px'}}><Input required label='Título' value={threadData.title} change={onChange} name='title'/></div>
                     {chooseCategory}
-                    <NewPost getContent={onGetContent}/>
+                    {!isEdit ? <NewPost getContent={onGetContent}/>
+                    : <NewPost getContent={onGetContent} contentValue={threadData.content}/>}
                     <div className={style.Button}>
-                        <Button button>{btnText}</Button>
+                        <Button type='submit' button>{btnText}</Button>
                     </div>
                 </Form>
                     
-            </div>
+        </div>
+    }
+
+    
+    return (
+        <>
+            {newThreadContainer}
         </>
     )
 }
 
+const mapStateToProps = state => {
+    return {
+        thread: state.thread.thread
+    }
+}
+
+
+
+
 const mapDispatchToProps = dispatch => {
     return {
-        setAlert: (msg, type) => dispatch((validationAlert(msg, type))),
+        editThread: (threadId, threadData) => dispatch(editThread(threadId, threadData)),
         newThread: (data) => dispatch(newThread(data)),
+        fetchThread: (threadId) => dispatch(fetchThread(threadId)),
         newPrivateThread: (data) => dispatch(newPrivateThread(data)),
         reFetchPage: () => dispatch(reFetchPage)
         
     }
 }
 
-export default connect(null, mapDispatchToProps)(NewThread);
+export default connect(mapStateToProps, mapDispatchToProps)(NewThread);

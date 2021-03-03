@@ -1,6 +1,7 @@
 import axios from '../../utils/axios';
 import {FETCH_THREADS, FETCH_USER, FETCH_POSTS, RESET_THREADS, RESET_POSTS} from '../actions/actionTypes/userTypes';
 import {LOADING, STOP_LOADING} from './actionTypes/commonTypes';
+import {loadUser} from './auth';
 
 export const fetchUser = userId => async dispatch => {
     dispatch({type: LOADING});
@@ -54,4 +55,15 @@ export const fetchPosts = param => async dispatch => {
 export const reset = type => dispatch => {
     if (type === 'threads') dispatch({type: RESET_THREADS});
     if (type === 'posts') dispatch({type: RESET_POSTS});
+}
+
+export const updateProfile = data => async (dispatch, getState) => {
+    try {
+        await axios.put('/user/account/update-profile', data);
+        loadUser(dispatch);
+        return 'success';
+    } catch (err) {
+        console.error(err);
+        return 'err';
+    }
 }

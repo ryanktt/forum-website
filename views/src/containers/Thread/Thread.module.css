@@ -3,7 +3,11 @@
 }
 
 .Thread .Post {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.Thread .Post:last-child {
+    margin-bottom: 30px;
 }
 
 .ThreadTitle {
@@ -21,13 +25,14 @@
 }
 
 
+
 @media only screen and (max-width: 676px) {
     .ThreadTitle {
         font-size: 18px;
     }
     
     .Thread .Post {
-        margin-bottom: 15px;
+        margin-bottom: 17px;
     }
 }
 

@@ -1,7 +1,7 @@
 .Post {
     display: flex;
-    background-color: rgb(241, 241, 241);
-    border: 1px solid rgb(236, 236, 236);
+    background-color: rgb(250, 250, 250);
+    border: 1px solid rgb(235, 235, 235);
     border-radius: 5px;
 
    
@@ -9,19 +9,26 @@
 
 /*BBCode*/
 .Post blockquote {
+    display: flex;
+    flex-direction: column;
     margin: 8px 0;
     border-left: 2px solid rgb(255, 145, 0);
     border-radius: 3px;
-    background-color: rgb(250, 250, 250);
+    background-color: rgb(242, 242, 242);
     padding: 7px 15px;
     font-size: 14px;
-    color: rgb(59, 59, 59);
+    color: rgb(44, 44, 44);
 }
 
 .Post blockquote small {
     display: block;
     margin-bottom: 5px;
-    color: gray;
+    color: rgb(80, 80, 80);
+}
+
+.Post .Content .ContentBox blockquote img {
+    max-width: 250px;
+    margin: 5px 0;
 }
 
 
@@ -77,11 +84,12 @@
     justify-content: space-between;
     width: 100%;
     min-height: 200px;
-    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .Content p {
-    color: rgb(29, 29, 29);
+    font-size: 15px;
+    color: rgb(37, 37, 37);
 }
 
 .Content div  {
@@ -91,11 +99,32 @@
 }
 
 .Content .ContentBox {
+    margin-bottom: 25px;
+}
+
+.Content .ContentBox, .Content .ContentArea {
     display: flex;
     flex-direction: column;
 }
 
+.Content .ContentArea {
+    margin: 0;
+    word-wrap: break-word;
+    white-space: pre-line;
+}
+.Content .ContentArea img{
+    margin: 10px 0;
+}
+
+.Content .ContentBox  img{
+    max-width: 100%;
+    width: min-content;
+    height: auto;
+
+}
+
 .Content .PostInf p{
+    white-space: nowrap;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.548);
 }
@@ -118,6 +147,7 @@
     margin-right: 25px;
     height: fit-content;
     margin-bottom: 0;
+    align-items: center;
 }
 
 .Action:hover, .Action:hover i, .Action:hover p {
@@ -127,7 +157,8 @@
 
 
 .Action i {
-    font-size: 14px;
+    line-height: 11px;
+    font-size: 11px;
     margin-right: 6px;
     color: rgba(0, 0, 0, 0.527);
 }
@@ -143,14 +174,24 @@
 }
 
 
-@media only screen and (max-width: 676px) {
+@media only screen and (max-width: 767px) {
     .Post {
         flex-direction: column;
         border-radius: 0;
         border: 1px solid rgb(214, 214, 214)
     }
+
+
+    .Post blockquote {
+        font-size: 13px;
+    }
+    
+    .Post .Content .ContentBox blockquote img {
+        max-width: 150px;
+    }
+
     .Content .PostInf p{
-        font-size: 11px;
+        font-size: 12px;
         
     }
     
@@ -172,7 +213,6 @@
         
     }
     
-    
     .UserDetails .UserDetailsBox {
         display: flex;
         flex-direction: row;
@@ -184,7 +224,7 @@
     
     
     .UserDetails img {
-        width: 50px;
+        width: 45px;
         margin-right: 20px;
     }
     
@@ -210,24 +250,30 @@
     .Content {
         padding-top: 5px;
         padding: 10px;
-        min-height: 80px;
+        min-height: 130px;
     }
 
-    .Content p {
-        font-size: 14px;
+    .Content  p {
+        font-size: 15px;
+        line-height: 19.9px;
     }
 
     .Action {
        margin-right: 15px;
     }
+    .Action:last-child {
+        margin: 0;
+     }
     
     .Action i {
+        line-height: 11px;
         margin-right: 2px;
         font-size: 12px;
         
     }
     
     .Action p {
-        font-size: 12px;
+        line-height: 11px;
+        font-size: 13px;
     }
 }

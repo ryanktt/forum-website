@@ -16,11 +16,13 @@ connectDB();
 const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
 const clientRoute = require('./routes/client');
+const adminRoute = require('./routes/admin')
 
 //Define Routes
 app.use('/auth', authRoute);
 app.use('/user', auth, userRoute);
 app.use(clientRoute);
+app.use('/admin', adminRoute);
 
 
 app.get('/', (req,res) => {

@@ -37,13 +37,13 @@
 
 .UserNavOptions img {
     object-fit: cover;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
 }
 
 .UserNavOptions i {
-    font-size: 25px;
+    font-size: 20px;
     color: rgb(255, 196, 0);
     cursor: pointer;
 }
@@ -75,12 +75,12 @@
      }
 
     .UserNavOptions img {
-        width: 28px;
-        height: 28px;
+        width: 25px;
+        height: 25px;
         
     }
     
     .UserNavOptions i {
-        font-size: 22px;
+        font-size: 18px;
     }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import style from './Post.module.css';
 import FetchLink from '../FetchLink/FetchLink';
@@ -11,10 +11,10 @@ const Post = (props) => {
     const {thread, user, post, match} = props;
     
     let category = match.params.category;
-    if(!match.params.category) category = thread.category;
+    if(!match.params.category && thread) category = thread.category;
 
     return (
-        <>
+        (post && thread) ? <>
             <div className={style.PostItem}>
 
                 <div className={[style.ProfilePic, style.Box].join(' ')}>
@@ -40,7 +40,7 @@ const Post = (props) => {
                 </div>
             </div>
             <hr className={style.Hr}/>
-        </>
+        </> : null 
     )
 }
 

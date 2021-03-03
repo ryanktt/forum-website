@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import style from './UserPage.module.css';
+
 import Button from '../../../components/UI/Button/Button';
 import {fetchUser, fetchPosts, fetchThreads, reset} from '../../../redux/actions/user';
 import {dateFormat} from '../../../utils/dateFormat';
@@ -8,6 +9,10 @@ import Thread from '../../ThreadList/Thread/Thread';
 import PageLocation from '../../../components/PageLocation/PageLocation';
 import Location from '../../../components/Location/Location';
 import Post from '../../../components/PostList/Post';
+import UserModal from '../../Modals/UserModal/UserModal';
+import Backdrop from '../../../components/UI/Backdrop/Backdrop';
+import ValidationMsgs from '../../../components/UI/Validation/ValidationMsgs';
+
 
 
 const UserPage = (props) => {
@@ -22,7 +27,7 @@ const UserPage = (props) => {
     const postParam = {userId: userId, currentPage: currentPage}
     
     useEffect(() => {
-        fetchUser(userId);
+        if(!user) fetchUser(userId);
        
     }, [userId]);
 
@@ -32,6 +37,7 @@ const UserPage = (props) => {
             reset('posts')
             setLoad(true);
         }
+        
     }, []);
 
 
@@ -99,6 +105,14 @@ const UserPage = (props) => {
     )
     let pmButton = null
     if(isAuth && clientUser._id !== userId) pmButton = <Button button clicked={onClickPrivateMessage} intense small>Mensagem Privada</Button>
+
+    //Admin
+    const [adminModalActive, setAdminModalActive] = useState(false);
+
+    const adminActionsToggle = () => {
+        setAdminModalActive(!adminModalActive);
+    }
+
     
     return (
         <>
@@ -106,8 +120,14 @@ const UserPage = (props) => {
             <Location items={routeLocationItems}/>
         </div>
             {user ? 
+            <>
+            <ValidationMsgs/>
+            {adminModalActive ? <Backdrop clicked={adminActionsToggle}/> : null}
+            <UserModal active={adminModalActive} close={adminActionsToggle} userId={user._id}/>
+            
             <div className={style.UserPage}>
                 <div className={style.UserPageBox}>
+                    <div className={style.AdminBtn}><Button clicked={adminActionsToggle} small intense button >Admin</Button></div>
                     <div className={style.Img}>
                         <img alt='user-img' src={user.profile.userImg}/>
                     </div>
@@ -143,6 +163,7 @@ const UserPage = (props) => {
                 </div>
                 <div></div>
             </div>
+            </>
             : <h2 style={{color: 'rgb(29,29,29)', marginLeft: '25px'}}>Usuário não Encontrado :(</h2>}
             <div style={{marginTop: '15px'}} >
                 {threadsSection}
@@ -150,8 +171,8 @@ const UserPage = (props) => {
             </div>
             
         </>
-    )
-}
+     )
+}   
 
 const mapStateToProps = state => {
     return {

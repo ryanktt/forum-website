@@ -1,27 +1,48 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 import style from './Toolbar.module.css';
 import HamburgerToggle from '../SideDrawer/HamburgerToggle/HamburgerToggle';
 import Button from '../../UI/Button/Button';
-import userImg from '../../../assets/user.png';
 import FetchLink from '../../FetchLink/FetchLink';
+import {logout} from '../../../redux/actions/auth';
 
 const Toolbar = (props) => {
     let loginButton = null
-    if (props.isAuth !== null) loginButton = <Button link='/auth/login'>Login</Button>;
+    if (props.isAuth !== null) loginButton = <Button intense link='/auth/login'>Login</Button>;
+
+    const onLogout = () => {
+        props.logout();
+        props.history.push('/')
+    }
 
     return ( 
         <div className={style.Toolbar}>
                 <HamburgerToggle clicked={props.sideDrawerHandler}/>
                 {!props.isAuth ? loginButton
                 : <div className={style.UserNavOptions}>
-                    <img alt='user-img' src={userImg} />
-                    <FetchLink path='/user/conversations'><i class="far fa-envelope"></i></FetchLink>
-                    <i class="far fa-bell"></i>
+                    <Link to='/user/account'><img alt='user-img' src={props.userImg} /></Link>
+                    <FetchLink path='/user/conversations'><i className="far fa-envelope"></i></FetchLink>
+                    <i className="far fa-bell"></i>
+                    <i onClick={onLogout} class="fas fa-sign-out-alt"></i>
                 </div>}
  
         </div>
     )
 }
 
-export default Toolbar
+const mapStateToProps = state => {
+    if(state.auth.user){
+        return {
+            userImg: state.auth.user.profile.userImg
+        }
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch(logout)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Toolbar));

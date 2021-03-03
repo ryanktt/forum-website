@@ -7,7 +7,7 @@ import {getSubstringsBetween} from '../../utils/textFormat';
 
 
 const NewPost = (props) => {
-    const {quote, submit, button, getContent} = props;
+    const {quote, submit, button, getContent, contentValue} = props;
     const [content, setContent] = useState('');
     const [selectedContent, setSelectedContent] = useState({
         startIndex: 0,
@@ -29,6 +29,11 @@ const NewPost = (props) => {
         if(getContent) getContent(content);
     }, [content])
 
+    useEffect(() => {
+        if(contentValue) {
+            setContent(contentValue);
+        }
+    }, [contentValue])
 
     const parseBBCode = (postContent) => {
        const getQuoteInfo = getSubstringsBetween(postContent, '[quote', ']');

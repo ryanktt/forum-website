@@ -1,4 +1,4 @@
-import {LOGIN, SIGNUP, LOGOUT, AUTH_ERROR, LOAD_USER, USER_LOADING, USER_STOP_LOADING} from '../actions/actionTypes/authTypes';
+import {LOGIN, SIGNUP, LOGOUT, AUTH_ERROR, LOAD_USER, USER_LOADING} from '../actions/actionTypes/authTypes';
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -12,14 +12,12 @@ const auth = (state = initialState, action) => {
         case USER_LOADING: {
             return {...state, loading: true}
         }
-        case USER_STOP_LOADING: {
-            return {...state, loading: false}
-        }
         case LOAD_USER: 
             return {
                 ...state,
                 isAuthenticated: true,
                 user: action.payload,
+                loading: false
         }
         case LOGIN:
             return {
@@ -37,7 +35,8 @@ const auth = (state = initialState, action) => {
                 ...state,
                 token: null,
                 isAuthenticated: false,
-                user: null
+                user: null,
+                loading: false
             }
         default:
             return state   

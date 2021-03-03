@@ -2,7 +2,6 @@ const express = require('express');
 const {check, validationResult} = require('express-validator');
 const router = express.Router();
 const checkObjectId = require('../middleware/checkObjectId');
-const mongoose = require('mongoose');
 
 const User = require('../models/user');
 const Post = require('../models/post');
@@ -19,7 +18,7 @@ const { now } = require('moment');
 router.get('/', async(req, res) => {
     try {
         
-        const user = await User.findById(req.user.id).select('-email -ip -password -settings');
+        const user = await User.findById(req.user.id).select('-email -ip -password ');
         res.json(user)
   
     } catch (err) {
@@ -27,6 +26,25 @@ router.get('/', async(req, res) => {
       res.status(500).json('Erro de Servidor')
     }
   })
+
+// @route    PUT /
+// @desc     Edit profile
+// @access   Private
+router.put('/account/update-profile', async(req, res, next) => {
+
+    const {userImg, description} = req.body;
+
+    try {
+        const user = await User.findById(req.user.id);
+        user.profile.userImg = userImg;
+        user.profile.description = description;
+        await user.save()
+        res.status(200).json('Sucesso');
+    } catch (err) {
+        res.status(500).json('Erro de Servidor');
+        console.error(err);
+    }
+})
 
 // @route    GET /
 // @desc     Get private threads
@@ -177,7 +195,7 @@ async (req, res, next) => {
         const thread = new Thread({
             user: req.user.id,
             title,
-            category: 'vale-tudo',
+            category: 'conversation',
             settings: settings,
             posts: [{post: postId}],
             
@@ -236,6 +254,7 @@ async (req, res) => {
         category
     } = req.body    
     
+
     if(!status) status = 'public';
     try {
        
@@ -283,51 +302,6 @@ async (req, res) => {
     } catch(err) {
         console.error(err);
         res.status(500).json('Erro de Servidor')
-    }
-
-});
-
-
-// @route    DELETE /
-// @desc     Delete post if admin
-// @access   Private
-router.delete('/post/:post_id', 
-async (req, res) => {
-    const postId = req.params.post_id;
-
-    try {
-        //check if it's admin 
-
-        await Post.findByIdAndDelete(postId);
-        res.json({msg: 'successfully deleted'});
-
-    } catch(err) {
-        console.error(err);
-    }
-
-});
-
-// @route    PUT /
-// @desc     Edit post
-// @access   Private
-router.put('/post/:post_id', 
-check('content', 'Conteúdo é obrigatório').exists(),
-async (req, res) => {
-    const errors = validationResult(req);
-    if(!errors.isEmpty()) {
-        res.json({errors: errors.array()})
-    }
-    const postId = req.params.post_id;
-
-    const updatedContent = req.body.content;
-
-    try {
-        await Post.updateOne({_id: postId}, {content: updatedContent})
-        
-        res.json({msg: 'successfully edited'});
-
-    } catch(err) {
-        console.error(err);
     }
 
 });
@@ -489,7 +463,6 @@ router.put('/undo-dislike/:id', checkObjectId('id'), async (req, res) => {
         
     }
 });
-
 
 
 module.exports = router;

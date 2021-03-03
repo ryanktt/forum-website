@@ -90,6 +90,12 @@
 }
 
 
+.LastPost {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 .LastPost p {
     display: inline-block;
     margin-right: 5px;

@@ -3,17 +3,21 @@ import style from './Categories.module.css';
 import Category from './Category/Category';
 import {categories} from '../../utils/categories';
 import axios from '../../utils/axios';
+import Loading from '../../components/UI/Loading/Loading';
 
 const Categories = () => {
     const [categoryArr, setCategoryArr] = useState([])
+    const [loading, setLoading] = useState(false);
 
-    useEffect(async() => {
-        setCategoryArr(await Promise.all(categories.map(async category => {
+    useEffect(() => {(async() => {
+        setLoading(true)
+        const categoryPromise =  await Promise.all(categories.map(async category => {
 
             const categoryInf = await axios.get(`/categories/${category.value}`);
             const threadCount = categoryInf.data.threadCount;
             const postCount = categoryInf.data.postCount;
             const lastPost = categoryInf.data.lastPost[0];
+
 
             return <Category
             key={category.value}
@@ -27,13 +31,14 @@ const Categories = () => {
             postCount={postCount}
             categoryPath={category.value}
             />
-        })))
+        }))
+        setCategoryArr(categoryPromise);
+        setLoading(false)})()
     }, []);
 
-    console.log(categoryArr)
     return (
         <div className={style.Categories}>
-            {categoryArr}
+            {loading ? <Loading/> : categoryArr}
             
         </div>
     )

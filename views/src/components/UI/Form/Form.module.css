@@ -17,3 +17,10 @@
 .Form {
     margin: 0 auto;
 }
+
+
+@media only screen and (max-width: 501px) {
+    .Form form{
+        padding: 25px 15px;
+    }
+}

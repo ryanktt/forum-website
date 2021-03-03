@@ -12,10 +12,13 @@
     appearance: none;
     background: rgb(236, 236, 236) url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat 98% center;
     padding-right: 45px;
+    cursor: pointer;
 }
 
 .Dropdown select:focus {
     outline: none;
 }
 
-
+.Dropdown option {
+    cursor: pointer;
+}

@@ -1,6 +1,6 @@
 import axios from '../../utils/axios';
 
-import {LOGIN, SIGNUP, AUTH_ERROR, LOAD_USER, LOGOUT, USER_LOADING, USER_STOP_LOADING} from './actionTypes/authTypes';
+import {LOGIN, SIGNUP, AUTH_ERROR, LOAD_USER, LOGOUT, USER_LOADING} from './actionTypes/authTypes';
 import {LOADING, STOP_LOADING} from './actionTypes/commonTypes';
 import {validationAlert as valAlert} from './validationAlert';
 
@@ -9,16 +9,14 @@ export const loadUser = async dispatch => {
 
     try {
         const user = await axios.get('/user');
-
-        dispatch({type: USER_STOP_LOADING})
         return dispatch({
             type: LOAD_USER,
             payload: user.data
         })
+        
     } catch (err) {
-
         dispatch({type: AUTH_ERROR})
-        dispatch({type: USER_STOP_LOADING});
+
     }
 }
 export const auth = (formData, type) => async dispatch => {

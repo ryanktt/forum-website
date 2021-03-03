@@ -1,4 +1,4 @@
-import { NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_START, FETCH_THREAD, REFETCH, NEW_PRIVATE_THREAD, FETCH_PRIVATE_THREADS, FETCH_PRIVATE_THREAD} from '../actions/actionTypes/threadTypes';
+import { NEW_THREAD, NEW_POST, FETCH_THREADS, FETCH_START, FETCH_THREAD, REFETCH, NEW_PRIVATE_THREAD, FETCH_PRIVATE_THREADS, FETCH_PRIVATE_THREAD, SET_PATH} from '../actions/actionTypes/threadTypes';
 
 const initialState = {
     threadList: null,
@@ -6,6 +6,7 @@ const initialState = {
     thread: null,
     fetching: false,
     reFetch: true,
+    path: null
 
 }
 
@@ -36,6 +37,9 @@ const thread = (state = initialState, action) => {
         }
         case REFETCH: {
             return {...state, reFetch: true}
+        }
+        case SET_PATH: {
+            return {...state, path: payload}
         }
         default: 
         return state

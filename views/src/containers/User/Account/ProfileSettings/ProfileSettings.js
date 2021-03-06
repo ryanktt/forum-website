@@ -5,12 +5,13 @@ import Form from '../../../../components/UI/Form/Form';
 import Input from '../../../../components/UI/Input/Input';
 import Button from '../../../../components/UI/Button/Button';
 import {editUserProfile} from '../../../../redux/actions/admin';
+import {loadUser} from '../../../../redux/actions/auth';
 import {updateProfile, fetchUser} from '../../../../redux/actions/user';
 import {validationAlert} from '../../../../redux/actions/validationAlert';
 import Alert from '../../../../components/UI/Validation/ValidationMsgs';
 
 const ProfileSettings = (props) => {
-    const {clientUser, setAlert, updateProfile, loadedUser, fetchUser, location, match, adminEditProfile} = props;
+    const {clientUser, setAlert, updateProfile, loadedUser, fetchClientUser, fetchUser, location, match, adminEditProfile} = props;
     const isAdmin = location.pathname === `/admin/edit-account/${match.params.id}`;
 
     let user = clientUser;
@@ -40,6 +41,7 @@ const ProfileSettings = (props) => {
     let onSubmit = async (e) => {
         e.preventDefault();
         const res = await  updateProfile(settings);
+        fetchClientUser();
         if(res === 'err') return setAlert('Ocorreu um Erro', 'danger');
         return setAlert('Atualizado com Sucesso', 'success');
     }
@@ -57,6 +59,7 @@ const ProfileSettings = (props) => {
     onSubmit = async (e) => {
         e.preventDefault();
         const res = await  adminEditProfile(match.params.id, settings);
+        fetchUser(match.params.id);
         if(res === 'err') return setAlert('Ocorreu um Erro', 'danger');
         return setAlert('Atualizado com Sucesso', 'success');
     }
@@ -91,7 +94,8 @@ const mapDispatchToProps = dispatch => {
         fetchUser: (userId) => dispatch(fetchUser(userId)),
         updateProfile: (data) => dispatch(updateProfile(data)),
         setAlert: (msg, type) => dispatch(validationAlert(msg, type)),
-        adminEditProfile: (userId, data) => dispatch(editUserProfile(userId, data))
+        adminEditProfile: (userId, data) => dispatch(editUserProfile(userId, data)),
+        fetchClientUser: () => dispatch(loadUser)
     }
 }
 

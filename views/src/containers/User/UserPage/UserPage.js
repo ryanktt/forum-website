@@ -27,7 +27,7 @@ const UserPage = (props) => {
     const postParam = {userId: userId, currentPage: currentPage}
     
     useEffect(() => {
-        if(!user) fetchUser(userId);
+        fetchUser(userId);
        
     }, [userId]);
 

@@ -22,6 +22,56 @@
     
 }
 
+.Preview {
+    padding: 15px;
+    border: 1px solid rgb(206, 206, 206);
+    border-radius: 3px;
+    margin-top: 10px;
+    white-space: pre-line;
+    color: rgb(39, 39, 39);
+    font-family: 'Roboto', sans-serif;
+}
+
+.Preview  img{
+    max-width: 100%;
+    width: min-content;
+    height: auto;
+
+}
+
+.Preview blockquote {
+
+    margin: 8px 0;
+    border-left: 2px solid rgb(255, 145, 0);
+    border-radius: 3px;
+    background-color: rgb(242, 242, 242);
+    padding: 7px 15px;
+    font-size: 14px;
+    color: rgb(44, 44, 44);
+}
+
+.Preview blockquote small {
+    display: block;
+    margin-bottom: 5px;
+    color: rgb(80, 80, 80);
+}
+
+.Preview blockquote img {
+    max-width: 250px;
+    margin: 5px 0;
+}
+
+.Preview a {
+    color: rgb(0, 125, 141);
+    text-decoration: underline;
+}
+
+.NewPost .Preview h4 {
+    color: rgb(41, 41, 41);
+    margin: 0 0 20px 0;
+
+}
+
 .NewPost textarea:focus {
     border: none;
     outline:none;
@@ -29,6 +79,7 @@
 
 .NewPost .BBbar {
     display: flex;
+    justify-content: space-between;
     position: relative;
     background-color: rgb(39, 39, 39);
     padding: 7px 10px;
@@ -36,11 +87,17 @@
     border-top: 2px solid rgb(255, 136, 0);
     border-top-left-radius: 5px;
     border-top-right-radius: 3px;
+    align-items: center;
 
+}
+
+.BBItems {
+    display: flex;
 }
 
 .NewPost .BBItem {
     position: relative;
+    
 } 
 
 .NewPost .BBItem div p {
@@ -72,11 +129,16 @@
     cursor: pointer;
 }
 
+.NewPost .Btns {
+    display: flex;
+    margin: 10px auto;
+    width: 170px;
+    justify-content: space-between;
+}
 
 .NewPost .Btn {
-    position: absolute;
-    right: 25px;
-    bottom: calc(50% - 14px);
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .EmojiPicker {
@@ -106,6 +168,11 @@
     color: rgb(97, 97, 97);
 }
 
+.EmojiDescription {
+    position: absolute;
+    margin-top: 10px;
+}
+
 .Disable {
     display: none;
 }
@@ -119,6 +186,21 @@
         width: 400px;
         
     }
+
+}
+
+@media only screen and (max-width: 767px) {
+
+
+
+    .Preview blockquote {
+        font-size: 13px;
+    }
+    
+    .Preview blockquote img {
+        max-width: 150px;
+    }   
+
 
 }
 

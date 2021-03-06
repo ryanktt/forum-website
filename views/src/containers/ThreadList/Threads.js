@@ -49,9 +49,11 @@ const Threads = (props) => {
     //MAKE SO THAT THE THREADS ONLY FETCH ONCE (LOADING BUG)
     useEffect(() => {
         setPath(currentPath)
-        if(isConversation && !threads && !fetching  
+  
+        if(isAuth) if(isConversation && !threads && !fetching  
             || reFetch && isConversation && !fetching ) {
             return fetchPrivateThreads(currentPage);
+
 
         }
         const param = {category: category, currentPage: currentPage}
@@ -66,7 +68,7 @@ const Threads = (props) => {
     }, [reFetch])
 
     useEffect(() => {
-        if(isConversation && !threads  
+        if(isAuth) if(isConversation && !threads  
             || reFetch && isConversation ) {
             return fetchPrivateThreads(currentPage);
 

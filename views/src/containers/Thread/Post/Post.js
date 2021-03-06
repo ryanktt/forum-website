@@ -3,13 +3,16 @@ import {connect} from 'react-redux';
 import style from './Post.module.css';
 import axios from '../../../utils/axios';
 import {dateFormat} from '../../../utils/dateFormat';
-import parser from 'bbcode-to-react';
+import parser from '../../../utils/libraries/bbCodeToReact';
 import {reFetchPage} from '../../../redux/actions/thread';
 import ThreadModal from '../../Modals/ThreadModal/ThreadModal';
 import Backdrop from '../../../components/UI/Backdrop/Backdrop';
+import Iframe from 'react-iframe';
+
+
 
 const Post = (props) => {
-    const {post, user, postNumber, quoted, reFetch, clientUser, isAuth, match, history} = props;
+    const {post, user, postNumber, quoted, reFetch, clientUser, isAuth} = props;
     const [isAdmin, setIsAdmin] = useState(false)
      
 
@@ -26,6 +29,7 @@ const Post = (props) => {
         like: 'like',
         dislike: 'dislike'
     });
+
 
     const adminActionsToggle = () => {
         setAdminModalActive(!adminModalActive);
@@ -64,13 +68,12 @@ const Post = (props) => {
         }
     }, [reaction]);
 
-    const parsedContent = parser.toReact(post.content).map(content => {
-        if (typeof content === 'string') return <p>{content}</p>
-        return content
+    // const parsedContent = parser.toReact(post.content).map(content => {
+    //     if (typeof content === 'string') return <p>{content}</p>
+    //     return content
         
-    });
- 
-    const threadId = match.params.id
+    // });
+
     const username = user.name;
     const createdAt = user.createdAt;
     const postLikes = user.profile.likes;
@@ -102,14 +105,14 @@ const Post = (props) => {
     let actions = null;
     if(isAuth) actions = (
         <div className={style.UserActions}>            
-            <div className={style.Action} onClick={adminActionsToggle}>
-                {isAdmin ? <>
+            {isAdmin ? <div className={style.Action} onClick={adminActionsToggle}>
                 <i className="fas fa-cog"></i>
                 <p>Admin</p> 
-                </>: <>
-                <i className="fas fa-exclamation-circle"></i>
-                <p>Reportar</p></> }
             </div>
+            : <div className={style.Action} onClick={adminActionsToggle}>
+                <i className="fas fa-exclamation-circle"></i>
+                <p>Reportar</p>
+            </div>}
 
             <div className={style.Actions}> 
                 <div onClick={() => postActions(post._id, reactionAction.like)} className={reactionStyle.like.join(' ')}>
@@ -171,7 +174,7 @@ const Post = (props) => {
                         <p>{`#${postNumber}`}</p>
                     </div>
                     <div className={style.ContentArea}>
-                        {parsedContent}
+                        {parser.toReact(post.content)}
                     </div>
                     
                 </div>

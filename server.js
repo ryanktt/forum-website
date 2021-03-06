@@ -2,7 +2,10 @@ const express = require('express');
 require('dotenv').config()
 const cors = require('cors')
 const connectDB = require('./db');
+
 const auth = require('./middleware/auth');
+const checkAdmin = require('./middleware/checkAdmin');
+const checkStatus = require('./middleware/checkStatus');
 
 const app = express();
 
@@ -22,7 +25,7 @@ const adminRoute = require('./routes/admin')
 app.use('/auth', authRoute);
 app.use('/user', auth, userRoute);
 app.use(clientRoute);
-app.use('/admin', adminRoute);
+app.use('/admin', auth, checkAdmin, adminRoute);
 
 
 app.get('/', (req,res) => {

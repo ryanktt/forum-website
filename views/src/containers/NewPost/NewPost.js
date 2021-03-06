@@ -76,7 +76,7 @@ const NewPost = (props) => {
     return (
         <>
         <div className={style.NewPost}>
-            <form style={{padding: '0'}} onSubmit={(e) => {submit(e, content); setContent('')}}>
+            <form style={{padding: '0', boxShadow: 'none'}} onSubmit={(e) => {submit(e, content); setContent('')}}>
                 <Post button={button} chosenEmoji={chosenEmoji.emoji} emojiClicked={onEmojiClick} select={onSelect} tagClicked={onClickTag} content={content} change={onChange} quote={quote}/>
             </form>
         </div>

@@ -6,7 +6,7 @@
 
 body {
   text-rendering: optimizeLegibility;
-  background-color: rgb(250, 250, 250);
+  background-color: rgb(247, 247, 247);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -25,6 +25,11 @@ img {
 
 h1, h2, h3, h4, h5 {
   font-family: 'Ubuntu', sans-serif;
+  color: rgb(34, 34, 34);
+}
+
+b, strong {
+  color: rgb(34, 34, 34);
 }
 
 

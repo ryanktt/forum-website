@@ -30,10 +30,10 @@ const thread = (state = initialState, action) => {
         }
         case NEW_PRIVATE_THREAD:
         case NEW_THREAD: {
-            return {...state, loading: false}
+            return {...state, loading: false, fetching: false, reFetch: false}
         }
         case NEW_POST: {
-            return {...state, loading: false}
+            return {...state, loading: false, fetching: false, reFetch: false}
         }
         case REFETCH: {
             return {...state, reFetch: true}

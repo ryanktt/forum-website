@@ -1,6 +1,6 @@
 const User = require('../models/user');
 // middleware to check user status (1 = normal, 2 = temporarily banned, 3 = permaban)
-const checkAdmin  = (req, res, next) => {
+const checkAdmin  = async (req, res, next) => {
     const user = await User.findById(req.user.id).select('settings');
 
     if(user.settings.status === 3) {

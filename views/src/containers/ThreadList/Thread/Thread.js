@@ -64,7 +64,7 @@ const Thread = (props) => {
                     </div>
                 </div>
                 {categories}
-            </div>
+            </div> 
 
             <div className={[style.Details, style.Box].join(' ')}>
                 <div className={style.DetailsBox}>

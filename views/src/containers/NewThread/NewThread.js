@@ -149,7 +149,7 @@ const NewThread = (props) => {
             })
         }
     }, [isEdit, thread])
-    console.log(threadData)
+  
     if (isEdit) {
         title = 'Editar Tópico';
         btnText= 'Editar Tópico'

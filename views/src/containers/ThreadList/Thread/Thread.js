@@ -81,7 +81,7 @@ const Thread = (props) => {
 
             <div className={style.DetailsMobile}>
                 <div className={style.DetailsMobileBox}>
-                    <i class="fas fa-comment-alt"></i>
+                    <i className="fas fa-comment-alt"></i>
                     <p>{thread.posts.length - 1}</p>
                 </div>
             </div>

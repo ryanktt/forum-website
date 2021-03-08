@@ -48,7 +48,7 @@ const Users = (props) => {
                     <tr>
                         <td>Loquiros</td>
                         <td>192.168.241.23</td>
-                        <td onClick={()=> setModalActive(true)} className={style.Gear}><i class="fas fa-cog"></i></td>
+                        <td onClick={()=> setModalActive(true)} className={style.Gear}><i className="fas fa-cog"></i></td>
                     </tr>
                     
                 </tbody>

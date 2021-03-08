@@ -69,7 +69,7 @@ const Post = (props) => {
                     <div onClick={() => tagClicked('img')} className={style.BBItem}><i className="far fa-image"></i><div className={style.EmojiDescription} ><p>Inserir Imagem</p></div></div>
                     <div onClick={() => tagClicked('url')} className={style.BBItem}><i className="fas fa-link"></i><div className={style.EmojiDescription} ><p>Inserir Link</p></div></div>
                     <div onClick={() => tagClicked('youtube')} className={style.BBItem}><i className="fab fa-youtube"></i><div className={style.EmojiDescription} ><p>Youtube</p></div></div>
-                    <div onClick={() => tagClicked('twitter')} className={style.BBItem}><i class="fab fa-twitter"></i><div className={style.EmojiDescription} ><p>Tweet</p></div></div>
+                    <div onClick={() => tagClicked('twitter')} className={style.BBItem}><i className="fab fa-twitter"></i><div className={style.EmojiDescription} ><p>Tweet</p></div></div>
                     <div  className={style.BBItem} onClick={emojisOn}>
                         <i className="far fa-smile-wink"></i>
                         <div className={style.EmojiDescription}><p>Emoji</p></div>

@@ -1,0 +1,35 @@
+.Searchbar {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 30%;
+    height: 60px;
+    border-radius: 3px;
+    background-color: rgb(29, 29, 29);
+}
+
+
+
+.PageLocation {
+    margin-top: 15px;
+}
+
+@media only screen and (max-width: 767px) {
+    .Searchbar {
+        padding: 0 10%;
+
+    }
+
+    .Search h4 {
+        padding: 0 10px;
+    }
+} 
+
+@media only screen and (max-width: 501px) {   
+    .PageLocation {
+        margin-left: 10px;
+    }
+
+    
+   
+}

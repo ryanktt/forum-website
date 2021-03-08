@@ -1,9 +1,13 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom'
 import style from './SideDrawer.module.css';
 import NavLink from '../NavLink/NavigationLink';
 import Searchbar from '../Searchbar/Searchbar';
+import {categories} from '../../../utils/categories';
 
 const SideDrawer = (props) => {
+    const{location, isAuth} = props;
         let classes = [style.SideDrawer];
     if(props.active) {
          classes = [style.SideDrawer, style.Active];
@@ -11,18 +15,30 @@ const SideDrawer = (props) => {
         
     return (
         <div className={classes.join(' ')}>
-            <Searchbar/>
+            {isAuth ? <Searchbar/> : null}
             <ul>     
-                <NavLink link='/'>Home</NavLink>
-                <NavLink link='/'>Jogos</NavLink>
-                <NavLink link='/'>Animes</NavLink>
-                <NavLink link='/'>Tech</NavLink>
+                {categories.map(category => {
+                    const path = `/threads/${category.value}`;
+                    
+                    if (location.pathname === path) {
+                        return <NavLink active={true} link={path}>{category.icon} {`${category.name}`}</NavLink>
+                    }
+
+                    return <NavLink  link={path}>{category.icon} {`${category.name}`}</NavLink>
+                })}
+                
             </ul>
             
         </div>
     )
 }
 
-export default SideDrawer;
+const mapStateToProps = state => {
+    return {
+        isAuth: state.auth.isAuthenticated
+    }
+}
+
+export default connect(mapStateToProps)(withRouter(SideDrawer));
 
 

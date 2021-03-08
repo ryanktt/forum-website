@@ -17,7 +17,6 @@ const NewPost = (props) => {
     const [chosenEmoji, setChosenEmoji] = useState({
         emoji: null
     });
-    
 
     useEffect(() => {
         if(quote === '') return;

@@ -5,10 +5,24 @@ import Modal from '../../../components/UI/Modal/Modal';
 import Button from '../../../components/UI/Button/Button';
 import {deletePost, deleteThread} from '../../../redux/actions/admin';
 import {reFetchPage} from '../../../redux/actions/thread';
+import {report} from '../../../redux/actions/user';
 import {TextareaAutosize} from '@material-ui/core';
 
 const ThreadModal = (props) => {
-    const {active, close, deletePost, deleteThread, history, match, threadId, postId, postNumber, setReFetch, user} = props;
+    let {
+        active, 
+        close, 
+        deletePost, 
+        deleteThread, 
+        history, 
+        match, 
+        threadId, 
+        postId, 
+        postNumber, 
+        setReFetch, 
+        user, 
+        report} = props;
+
     const [reportMsg, setReportMsg] = useState('');
     const isAdmin = user.settings.role >= 2
 
@@ -28,10 +42,11 @@ const ThreadModal = (props) => {
         }
     };
 
-    const submitReport = () => {
-        
+    const submitReport = async() => {
+        if(reportMsg.length < 3) return;
+        await report(reportMsg, threadId, postId, user._id);
+        close();
     }
-
 
 
     let editBtnText = 'Editar Post';
@@ -50,17 +65,18 @@ const ThreadModal = (props) => {
             </div>
         </Modal> 
         : <Modal active={active} close={close} title='Reportar Conteúdo'>
-            <h4 style={{marginBottom: '15px'}}>Digite o Motivo de Reportar</h4>
+            <h4 style={{marginBottom: '15px', color: 'rgb(49, 49, 49)'}}>Digite o Motivo de Reportar</h4>
             <div>
                 <TextareaAutosize 
                     rowsMin={5} 
                     name='report-message' 
                     value={reportMsg} 
                     onChange={(e) => setReportMsg(e.target.value)}
+                    required={true}
                     className={style.Textarea}/>
             </div>            
             <div style={{width: 'max-content', margin: '10px auto'}} onClick={submitReport}>
-                <Button medium>Reportar</Button>
+                <Button>Reportar</Button>
             </div>
         </Modal>
     )
@@ -76,7 +92,8 @@ const mapDispatchToProps = dispatch => {
     return {
         deletePost: (postId) => dispatch(deletePost(postId)),
         deleteThread: (threadId) => dispatch(deleteThread(threadId)),
-        setReFetch: () => dispatch(reFetchPage)
+        setReFetch: () => dispatch(reFetchPage),
+        report: (message, threadId, postId, userId) => dispatch(report(message, threadId, postId, userId))
     }
 }
 

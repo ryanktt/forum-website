@@ -1,6 +1,4 @@
 import parser, {Tag} from 'bbcode-to-react';
-import Iframe from 'react-iframe';
-import Parser from 'react-html-parser'
 import {TwitterTweetEmbed} from 'react-twitter-embed';
 import {getSubstringsBetween} from '../textFormat';
 
@@ -40,6 +38,7 @@ class youtubeTag extends Tag {
             <div style={{maxWidth: '600px'}}>
                 <div style={divStyle}>
                     <iframe
+                        title='youtube'
                         style={iframeStyle}
                         {...attributes}
                         frameBorder="0"

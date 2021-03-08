@@ -48,7 +48,8 @@ async (req, res) => {
     
     const payload = {
         user: {
-          id: user.id
+          id: user.id,
+          settings: user.settings
         }
     }
 
@@ -101,7 +102,8 @@ async (req, res) => {
 
         const payload = {
             user: {
-              id: user.id
+              id: user.id,
+              settings: user.settings
             }
         }
         

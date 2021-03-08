@@ -42,7 +42,7 @@ const Threads = (props) => {
 
     if(isAuth) {
         newThreadBtn = <div className={style.ThreadsBtn}>
-        <Button  link={link} intense >{btnText}</Button>
+        <Button  link={link}  >{btnText}</Button>
         </div>
     }    
 

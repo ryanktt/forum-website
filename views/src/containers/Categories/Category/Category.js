@@ -23,11 +23,11 @@ const Category = (props) => {
                     <div className={style.CategoryDetails}>
                         <div className={style.CategoryDetailsBox}>
                             <div>
-                                <i class="far fa-comment"></i>
+                                <i className="far fa-comment"></i>
                                 <p>{threadCount}</p>
                             </div>
                             <div>
-                                <i class="far fa-comments"></i>
+                                <i className="far fa-comments"></i>
                                 <p>{postCount}</p>
                             </div>
                         </div>

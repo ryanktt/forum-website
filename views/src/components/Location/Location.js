@@ -20,7 +20,7 @@ const Location = (props) => {
 
     return (
         <div className={style.Location}>
-                <p >ForumPlayers</p>
+                <p >FórumPlayers</p>
             {locationItems}
         </div>
     )

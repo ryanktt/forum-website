@@ -9,7 +9,7 @@ import ValidationMsgs from '../../../components/UI/Validation/ValidationMsgs';
 import Form from '../../../components/UI/Form/Form';
 
 const EditPost = (props) => {
-    const {match, history, editPost, setReFetch} = props;
+    const {match, editPost, setReFetch} = props;
     const [content, setContent] = useState('');
 
     useEffect(() => {

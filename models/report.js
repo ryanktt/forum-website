@@ -10,6 +10,9 @@ const ReportSchema = new Schema({
     post: {
         type: Schema.Types.ObjectId
     },
+    user: {
+        type: Schema.Types.ObjectId
+    },
     message: {
         type: String, required: true
     }

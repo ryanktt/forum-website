@@ -1,25 +1,46 @@
-.NavLink {
-    text-decoration: none;
+.NavBox {
+    padding: 7px;
+    border-radius: 2px;
+    outline: none;
+}
+
+
+.NavBox i {
+    font-size: 15px;
+    margin-right: 3px;
+    color: white !important;
+}
+
+.NavBox.Active {
+    background-color: #FFBA3B;
+}
+
+.NavLink.Active, .NavBox.Active i {
+    color: rgb(29, 29, 29)  !important;
+}
+
+.NavBox:hover h4 i {
+    color: rgb(255, 187, 0) !important;
+}
+
+.NavBox:hover  h4 {
+    color: rgb(255, 187, 0);
+}
+
+.NavBox.Active:hover h4 i {
+    color: rgb(29, 29, 29) !important;
+}
+
+.NavBox.Active:hover  h4 {
+    color: rgb(250, 250, 250);
 }
 
 .NavLink {
-    font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    color: rgb(255, 185, 80);
+    font-size: 15px;
+    color: rgb(250, 250, 250);
     padding: 0;
-}
-
-.NavLink .active{
-    background-color: rgb(236, 154, 0);
-    border-radius: 3px;
-    padding: 5px;
-    width: fit-content;
-
-}
-
-
-.NavLink .active  {
-    color: white;
+    margin: 0;
 }
 
 .NavLink :hover {

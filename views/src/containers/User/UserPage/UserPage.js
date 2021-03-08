@@ -21,10 +21,10 @@ const UserPage = (props) => {
     const [postList, setPostList] = useState(null);
     const [load, setLoad] = useState(true); //prevent posts or threads from loading before user asks for it
     
-    const currentPage = location.search;
+    let currentPage = location.search;
     const userId = match.params.id;
-    const threadParam = {userId: userId, currentPage: currentPage}
-    const postParam = {userId: userId, currentPage: currentPage}
+    let threadParam = {userId: userId, currentPage: currentPage};
+    let postParam = {userId: userId, currentPage: currentPage};
     
     useEffect(() => {
         fetchUser(userId);
@@ -34,7 +34,7 @@ const UserPage = (props) => {
     useEffect(() => {
         if (threads || posts) {
             reset('threads');
-            reset('posts')
+            reset('posts');
             setLoad(true);
         }
         
@@ -59,29 +59,34 @@ const UserPage = (props) => {
 
 
     useEffect(() => {
-        if(threads && !load) fetchThreads(threadParam)
+        if(threads && !load) fetchThreads(threadParam);
+        if(posts && !load) fetchPosts(threadParam);
     }, [currentPage]);
 
 
     const onClickTopics =  () => {
+        history.push(location.pathname);
+        threadParam = {userId: userId, currentPage: ''};
         reset('posts');
         fetchThreads(threadParam);
-        setLoad(false) 
+        setLoad(false)
 
     }
 
     const onClickPosts = () => {
+        history.push(location.pathname);
+        postParam = {userId: userId, currentPage: ''};
         reset('threads');
         fetchPosts(postParam);
-        setLoad(false) 
+        setLoad(false);
     }
 
     const onClickPrivateMessage = () => {
         history.push(`/user/new-conversation?with=${user.name}`)
     }
 
-    const pageLocationPath = (category, pageNumber) => {
-        return `/member/${userId}?page=${pageNumber}`
+    let pageLocationPath = (category, pageNumber) => {
+        return `/member/${userId}?page=${pageNumber}`;
     }
 
     const routeLocationItems = [
@@ -92,7 +97,7 @@ const UserPage = (props) => {
     if(threads) threadsSection = (
             <>
                 {threadList}
-                <div className={style.PageLocation}><PageLocation path={pageLocationPath} history={history} {...threads.pagination}/></div>
+                <div className={style.PageLocation}><PageLocation path={pageLocationPath} {...props} {...threads.pagination}/></div>
             </>
     )
         
@@ -100,11 +105,11 @@ const UserPage = (props) => {
     if(posts) postsSection = (
             <>
                 {postList}
-                <div className={style.PageLocation}><PageLocation path={pageLocationPath} history={history} {...posts.pagination}/></div>
+                <div className={style.PageLocation}><PageLocation path={pageLocationPath} {...props} {...posts.pagination}/></div>
             </>
     )
     let pmButton = null
-    if(isAuth && clientUser._id !== userId) pmButton = <Button button clicked={onClickPrivateMessage} intense small>Mensagem Privada</Button>
+    if(isAuth && clientUser._id !== userId) pmButton = <Button button clicked={onClickPrivateMessage}  small>Mensagem Privada</Button>
 
     //Admin
     const [adminModalActive, setAdminModalActive] = useState(false);
@@ -112,7 +117,10 @@ const UserPage = (props) => {
     const adminActionsToggle = () => {
         setAdminModalActive(!adminModalActive);
     }
-
+    const adminBtn = null;
+    if(clientUser) if(clientUser.settings.role === 2) {
+        adminBtn = <div className={style.AdminBtn}><Button clicked={adminActionsToggle} small  button >Admin</Button></div>;
+    }
     
     return (
         <>
@@ -126,15 +134,15 @@ const UserPage = (props) => {
             <UserModal active={adminModalActive} close={adminActionsToggle} userId={user._id}/>
             
             <div className={style.UserPage}>
-                <div className={style.UserPageBox}>
-                    <div className={style.AdminBtn}><Button clicked={adminActionsToggle} small intense button >Admin</Button></div>
+                <div className={style.UserPageBox}> 
+                    {adminBtn}
                     <div className={style.Img}>
                         <img alt='user-img' src={user.profile.userImg}/>
                     </div>
                     <div className={style.UserContent}>
                         <h3>{user.name}</h3>
                         <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                            <div className={style.UserStatistics}>
+                            <div className={style.UserStatistics}> 
                                 <h5>Postagens</h5><p>{user.profile.postCount}</p></div>
                             <div className={style.UserStatistics}>
                                 <h5>Likes</h5><p>{user.profile.likes}</p></div>
@@ -151,8 +159,8 @@ const UserPage = (props) => {
                             </div>
                             <div style={{position: 'relative'}}>
                                 <div className={style.ButtonsBox}>
-                                    <Button button clicked={onClickTopics} intense small>Tópicos</Button>
-                                    <Button button intense clicked={onClickPosts} small>Posts</Button>
+                                    <Button button clicked={onClickTopics}  small>Tópicos</Button>
+                                    <Button button  clicked={onClickPosts} small>Posts</Button>
                                     {pmButton}
                                 </div>
 

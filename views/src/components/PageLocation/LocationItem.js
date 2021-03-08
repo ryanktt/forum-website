@@ -4,8 +4,7 @@ import style from './PageLocation.module.css';
 import {reFetchPage} from '../../redux/actions/thread';
 
 const LocationItem = (props) => {
-    const {category, pageNumber, selected, history, reFetchPage, content, classes, path} = props;
-
+    const {category, pageNumber, selected, history, reFetchPage, content, classes, path, location} = props;
     const onClick = () => {
         
         reFetchPage();

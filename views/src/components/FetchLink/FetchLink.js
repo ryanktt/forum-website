@@ -7,8 +7,8 @@ import {reFetchPage} from '../../redux/actions/thread';
 const FetchLink = (props) => {
     //pass state to links refetch page data
 
-    let {path, underline, classes, reFetchPage} = props;
-
+    let {path, underline, classes, reFetchPage, style} = props;
+    if(!style) style = {}
 
     const fetch = () => {
         reFetchPage()
@@ -19,6 +19,7 @@ const FetchLink = (props) => {
     return (
             <Link 
             onClick={fetch} 
+            style={style}
             className={[underline, classes].join(' ')} 
             to={{
                 pathname: path

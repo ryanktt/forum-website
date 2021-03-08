@@ -39,7 +39,7 @@ export const auth = (formData, type) => async dispatch => {
 
         dispatch({type: STOP_LOADING});
         if(type === 'login') { 
-            loadUser(dispatch);
+            dispatch(loadUser);
             return {type: 'login'}
         }
         return {type: 'signup'}

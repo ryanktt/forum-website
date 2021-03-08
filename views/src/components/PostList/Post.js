@@ -8,8 +8,9 @@ import {trimString} from '../../utils/textFormat';
 
 
 const Post = (props) => {
-    const {thread, user, post, match} = props;
-    
+    let {thread, user, post, match} = props;
+    if(!user) user = post.user;
+
     let category = match.params.category;
     if(!match.params.category && thread) category = thread.category;
 

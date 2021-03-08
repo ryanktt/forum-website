@@ -1,22 +1,21 @@
 import React, {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import style from './Post.module.css';
-import axios from '../../../utils/axios';
 import {dateFormat} from '../../../utils/dateFormat';
 import parser from '../../../utils/libraries/bbCodeToReact';
-import {reFetchPage} from '../../../redux/actions/thread';
+import {postActions} from '../../../redux/actions/thread';
 import ThreadModal from '../../Modals/ThreadModal/ThreadModal';
 import Backdrop from '../../../components/UI/Backdrop/Backdrop';
-import Iframe from 'react-iframe';
+
 
 
 
 const Post = (props) => {
-    const {post, user, postNumber, quoted, reFetch, clientUser, isAuth} = props;
+    const {post, user, postNumber, quoted, postActions, clientUser, isAuth} = props;
     const [isAdmin, setIsAdmin] = useState(false)
      
-
-    const [adminModalActive, setAdminModalActive] = useState(false);
+    const [modalActive, setModalActive] = useState(false);
     const [reaction, setReaction] = useState({
         like: false,
         dislike: false
@@ -31,8 +30,8 @@ const Post = (props) => {
     });
 
 
-    const adminActionsToggle = () => {
-        setAdminModalActive(!adminModalActive);
+    const actionsToggle = () => {
+        setModalActive(!modalActive);
     }
 
     useEffect(() => {
@@ -80,49 +79,30 @@ const Post = (props) => {
     const postDislikes = user.profile.dislikes;
     const postCount = user.profile.postCount;
 
-
-    const postActions = async (postId, action) => {
-        let request = null;
-        switch(action) {
-            case 'like':
-            case 'dislike':
-            case 'unlike':
-            case 'undo-dislike': {
-                request = () => axios.put(`/user/${action}/${postId}`);
-                break
-            }
-            default: break;       
-        }
-        try {
-     
-            await request();
-            reFetch();
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
     let actions = null;
     if(isAuth) actions = (
         <div className={style.UserActions}>            
-            {isAdmin ? <div className={style.Action} onClick={adminActionsToggle}>
+            {isAdmin ? <div className={style.Action} onClick={actionsToggle}>
                 <i className="fas fa-cog"></i>
                 <p>Admin</p> 
             </div>
-            : <div className={style.Action} onClick={adminActionsToggle}>
+            : <div className={style.Action} onClick={actionsToggle}>
                 <i className="fas fa-exclamation-circle"></i>
                 <p>Reportar</p>
             </div>}
 
             <div className={style.Actions}> 
-                <div onClick={() => postActions(post._id, reactionAction.like)} className={reactionStyle.like.join(' ')}>
-                    <i className="far fa-thumbs-up"></i>
-                    <p className={style.actionParagraph}>Like</p>
-                </div>
-                <div onClick={() => postActions(post._id, reactionAction.dislike)} className={reactionStyle.dislike.join(' ')}>
-                    <i className="far fa-thumbs-down"></i>
-                    <p className={style.actionParagraph}>Dislike</p>
-                </div>
+                {post.user._id !== clientUser._id ? 
+                <>
+                    <div onClick={() => postActions(post._id, reactionAction.like)} className={reactionStyle.like.join(' ')}>
+                        <i className="far fa-thumbs-up"></i>
+                        <p className={style.actionParagraph}>Like</p>
+                    </div>
+                    <div onClick={() => postActions(post._id, reactionAction.dislike)} className={reactionStyle.dislike.join(' ')}>
+                        <i className="far fa-thumbs-down"></i>
+                        <p className={style.actionParagraph}>Dislike</p>
+                    </div>
+                </> : null}
                 <a href='#quote' onClick={() => quoted(post.content, post._id, {name: user.name, id: user._id})} style={{textDecoration: 'none'}}>
                     <div className={style.Action} >
                         <i className="fas fa-reply"></i>
@@ -135,18 +115,18 @@ const Post = (props) => {
     
     return (
         <div  className={style.Post}>
-            {adminModalActive ? <Backdrop clicked={adminActionsToggle}/> : null}
-            <ThreadModal 
-                active={adminModalActive} 
-                close={adminActionsToggle} 
+            {modalActive ? <Backdrop clicked={actionsToggle}/> : null}
+            {isAuth ?<ThreadModal 
+                active={modalActive} 
+                close={actionsToggle} 
                 postId={post._id}  
                 threadId={post.thread} 
                 postNumber={postNumber}
-                {...props}/>
+                {...props}/> : null}
 
             <div className={style.UserDetails}>
-                <img src={user.profile.userImg} alt='user-img'/>
-                <h4>{username}</h4>
+            <Link to={`/member/${post.user._id}`}><img src={user.profile.userImg} alt='user-img'/></Link>
+                <Link to={`/member/${post.user._id}`}><h4>{username}</h4></Link>
                 <div className={style.UserDetailsBox}>
                     <div>
                         <i className="far fa-user"></i>
@@ -195,7 +175,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        reFetch: () => dispatch(reFetchPage)
+        postActions: (postId, action) => dispatch(postActions(postId, action)) 
     }
 }
 

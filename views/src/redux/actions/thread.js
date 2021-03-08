@@ -164,6 +164,29 @@ export const fetchPrivateThread = threadId => async dispatch => {
     }
 } 
 
+export const postActions =  (postId, action) => async dispatch  =>{
+    dispatch({type: LOADING});
+    let request = null;
+    switch(action) {
+        case 'like':
+        case 'dislike':
+        case 'unlike':
+        case 'undo-dislike': {
+            request = () => axios.put(`/user/${action}/${postId}`);
+            break
+        }
+        default: break;       
+    }
+    try {
+ 
+        await request();
+        dispatch(reFetchPage);
+    } catch (err) {
+        console.error(err);
+        dispatch({type:STOP_LOADING});
+    }
+}
+
 export const setPath = path => dispatch => {
     dispatch({type: SET_PATH, payload: path});
 }

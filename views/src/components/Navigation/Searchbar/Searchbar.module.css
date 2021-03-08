@@ -1,32 +1,31 @@
 .Searchbar * {
-    display: inline-block;
     outline:none;
 }
 
 .Searchbar {
+    display: flex;
+    justify-content: space-between;
     white-space: pre-wrap;
     background-color: white;
-    border-radius: 5px;
-    padding: 5px;
-    width: fit-content;
+    border-radius: 3px;
+    width: 100%;
     height: fit-content;
 }
 
 .Searchbar input{
+    padding-left: 7px;
+    border-radius: 3px;
     border-style: none;
+    width: 85%;
     
 }
 
 .Searchbar i {
-    color: rgb(255, 166, 0);
-    margin-right: 5px;
+    color: rgb(31, 31, 31);
+    margin: 0 5px;
     -moz-user-select: none;
     user-select: none;
     
     
 }
 
-.Searchbar button {
-    border: none;
-    background-color: white;
-}

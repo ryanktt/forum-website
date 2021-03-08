@@ -73,7 +73,7 @@ router.get('/thread/:id', async (req, res) => {
     
   try {
       const [threadInfo, posts] = await Promise.all([
-        Thread.findById({_id: req.params.id, 'settings.status': 'public'}).select('title createdAt category'),
+        Thread.findById({_id: req.params.id, 'settings.status': 'public'}).select('title createdAt category').lean(),
         Post.paginate({thread: req.params.id, status: 'public'}, options)
       ]) 
       const thread = {id: threadInfo.id, createdAt: threadInfo.createdAt, title: threadInfo.title, category: threadInfo.category, posts: posts.docs}
@@ -138,7 +138,7 @@ router.get('/member/threads/:id', checkObjectId('id'), async(req, res) => {
     sort: {createdAt: -1},
     select: 'title createdAt views category posts',
     populate: {path: 'posts.post', select: 'createdAt user', populate: {path: 'user', select: 'profile name'}},
-    limit: 25,
+    limit: 20,
     collation: {
       locale: 'en',
     },
@@ -170,7 +170,7 @@ router.get('/member/posts/:id', checkObjectId('id'), async(req, res) => {
     sort: {createdAt: -1},
     select: 'user thread content createdAt',
     populate: {path: 'thread', select: 'title category'},
-    limit: 25,
+    limit: 20,
     collation: {
       locale: 'en',
     },

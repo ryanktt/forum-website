@@ -2,12 +2,16 @@ const express = require('express');
 const {check, validationResult} = require('express-validator');
 const router = express.Router();
 const checkObjectId = require('../middleware/checkObjectId');
-
+const checkAction = require('../middleware/checkAction');
+const setNotification = require('../middleware/setNotification');
 const User = require('../models/user');
 const Post = require('../models/post');
 const Thread = require('../models/thread');
+const Notification = require('../models/notification');
 const MessageToUser = require('../models/messageToUser');
+const Report = require('../models/report');
 const { now } = require('moment');
+const user = require('../models/user');
 
 
 
@@ -91,7 +95,7 @@ router.get('/threads', async (req, res) => {
 })
 
 // @route    GET /
-// @desc     Fetch private thread and posts
+// @desc     Fetch private thread 
 // @access   Private
 router.get('/thread/:id', async (req, res) => {
     //Pagination
@@ -136,6 +140,91 @@ router.get('/thread/:id', async (req, res) => {
     }
   
   })
+
+// @route    GET /
+// @desc     Performs a search on post content
+// @access   Private
+router.get('/search', async (req, res) => {
+    //Pagination
+    let page = Number(req.query.page);
+    if(!page) {
+        page = 1;
+    }
+    console.log(req.query)
+    const options = {
+        page: page,
+        sort: {createdAt: -1},
+        select: 'user thread content createdAt',
+        populate: [
+            {path: 'thread', select: 'title category'},
+            {path: 'user', select: 'profile name'}
+        ],
+        limit: 25,
+        collation: {
+        locale: 'en',
+        },
+        lean: true
+    };
+    try {
+        const posts = await Post.paginate({content: { $regex: req.query.text }, status: 'public'}, options)
+        res.json(posts);
+    } catch (err) {
+        console.error(err)
+        res.status(500).json('Erro de Servidor');
+  
+    }
+  
+  });
+
+// @route    GET /
+// @desc     Get notifications
+// @access   Private
+router.get('/notifications', async(req, res) => {
+    let page = Number(req.query.page);
+    
+    if(!page) {
+        page = 1;
+    }
+
+    const options = {
+        page: page,
+        sort: {createdAt: -1},
+        select: 'user thread content createdAt',
+        populate: {path: 'sender', select: 'profile name'},
+        limit: 15,
+        collation: {
+        locale: 'en',
+        },
+        lean: true
+    };
+
+    try {
+        const [notifications] = await Promise.all([
+            Notification.paginate({recipient: req.user.id}, options),
+            Notification.updateMany({recipient: req.user.id, isRead: false}, {$set: {isRead: true}})
+        ]);
+        res.json(notifications)
+  
+    } catch (err) {
+      console.error(err);
+      res.status(500).json('Erro de Servidor');
+    }
+});
+
+// @route    GET /
+// @desc     Get number of unread notifications
+// @access   Private
+router.get('/notification-count', async(req, res) => {
+    try {
+        const notificationCount = await Notification.countDocuments({recipient: req.user.id, isRead: false});
+        
+        res.json(notificationCount);
+  
+    } catch (err) {
+      console.error(err);
+      res.status(500).json('Erro de Servidor');
+    }
+});
 
 // @route    POST /
 // @desc     Make new thread
@@ -236,9 +325,36 @@ async (req, res, next) => {
 });
 
 // @route    POST /
+// @desc     Report post/thread
+// @access   Private
+router.post('/report',
+check('message', 'Motivo é obrigatório').isString().isLength({min: 3}),
+async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        res.status(400).json({errors: errors.array()});
+    }
+    const {message, threadId, postId, userId} = req.body;
+
+    try {
+        const report = new Report({
+            message, thread: threadId, post: postId, user: userId
+        })
+
+        report.save();
+        res.json('Sucesso')
+    }catch(err) {
+        console.error(err);
+        res.status(500).json('Erro de Servidor');
+    }
+});
+
+
+// @route    POST /
 // @desc     Make new post
 // @access   Private
 router.post('/post', 
+setNotification,
 check('content', 'Conteúdo é obrigatório').isString().isLength({min: 1}),
 async (req, res) => {
     const errors = validationResult(req);
@@ -309,7 +425,7 @@ async (req, res) => {
 // @route    PUT /like/:id
 // @desc     Like a post/thread
 // @access   Private
-router.put('/like/:id', checkObjectId('id'), async (req, res) => {
+router.put('/like/:id', checkObjectId('id'), checkAction('id'), async (req, res) => {
     let post;
     let type = 'Post'
     try {
@@ -353,7 +469,7 @@ router.put('/like/:id', checkObjectId('id'), async (req, res) => {
 // @route    PUT api/posts/unlike/:id
 // @desc     Unlike a post/thread
 // @access   Private
-router.put('/unlike/:id', checkObjectId('id'), async (req, res) => {
+router.put('/unlike/:id', checkObjectId('id'), checkAction('id'), async (req, res) => {
     let post;
     let type = 'Post'
 
@@ -389,7 +505,7 @@ router.put('/unlike/:id', checkObjectId('id'), async (req, res) => {
 // @route    PUT /dislike/:id
 // @desc     Dislike a post/thread
 // @access   Private
-router.put('/dislike/:id', checkObjectId('id'), async (req, res) => {
+router.put('/dislike/:id', checkObjectId('id'), checkAction('id'), async (req, res) => {
     let post;
     let type = 'Post'
     try {
@@ -431,7 +547,7 @@ router.put('/dislike/:id', checkObjectId('id'), async (req, res) => {
 // @route    PUT api/posts/undo-dislike/:id
 // @desc     undo dislike in a post/thread
 // @access   Private
-router.put('/undo-dislike/:id', checkObjectId('id'), async (req, res) => {
+router.put('/undo-dislike/:id', checkObjectId('id'), checkAction('id'), async (req, res) => {
     let post;
     let type = 'Post'
     try {

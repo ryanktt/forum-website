@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import style from './Toolbar.module.css';
@@ -6,25 +6,45 @@ import HamburgerToggle from '../SideDrawer/HamburgerToggle/HamburgerToggle';
 import Button from '../../UI/Button/Button';
 import FetchLink from '../../FetchLink/FetchLink';
 import {logout} from '../../../redux/actions/auth';
+import {getNotificationCount} from '../../../redux/actions/user';
 
 const Toolbar = (props) => {
+    const {userImg, isAuth, notifications, history, sideDrawerHandler, logout, getNotificationCount, location} = props;
     let loginButton = null
-    if (props.isAuth !== null) loginButton = <Button intense link='/auth/login'>Login</Button>;
+    if (isAuth !== null) loginButton = <Button  link='/auth/login'>Login</Button>;
+    const [notificationNumber, setNotificationNumber] = useState(null);
 
+    useEffect(() => {
+        if(isAuth) getNotificationCount();
+    }, [isAuth])
+
+    if(notifications) if(notifications.count != notificationNumber) setNotificationNumber(notifications.count);
+
+    useEffect(() => {
+        getNotificationCount();
+        if(notifications) setNotificationNumber(notifications.count);
+    }, [location.pathname])
+
+
+    
     const onLogout = () => {
-        props.logout();
-        props.history.push('/')
+        logout();
+        history.push('/')
     }
 
     return ( 
         <div className={style.Toolbar}>
-                <HamburgerToggle clicked={props.sideDrawerHandler}/>
-                {!props.isAuth ? loginButton
+                <HamburgerToggle clicked={sideDrawerHandler}/>
+                {!isAuth ? loginButton
                 : <div className={style.UserNavOptions}>
-                    <Link to='/user/account'><img alt='user-img' src={props.userImg} /></Link>
+                    <Link to='/user/account'><img alt='user-img' src={userImg} /></Link>
                     <FetchLink path='/user/conversations'><i className="far fa-envelope"></i></FetchLink>
-                    <i className="far fa-bell"></i>
-                    <i onClick={onLogout} class="fas fa-sign-out-alt"></i>
+                    <div style={{position: 'relative'}}>
+                        <Link to='/user/notifications'>
+                            <i className="far fa-bell"></i>
+                            {notificationNumber ? <p className={style.NotificationNumber}>{notificationNumber}</p> : null}
+                        </Link></div>
+                    <i onClick={onLogout} className="fas fa-sign-out-alt"></i>
                 </div>}
  
         </div>
@@ -34,14 +54,16 @@ const Toolbar = (props) => {
 const mapStateToProps = state => {
     if(state.auth.user){
         return {
-            userImg: state.auth.user.profile.userImg
+            userImg: state.auth.user.profile.userImg,
+            notifications: state.user.notifications
         }
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout: () => dispatch(logout)
+        logout: () => dispatch(logout),
+        getNotificationCount: () => dispatch(getNotificationCount)
     }
 }
 

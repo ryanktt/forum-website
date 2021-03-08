@@ -7,6 +7,7 @@ import {validationAlert} from '../../redux/actions/validationAlert';
 import {setQuote, quoted} from '../../redux/actions/post';
 import Location from '../../components/Location/Location';
 import {categories} from '../../utils/categories';
+import {getSubstringsBetween} from '../../utils/textFormat';
 import NewPost from '../../containers/NewPost/NewPost';
 import Loading from '../../components/UI/Loading/Loading';
 
@@ -36,6 +37,12 @@ const Thread = (props) => {
     const [loading, setLoading] = useState(true);
     //check if it's fetching or if the thread has not been fetched before fetching again
   
+    useEffect(() => {
+        return () => {
+          quoted();
+        };
+      }, []);
+
     useEffect(() => {
         if(isConversation && !thread ) {
             return fetchPrivateThread(match.params.id);
@@ -72,13 +79,22 @@ const Thread = (props) => {
     }
 
     const onQuote = (content, postId, user) => {
-        const quotedMsg = `[quote=${user.name}, post=${postId}]${content}[/quote]`;
+        //remove inner quotes
+        const quoteIndexStart = content.indexOf('[quote=');
+        const quoteIndexEnd = content.indexOf('[/quote]') + 8;
+        const firstPart = content.substr(0, quoteIndexStart);
+        const lastPart = content.substr(quoteIndexEnd, content.length)
+        if(quoteIndexStart !== -1) {
+            content = `${firstPart}\n${lastPart}`;
+        }
+        
+        const quotedMsg = `[quote=${user.name} member=${user.id}]${content}[/quote]`;
         setQuote({message: quotedMsg, toggler: !quote.toggler});
     }
 
     let postNumber = 0
 
-    useEffect(() => {
+    useEffect(() => { 
         if(isAuth) setNewPost(<NewPost button submit={onSubmit}/>)
 
         if(thread) setPosts(thread.posts.map(post => {

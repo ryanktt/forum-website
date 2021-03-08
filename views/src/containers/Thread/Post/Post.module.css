@@ -8,18 +8,21 @@
 /*BBCode*/
 .Post blockquote {
     margin: 8px 0;
-    border-left: 2px solid rgb(255, 145, 0);
+    border-left: 2px solid rgb(255, 174, 0);
+    border-bottom: 1px solid rgb(233, 233, 233);
+    border-right: 1px solid rgb(233, 233, 233);
+    border-top: 1px solid rgb(233, 233, 233);
     border-radius: 3px;
-    background-color: rgb(242, 242, 242);
+    background-color: rgb(245, 245, 245);
     padding: 7px 15px;
-    font-size: 14px;
-    color: rgb(44, 44, 44);
+    font-size: 15px;
+    color: rgb(31, 31, 31);
 }
 
 .Post blockquote small {
     display: block;
     margin-bottom: 5px;
-    color: rgb(80, 80, 80);
+    color: rgb(63, 63, 63);
 }
 
 .Post .Content .ContentBox blockquote img {
@@ -44,6 +47,16 @@
     height: auto;
     margin-bottom: 5px;
 }
+
+.UserDetails a {
+    font-size: 16px;
+}
+
+.UserDetails a:hover {
+    text-decoration: underline;
+    color: orange;
+}
+
 .UserDetails h4 {
     text-align: center;
     margin-bottom: 20px;
@@ -67,7 +80,6 @@
 }
 
 .UserDetails p {
-    font-family: 'Roboto', sans-serif;
     font-size: 13px;
     font-weight: 500;
     color: rgb(201, 201, 201);
@@ -83,7 +95,6 @@
     min-height: 200px;
     overflow: hidden;
     color: rgb(37, 37, 37);
-    font-family: 'Roboto', sans-serif;
 }
 
 
@@ -107,6 +118,7 @@
     margin: 0;
     word-wrap: break-word;
     white-space: pre-line;
+
 }
 
 .Content .ContentArea img{
@@ -196,6 +208,10 @@
         font-size: 12px;
         
     }
+
+    .Content .ContentArea {
+        font-size: 14px;
+    }
     
     .UserDetails {
         max-width: 100%;
@@ -205,7 +221,7 @@
         border-top-left-radius: 0px;
         border-bottom-left-radius: 0px;
         border-top-right-radius: 0px;
-        min-height: 70px;
+        min-height: 60px;
     }
 
     .UserDetails h4 {
@@ -214,6 +230,10 @@
         margin: 0;
         height: fit-content;
         
+    }
+
+    .UserDetails a {
+        height: 44px;
     }
     
     .UserDetails .UserDetailsBox {

@@ -11,6 +11,8 @@ import Admin from './containers/Admin/Admin';
 import UserPage from './containers/User/UserPage/UserPage';
 import ProfileSettings from './containers/User/Account/ProfileSettings/ProfileSettings';
 import EditPost from './containers/Admin/EditPost/EditPost';
+import Search from './containers/User/Search/Search';
+import Notifications from './containers/User/Notifications/Notifications';
 
 import {loadUser, logout} from './redux/actions/auth';
 import setAuthToken from './utils/setAuthToken';
@@ -18,7 +20,7 @@ import setAuthToken from './utils/setAuthToken';
 
 
 const App = (props) => {
-
+  const {isAuth, user} = props;
   //CHECK FOR TOKEN IN LOCAL STORAGE
   useEffect(() => {
     if(localStorage.token) {
@@ -34,6 +36,24 @@ const App = (props) => {
     })
   }, [])
 
+  let userRoutes, adminRoutes = null;
+
+  if(isAuth) userRoutes = <>
+    <Route path='/user/new-conversation' exact component={NewThread}/>
+    <Route path='/user/conversations' exact component={ThreadList}/>
+    <Route path='/user/conversation/:id' exact component={Thread}/>
+    <Route path='/user/account' exact component={ProfileSettings}/>
+    <Route path='/user/new-thread' exact component={NewThread}/>
+    <Route path='/user/search' exact component={Search} />
+    <Route path='/user/notifications' exact component={Notifications}/>
+  </>
+
+  if(user) if(user.settings.role === 2) adminRoutes = <>
+    <Route path='/admin/edit-account/:id' exact component={ProfileSettings}/>
+    <Route path='/admin/edit-thread/:id' exact component={NewThread}/>
+    <Route path='/admin/edit-post/:id' exact component={EditPost}/>
+    <Route path='/admin/panel' exact component={Admin}/>
+  </>
 
   return (
     <Layout>
@@ -42,20 +62,20 @@ const App = (props) => {
       <Route path='/thread/:category/:id' exact component={Thread}/>
       <Route path='/auth/login' exact component={Auth}/>
       <Route path='/auth/signup' exact component={Auth}/>
-      <Route path='/user/new-thread' exact component={NewThread}/>
-      <Route path='/admin/edit-thread/:id' exact component={NewThread}/>
-      <Route path='/admin/edit-post/:id' exact component={EditPost}/>
-      <Route path='/user/new-conversation' exact component={NewThread}/>
-      <Route path='/user/conversations' exact component={ThreadList}/>
-      <Route path='/user/conversation/:id' exact component={Thread}/>
-      <Route path='/user/account' exact component={ProfileSettings}/>
-      <Route path='/admin/edit-account/:id' exact component={ProfileSettings}/>
       <Route path='/member/:id' exact component={UserPage}/>
-      <Route path='/admin/panel' exact component={Admin}/>
+      {userRoutes}
+      {adminRoutes}
     </Layout>
     
   )
   
+}
+
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user,
+    isAuth: state.auth.isAuthenticated
+  }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -65,4 +85,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

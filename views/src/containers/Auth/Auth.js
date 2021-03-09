@@ -8,6 +8,7 @@ import Form from '../../components/UI/Form/Form';
 import {auth} from '../../redux/actions/auth';
 import ValidationMsgs from '../../components/UI/Validation/ValidationMsgs';
 import {validationAlert} from '../../redux/actions/validationAlert';
+import logo from '../../assets/logo.png'
 
 const Auth = (props) => {
     const [formData, setFormData] = useState({
@@ -86,7 +87,11 @@ const Auth = (props) => {
 
     return (
         <div className={style.Auth}>
-            <h2>Bem Vindo Ao <span>ForumPlayers</span></h2>
+           
+            <div className={style.Logo}>
+                <img src={logo} alt='logo'/>
+            </div>
+         
             <ValidationMsgs/>
            {auth}
         </div>

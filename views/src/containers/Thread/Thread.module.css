@@ -7,7 +7,7 @@
 }
 
 .Thread .Post:last-child {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .ThreadTitle {
@@ -15,6 +15,10 @@
     font-weight: 500;
     color: rgb(29, 29, 29);
     word-wrap: break-word;
+}
+
+.NewPost {
+    margin-top: 15px;
 }
 
 .LocationBar {
@@ -41,7 +45,10 @@
         font-size: 17px;
         margin-left: 10px;
     }
-
+    .PageLocation {
+        margin-left: 10px;
+    }
+    
     .LocationBar {
         margin-left: 10px;
     }

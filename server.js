@@ -23,7 +23,7 @@ const adminRoute = require('./routes/admin')
 
 //Define Routes
 app.use('/auth', authRoute);
-app.use('/user', auth, userRoute);
+app.use('/user', auth, checkStatus, userRoute);
 app.use(clientRoute);
 app.use('/admin', auth, checkAdmin, adminRoute);
 

@@ -63,7 +63,7 @@ router.get('/thread/:id', async (req, res) => {
     page: page,
     sort: {createdAt: 1},
     populate: {path: 'user', select: 'name createdAt deslikes likes profile'},
-    limit: 25,
+    limit: 35,
     collation: {
       locale: 'en',
     },
@@ -76,7 +76,10 @@ router.get('/thread/:id', async (req, res) => {
         Thread.findById({_id: req.params.id, 'settings.status': 'public'}).select('title createdAt category').lean(),
         Post.paginate({thread: req.params.id, status: 'public'}, options)
       ]) 
-      const thread = {id: threadInfo.id, createdAt: threadInfo.createdAt, title: threadInfo.title, category: threadInfo.category, posts: posts.docs}
+      const docs = posts.docs;
+      const pagination = posts;
+      delete pagination.docs;
+      const thread = {id: threadInfo._id, createdAt: threadInfo.createdAt, title: threadInfo.title, category: threadInfo.category, posts: docs, pagination: pagination}
       res.json(thread);
       
 

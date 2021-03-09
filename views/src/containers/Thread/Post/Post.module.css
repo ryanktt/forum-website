@@ -156,7 +156,8 @@
     margin-bottom: 0;
 }
 
-.Action {
+
+.Post .Action {
     display: flex;
     margin-right: 25px;
     height: fit-content;
@@ -164,29 +165,46 @@
     align-items: center;
 }
 
-.Action:hover, .Action:hover i, .Action:hover p {
+.Post .Action:last-child {
+    margin: 0;
+ }
+
+.Post .Action:hover, .Post .Action:hover i, .Post .Action:hover p {
     color: rgb(34, 34, 34);
     cursor: pointer;
 }
 
 
-.Action i {
+.Post .Action i {
     line-height: 11px;
     font-size: 11px;
     margin-right: 6px;
     color: rgba(0, 0, 0, 0.527);
 }
 
-.Action p {
+.Post .Action p {
     color: rgba(0, 0, 0, 0.527);
     font-size: 13px;
     cursor: pointer;
 }
 
-.Action.Active p, .Action.Active i{
-    color: rgb(0, 86, 136);
+.Post .Action .ReactionCount {
+    color: rgb(88, 88, 88);
+    font-weight: 500;
+    background-color: rgb(230, 230, 230);
+    padding: 0 2px;
+    border-radius: 2px;
+    margin-left: 3px;
 }
 
+.Post .Action.Active p, .Post .Action.Active i{
+    font-weight: 500;
+    color: rgb(0, 67, 105);
+}
+
+.Post .Action.Active .ReactionCount {
+    color: rgb(0, 67, 105);
+}
 
 @media only screen and (max-width: 767px) {
     .Post {
@@ -277,22 +295,19 @@
     }
 
 
-    .Action {
-       margin-right: 15px;
+    .Post .Action {
+       margin-right: 20px;
     }
-    .Action:last-child {
-        margin: 0;
-     }
-    
-    .Action i {
+
+    .Post .Action i {
         line-height: 11px;
         margin-right: 2px;
         font-size: 12px;
         
     }
     
-    .Action p {
+    .Post .Action p {
         line-height: 11px;
-        font-size: 13px;
+        font-size: 11px;
     }
 }

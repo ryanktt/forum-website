@@ -108,7 +108,7 @@ router.get('/thread/:id', async (req, res) => {
       page: page,
       sort: {updatedAt: 1},
       populate: {path: 'user', select: 'name createdAt deslikes likes profile'},
-      limit: 25,
+      limit: 35,
       collation: {
         locale: 'en',
       },
@@ -117,9 +117,10 @@ router.get('/thread/:id', async (req, res) => {
   
       
     try {
-        const user = await User.findById(req.user.id).select('name').lean();
-
-        const threadInf = await Thread.findById(req.params.id).select('title settings createdAt').lean();
+        const  [user, threadInf] = await Promise.all([
+            User.findById(req.user.id).select('name').lean(),
+            Thread.findById(req.params.id).select('title settings createdAt category').lean()
+        ]);
 
         const isAuthorized =  threadInf.settings.participants.some(participant => { 
             return participant === user.name;
@@ -128,8 +129,10 @@ router.get('/thread/:id', async (req, res) => {
         if(!isAuthorized) return res.status(400).json('Não Autorizado');
 
         const posts = await Post.paginate({thread: req.params.id, status: 'private'}, options);
-       
-        const thread = {id: threadInf.id, createdAt: threadInf.createdAt, title: threadInf.title, posts: posts.docs};
+        const docs = posts.docs;
+        const pagination = posts;
+        delete pagination.docs;
+        const thread = {id: threadInf._id, category: threadInf.category, createdAt: threadInf.createdAt, title: threadInf.title, posts: docs, pagination};
         res.json(thread);
         
   
@@ -232,6 +235,7 @@ router.get('/notification-count', async(req, res) => {
 router.post('/thread',
 check('title', 'Título é obrigatório').isString().isLength({min: 3}),
 check('category', 'Categoria é obrigatório').isString().isLength({min: 1}),
+check('title', 'Título Excede o Limite de Caracteres').exists().isLength({max: 150}),
 async (req, res) => {
     const errors = validationResult(req);
 
@@ -264,7 +268,8 @@ async (req, res) => {
 // @desc     Make new private thread
 // @access   Private
 router.post('/private-thread',
-check('title', 'Título é obrigatório').exists().isLength({min: 3}),
+check('title', 'Título é Obrigatório').exists().isLength({min: 3}),
+check('title', 'Título Excede o Limite de Caracteres').exists().isLength({max: 150}),
 async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {

@@ -19,21 +19,11 @@
 }
 
 .Auth  h2{
-    padding-left: 40px;
-    color: rgb(29, 29, 29);
-    font-size: 23px;
-    font-weight: 500;
-    margin-bottom: 25px;
+    margin: 0 auto;
+    text-align: center;
+    margin: 30px 0;
     
 
-}
-
-.Auth span {
-    font-weight: 900;
-    color: orange;
-    left: 60px;
-    position: relative;
-    
 }
 
 .Auth {
@@ -41,3 +31,17 @@
     margin: 0 auto;
 }
 
+.Auth .Logo {
+    margin: 0 auto 30px auto;
+    max-width: 80%;
+    display: flex;
+    align-items: center;
+    padding: 10px ;
+    background-color: rgb(32, 32, 32);
+
+    border-radius: 5px;
+}
+
+.Auth .Logo img {
+    width: 100%;
+}

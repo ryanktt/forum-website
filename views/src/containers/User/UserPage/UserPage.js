@@ -117,7 +117,7 @@ const UserPage = (props) => {
     const adminActionsToggle = () => {
         setAdminModalActive(!adminModalActive);
     }
-    const adminBtn = null;
+    let adminBtn = null;
     if(clientUser) if(clientUser.settings.role === 2) {
         adminBtn = <div className={style.AdminBtn}><Button clicked={adminActionsToggle} small  button >Admin</Button></div>;
     }

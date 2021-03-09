@@ -7,6 +7,7 @@ import Button from '../../UI/Button/Button';
 import FetchLink from '../../FetchLink/FetchLink';
 import {logout} from '../../../redux/actions/auth';
 import {getNotificationCount} from '../../../redux/actions/user';
+import logo from '../../../assets/logo.png';
 
 const Toolbar = (props) => {
     const {userImg, isAuth, notifications, history, sideDrawerHandler, logout, getNotificationCount, location} = props;
@@ -35,6 +36,7 @@ const Toolbar = (props) => {
     return ( 
         <div className={style.Toolbar}>
                 <HamburgerToggle clicked={sideDrawerHandler}/>
+                <Link to='/'><div className={style.Logo}><img src={logo} alt='logo'/></div></Link>
                 {!isAuth ? loginButton
                 : <div className={style.UserNavOptions}>
                     <Link to='/user/account'><img alt='user-img' src={userImg} /></Link>

@@ -9,7 +9,7 @@ const Category = (props) => {
     let {path} = props;
  
     if(!path)  path = '' ;
-    console.log(lastPost)
+
     return (
         <div  className={style.Category} style={{borderColor: color}}>
             <div className={style.Introduction}>

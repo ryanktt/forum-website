@@ -24,12 +24,13 @@ export const fetchThreads = param => async dispatch => {
     }
 }
 
-export const fetchThread = threadId => async dispatch => {
+export const fetchThread = (threadId, page) => async dispatch => {
     dispatch({type: FETCH_START});
     dispatch({type: LOADING});
 
     try {
-        const thread = await axios.get(`/thread/${threadId}`);
+        const thread = await axios.get(`/thread/${threadId}${page}`);
+
         dispatch({type: FETCH_THREAD, payload: thread.data});
 
         dispatch({type:STOP_LOADING});
@@ -148,12 +149,12 @@ export const fetchPrivateThreads = page => async dispatch => {
     }
 }
 
-export const fetchPrivateThread = threadId => async dispatch => {
+export const fetchPrivateThread = (threadId, page) => async dispatch => {
     dispatch({type: FETCH_START});
     dispatch({type: LOADING});
 
     try {
-        const thread = await axios.get(`/user/thread/${threadId}`);
+        const thread = await axios.get(`/user/thread/${threadId}${page}`);
         dispatch({type: FETCH_PRIVATE_THREAD, payload: thread.data});
 
         dispatch({type:STOP_LOADING});

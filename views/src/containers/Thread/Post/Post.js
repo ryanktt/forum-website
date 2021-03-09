@@ -29,6 +29,9 @@ const Post = (props) => {
         dislike: 'dislike'
     });
 
+    const dislikeCount = post.dislikes.length;
+    const likesCount = post.likes.length;
+
 
     const actionsToggle = () => {
         setModalActive(!modalActive);
@@ -96,11 +99,11 @@ const Post = (props) => {
                 <>
                     <div onClick={() => postActions(post._id, reactionAction.like)} className={reactionStyle.like.join(' ')}>
                         <i className="far fa-thumbs-up"></i>
-                        <p className={style.actionParagraph}>Like</p>
+                        <p className={style.actionParagraph}>Like <span className={style.ReactionCount}>{likesCount}</span></p>
                     </div>
                     <div onClick={() => postActions(post._id, reactionAction.dislike)} className={reactionStyle.dislike.join(' ')}>
                         <i className="far fa-thumbs-down"></i>
-                        <p className={style.actionParagraph}>Dislike</p>
+                        <p className={style.actionParagraph}>Dislike <span className={style.ReactionCount}>{dislikeCount}</span></p>
                     </div>
                 </> : null}
                 <a href='#quote' onClick={() => quoted(post.content, post._id, {name: user.name, id: user._id})} style={{textDecoration: 'none'}}>

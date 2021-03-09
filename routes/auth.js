@@ -13,9 +13,10 @@ const router = express.Router();
 // @desc     Register user
 // @access   Public
 router.post('/signup',
-check('name', 'Nome é obrigatório').notEmpty().exists(),
-check('email', 'Por favor digite um email válido').isEmail(),
-check('password', 'Por favor digite uma senha com 6 ou mais caracteres').isLength({min: 6}),
+check('name', 'Nome é Obrigatório').notEmpty().exists().isLength({min: 3}),
+check('name', 'Nome Excede o Limite de Caracteres').isLength({max: 25}),
+check('email', 'Por Favor Digite um Email Válido').isEmail(),
+check('password', 'Por Favor Digite uma Senha com 6 ou Mais Caracteres').isLength({min: 6}),
 async (req, res) => {
   const ip = requestIp.getClientIp(req);
 
@@ -24,18 +25,37 @@ async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-
   const {
       name,
       email,
       password
   } = req.body;
+
+  let iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+  let iCharsEmail = "!#$%^&*()+=-[]\\\';,/{}|\":<>?";
+
+  if(name.includes(' ')) {
+    res.status(400).json({errors:[{msg: "Campos Não Devem Conter Espaços"}]});
+  }
+
+  for (var i = 0; i < name.length; i++) {
+      if (iChars.indexOf(name.charAt(i)) != -1) {
+          return res.status(400).json({errors:[{msg: "Caracteres Inválidos"}]});
+      }
+  }
+  for (var i = 0; i < email.length; i++) {
+    if (iCharsEmail.indexOf(email.charAt(i)) != -1) {
+        return res.status(400).json({errors:[{msg: "Caracteres Inválidos"}]});
+    }
+}
   try {
 
-    let user =  await User.findOne({email: email})
+    let user =  await User.findOne({$or:[ 
+      {email}, {name} 
+    ]})
 
     if(user) {
-      return res.status(400).json({errors: [{msg: 'Usuário já existe'}]})
+      return res.status(400).json({errors: [{msg: 'Usuário já Existe'}]})
     }
     user = new User({name, email, password, ip});
 
@@ -48,8 +68,7 @@ async (req, res) => {
     
     const payload = {
         user: {
-          id: user.id,
-          settings: user.settings
+          id: user.id
         }
     }
 
@@ -102,8 +121,7 @@ async (req, res) => {
 
         const payload = {
             user: {
-              id: user.id,
-              settings: user.settings
+              id: user.id
             }
         }
         

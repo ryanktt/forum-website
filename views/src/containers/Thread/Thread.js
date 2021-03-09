@@ -7,9 +7,9 @@ import {validationAlert} from '../../redux/actions/validationAlert';
 import {setQuote, quoted} from '../../redux/actions/post';
 import Location from '../../components/Location/Location';
 import {categories} from '../../utils/categories';
-import {getSubstringsBetween} from '../../utils/textFormat';
 import NewPost from '../../containers/NewPost/NewPost';
 import Loading from '../../components/UI/Loading/Loading';
+import PageLocation from '../../components/PageLocation/PageLocation';
 
 
 
@@ -35,6 +35,7 @@ const Thread = (props) => {
     const [posts, setPosts] = useState(null);
     const [newPost, setNewPost] = useState(null);
     const [loading, setLoading] = useState(true);
+    const currentPage = location.search;
     //check if it's fetching or if the thread has not been fetched before fetching again
   
     useEffect(() => {
@@ -45,17 +46,17 @@ const Thread = (props) => {
 
     useEffect(() => {
         if(isConversation && !thread ) {
-            return fetchPrivateThread(match.params.id);
+            return fetchPrivateThread(match.params.id, currentPage);
         } 
         if(isConversation && reFetch ) {
-            return fetchPrivateThread(match.params.id);
+            return fetchPrivateThread(match.params.id, currentPage);
         } 
 
         if(!thread && !fetching && !isConversation) {
-            return fetchThread(match.params.id);
+            return fetchThread(match.params.id, currentPage);
         }
         if(reFetch && !fetching && !isConversation) {
-            return fetchThread(match.params.id);
+            return fetchThread(match.params.id, currentPage);
         }
     
     }, [reFetch]);
@@ -95,7 +96,7 @@ const Thread = (props) => {
     let postNumber = 0
 
     useEffect(() => { 
-        if(isAuth) setNewPost(<NewPost button submit={onSubmit}/>)
+        if(isAuth) setNewPost(<div className={style.NewPost}><NewPost button submit={onSubmit}/></div>)
 
         if(thread) setPosts(thread.posts.map(post => {
             postNumber++
@@ -152,9 +153,15 @@ const Thread = (props) => {
             {name: categoryName, path: `/threads/${categoryPath}`}
         ]
     }
+    const pageLocationPath = (category, pageNumber) => {
+        if(thread.category === 'conversation') return `/user/conversation/${thread.id}?page=${pageNumber}`;
+        return `/thread/${thread.category}/${thread.id}?page=${pageNumber}`;
+    }
 
-    
-
+    let pagination = null
+    if(thread) pagination = <div className={style.PageLocation}>
+        <PageLocation path={pageLocationPath} {...thread.pagination} {...props}/>
+        </div>
     return (
         loading ? <Loading/> 
         :<> 
@@ -164,6 +171,7 @@ const Thread = (props) => {
             <div className={style.Thread}>
                 {posts}
             </div>
+            {pagination}
             <div>{newPost}</div>
         </>
     )
@@ -181,8 +189,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchThread: (threadId) => dispatch(fetchThread(threadId)),
-        fetchPrivateThread: (threadId) => dispatch(fetchPrivateThread(threadId)),
+        fetchThread: (threadId, page) => dispatch(fetchThread(threadId, page)),
+        fetchPrivateThread: (threadId, page) => dispatch(fetchPrivateThread(threadId, page)),
         setQuote: (quote) => dispatch(setQuote(quote)),
         quoted: () => dispatch(quoted),
         makeNewPost: (content, threadId, status, category) => dispatch(newPost(content, threadId, status, category)),

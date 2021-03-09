@@ -208,7 +208,7 @@
     .ProfilePic {
         width: fit-content;
         justify-content: center;
-        margin: 0  9px;
+        margin: 0  15px 0 10px;
     }
 
     .ThreadOwnerPic {

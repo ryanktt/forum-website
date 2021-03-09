@@ -91,6 +91,7 @@ router.put('/thread/:id',
 check('title', 'Título é obrigatório').isString().isLength({min: 3}),
 check('category', 'Categoria é obrigatório').isString().isLength({min: 1}),
 check('content', 'Conteúdo é obrigatório').isString().isLength({min: 3}),
+check('title', 'Título Excede o Limite de Caracteres').exists().isLength({max: 150}),
 async (req, res) => {
     const errors = validationResult(req);
 

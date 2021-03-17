@@ -3,7 +3,7 @@ const User = require('../models/user');
 const checkStatus  = async (req, res, next) => {
 
     try{
-        const user = await User.findById(req.user.id).select('settings').lean();
+        const user = await User.findById(req.user.id).select('settings');
         const allowAccessFrom = user.settings.allowAccessFrom;
         const status = user.settings.status;
         //check if ban time has passed

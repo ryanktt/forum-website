@@ -20,7 +20,7 @@ const Post = (props) => {
     if (!chosenEmoji) chosenEmoji = '';
 
     let btn = null;
-    if (button)  btn = <div className={style.Btn}><Button type='submit'  button >Novo Post</Button></div>
+    if (button)  btn = <div className={style.Btn}><Button type='submit' medium button >Novo Post</Button></div>
 
 
     useEffect(() => {
@@ -95,7 +95,7 @@ const Post = (props) => {
                 onSelect={(e) => select(e)}/>
             </div>
             <div className={style.Btns}>
-                    <div className={style.Btn}><Button clicked={onPreviewClick} button  >Preview</Button></div>
+                    <div className={style.Btn}><Button clicked={onPreviewClick} button medium>Preview</Button></div>
                     {btn}
             </div>
             {preview ?<div className={style.Preview}>

@@ -36,7 +36,6 @@
     border-left-color: rgb(255, 176, 29);
     border-left-width: 2px;
     padding-top: 5px;
-    
 }
 
 
@@ -51,7 +50,9 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+    position: relative;
 }
+
 
 .PageLocation {
     margin-top: 15px;
@@ -59,6 +60,7 @@
 
 .Btn {
     height: min-content;
+    
 }
 
 .BtnMobile {
@@ -67,6 +69,16 @@
     width: fit-content;
 }
 
+.ReloadBtn {
+    width: fit-content;
+    margin: 0 15px;
+    border-radius: 5px;
+  
+}
+
+.ReloadBtn.Bottom {
+    right: 0;
+}
 
 @media only screen and (max-width: 501px) {
     .ThreadsBtn {
@@ -86,6 +98,12 @@
         margin-left: 10px;
     }
 
+    .ReloadBtn, .ReloadBtn.Bottom {
+        width: fit-content;
+        right: 15px;
+        border-radius: 5px;
+      
+    }
 
 }
 

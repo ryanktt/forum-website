@@ -10,6 +10,7 @@ import {categories} from '../../utils/categories';
 import NewPost from '../../containers/NewPost/NewPost';
 import Loading from '../../components/UI/Loading/Loading';
 import PageLocation from '../../components/PageLocation/PageLocation';
+import Button from '../../components/UI/Button/Button';
 
 
 
@@ -117,10 +118,9 @@ const Thread = (props) => {
         setLoading(false)
     }, [thread])
 
-    
-    // if(isAuth) {
-    //     newPost = <NewPost button submit={onSubmit}/>;
-    // }
+    const onReloadPage = () => {
+        setReFetch();
+    }
 
     //get category name by param
     const currentCategory = categories.filter(el => {
@@ -166,13 +166,19 @@ const Thread = (props) => {
         loading ? <Loading/> 
         :<> 
             <h2 className={style.ThreadTitle}>{thread ? thread.title : null}</h2>
-            <div className={style.LocationBar}><Location items=
-            {locationItems}/></div>
+            <div className={style.LocationBar}>
+                <Location items={locationItems}/>
+                <div className={style.ReloadBtn}><Button medium clicked={onReloadPage} button><i className="fas fa-redo"></i></Button></div>
+            </div>
             <div className={style.Thread}>
                 {posts}
             </div>
             {pagination}
             <div>{newPost}</div>
+            <div className={style.LocationBar} style={{marginTop: '30px'}}>
+                <Location items={locationItems}/>
+                <div className={style.ReloadBtn}><Button clicked={onReloadPage} medium button><i className="fas fa-redo"></i></Button></div>
+            </div>
         </>
     )
 }

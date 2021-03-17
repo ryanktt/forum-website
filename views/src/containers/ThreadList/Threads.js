@@ -81,6 +81,10 @@ const Threads = (props) => {
        }
     }, [currentPath])
 
+    const onReloadPage = () => {
+        setReFetch();
+    }
+
     //get category name by param
     const currentCategory = categories.filter(el => {
         return el.value === category
@@ -101,27 +105,23 @@ const Threads = (props) => {
         })
     }
 
-
-
     let locationItems = [
         {name: 'Categorias', path: '/'},
     ]
 
-    
     const pageLocationPath = (category, pageNumber) => {
         return `/threads/${category}?page=${pageNumber}`
     }
-
-    //
-
-
 
     return (
         <>  
         <div className={style.BtnMobile}>{newThreadBtn}</div>
             <div className={style.LocationBar}>
                 <Location items={locationItems} />
-                <div  className={style.Btn}>{newThreadBtn}</div>
+                <div style={{display: 'flex'}}> 
+                    <div className={style.ReloadBtn}><Button clicked={onReloadPage} button><i className="fas fa-redo"></i></Button></div>
+                    <div  className={style.Btn}>{newThreadBtn}</div>
+                </div>
             </div>
             
             <div className={style.ThreadsCategory}>
@@ -129,8 +129,13 @@ const Threads = (props) => {
             </div>
             <div className={style.Thread}>
             {threadList}
+            
             </div>
             <div className={style.PageLocation}><PageLocation  path={pageLocationPath} history={history} category={category} {...paginate}/></div>
+            <div className={style.LocationBar}>
+                <Location items={locationItems} />
+                <div className={[style.ReloadBtn, style.Bottom].join(' ')}><Button clicked={onReloadPage} button><i className="fas fa-redo"></i></Button></div>
+            </div>
         </>
         
     )

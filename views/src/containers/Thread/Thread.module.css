@@ -52,4 +52,8 @@
     .LocationBar {
         margin-left: 10px;
     }
+
+    .ReloadBtn {
+        margin-right: 15px;
+    }
 }

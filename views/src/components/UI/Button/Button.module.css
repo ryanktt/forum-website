@@ -80,4 +80,19 @@
         padding: 5px 6px;
         font-size: 13px;
     }
+
+    .Button.Large {
+        font-size: 18px;
+        padding: 6px;
+    }
+    
+    .Button.Medium {
+        font-size: 14px;
+        padding: 4px;
+    }
+    
+    .Button.Small {
+        font-size: 12px;
+        padding: 3px;
+    }
 }
